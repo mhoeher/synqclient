@@ -9,6 +9,8 @@
 
 namespace SynqClient {
 
+Q_NAMESPACE_EXPORT(LIBSYNQCLIENT_EXPORT)
+
 class AbstractJobPrivate;
 
 enum class LIBSYNQCLIENT_EXPORT JobError : quint32 {
@@ -19,7 +21,11 @@ enum class LIBSYNQCLIENT_EXPORT JobError : quint32 {
     InvalidResponse //!< Received an invalid response during an operation
 };
 
+Q_ENUM_NS(JobError);
+
 enum class LIBSYNQCLIENT_EXPORT JobState : quint32 { Ready = 0, Running, Finished };
+
+Q_ENUM_NS(JobState);
 
 class LIBSYNQCLIENT_EXPORT ItemProperty
 {

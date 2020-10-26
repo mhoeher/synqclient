@@ -1,0 +1,53 @@
+variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+
+.build-and-test:
+    stage: build
+    script:
+        - curl -d install="true" -d adminlogin=admin -d adminpass=admin http://nextcloud/index.php
+        - curl -d install="true" -d adminlogin=admin -d adminpass=admin http://owncloud/index.php
+        - $RUNNER
+    services:
+        - name: nextcloud
+          alias: nextcloud
+        - name: owncloud
+          alias: owncloud
+    variables:
+        SYNQCLIENT_UT_WEBDAV_SERVERS: nextcloud://nextcloud/;owncloud://owncloud/;generic://nextcloud/remote.php/dav/files/admin/;generic://owncloud/remote.php/dav/files/admin/
+
+fedora:
+    image: fedora
+    extends: .build-and-test
+    variables:
+        RUNNER: ./ci/build-and-test.sh
+
+fedora-static:
+    image: fedora
+    extends: .build-and-test
+    variables:
+        RUNNER: ./ci/build-and-test-static.sh
+
+pages:
+    stage: build
+    image: fedora
+    script:
+        - ./ci/doxygen.sh
+    artifacts:
+        paths:
+            - public
+    only:
+    - master
+
+doxygen:
+    stage: build
+    image: fedora
+    script:
+        - ./ci/doxygen.sh
+    except:
+        - master
+
+cppcheck:
+    stage: build
+    image: fedora
+    script:
+        - ./ci/cppcheck.sh

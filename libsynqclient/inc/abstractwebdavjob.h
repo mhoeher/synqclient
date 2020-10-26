@@ -6,8 +6,11 @@
 #include <QScopedPointer>
 
 #include "libsynqclient_global.h"
+#include "AbstractJob"
 
 namespace SynqClient {
+
+Q_NAMESPACE_EXPORT(LIBSYNQCLIENT_EXPORT);
 
 class AbstractWebDAVJobPrivate;
 
@@ -16,6 +19,8 @@ enum class LIBSYNQCLIENT_EXPORT WebDAVServerType : quint32 {
     NextCloud = 1,
     OwnCloud = 2
 };
+
+Q_ENUM_NS(WebDAVServerType);
 
 class LIBSYNQCLIENT_EXPORT AbstractWebDAVJob
 {

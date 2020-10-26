@@ -6,4 +6,8 @@ SUBDIRS += \
 
 tests.depends += libsynqclient
 
-OTHER_FILES += $$files(model/*)
+OTHER_FILES += \
+    $$files(model/*) \
+    .gitlab-ci.yml \
+    Doxyfile \
+    $$files(ci/*.sh)

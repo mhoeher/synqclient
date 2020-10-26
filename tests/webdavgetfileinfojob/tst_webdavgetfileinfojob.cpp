@@ -4,6 +4,7 @@
 
 // add necessary includes here
 #include "WebDAVGetFileInfoJob"
+#include "../shared/utils.h"
 
 class WebDAVGetFileInfoJobTest : public QObject
 {
@@ -17,6 +18,7 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
     void getRootItemFileInfo();
+    void getRootItemFileInfo_data();
 };
 
 WebDAVGetFileInfoJobTest::WebDAVGetFileInfoJobTest() {}
@@ -29,17 +31,25 @@ void WebDAVGetFileInfoJobTest::cleanupTestCase() {}
 
 void WebDAVGetFileInfoJobTest::getRootItemFileInfo()
 {
+    QFETCH(QUrl, url);
+    QFETCH(SynqClient::WebDAVServerType, type);
+
     QNetworkAccessManager nam;
     SynqClient::WebDAVGetFileInfoJob job;
     job.setNetworkAccessManager(&nam);
-    job.setServerType(SynqClient::WebDAVServerType::NextCloud);
-    job.setUrl(QUrl("http://admin:admin@localhost:8080"));
+    job.setServerType(type);
+    job.setUrl(url);
     job.start();
     QSignalSpy spy(&job, &SynqClient::AbstractJob::finished);
     QVERIFY(spy.wait());
     QCOMPARE(job.error(), SynqClient::JobError::NoError);
     auto fileInfo = job.fileInfo();
     QCOMPARE(fileInfo[SynqClient::ItemProperty::Name], ".");
+}
+
+void WebDAVGetFileInfoJobTest::getRootItemFileInfo_data()
+{
+    SynqClient::UnitTest::setupWebDAVTestServerData();
 }
 
 QTEST_MAIN(WebDAVGetFileInfoJobTest)
