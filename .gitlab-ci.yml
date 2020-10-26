@@ -13,7 +13,7 @@ variables:
         - name: owncloud
           alias: owncloud
     variables:
-        SYNQCLIENT_UT_WEBDAV_SERVERS: nextcloud://nextcloud/;owncloud://owncloud/;generic://nextcloud/remote.php/dav/files/admin/;generic://owncloud/remote.php/dav/files/admin/
+        SYNQCLIENT_UT_WEBDAV_SERVERS: nextcloud://admin:admin@nextcloud/;owncloud://admin:admin@owncloud/;generic://admin:admin@nextcloud/remote.php/dav/files/admin/;generic://admin:admin@owncloud/remote.php/dav/files/admin/
 
 fedora:
     image: fedora
