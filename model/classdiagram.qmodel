@@ -1985,10 +1985,11 @@
                                     <object>{99a70cbe-da40-4b55-8f5a-b009dde0c993}</object>
                                     <name>CreateDirectoryJob</name>
                                     <pos>x:45;y:280</pos>
-                                    <rect>x:-65;y:-30;w:130;h:60</rect>
+                                    <rect>x:-65;y:-35;w:130;h:70</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
+                                  <show-all-members>true</show-all-members>
                                  </DClass>
                                 </instance>
                                </item>
@@ -2012,7 +2013,7 @@
                                </item>
                               </qlist>
                              </elements>
-                             <last-modified>1603491941330</last-modified>
+                             <last-modified>1603828815701</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -2637,6 +2638,17 @@
                              </relations>
                             </MObject>
                            </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{7c655a65-e0d9-4ec6-8745-6b97e404b3a6}</uid>
+                               <type>1</type>
+                               <declaration>QString path</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>

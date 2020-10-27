@@ -10,4 +10,5 @@ OTHER_FILES += \
     $$files(model/*) \
     .gitlab-ci.yml \
     Doxyfile \
-    $$files(ci/*.sh)
+    $$files(ci/*.sh) \
+    $$files(utils/*.*)

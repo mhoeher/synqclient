@@ -1,6 +1,7 @@
-#include <QtTest>
-#include <QSignalSpy>
 #include <QNetworkAccessManager>
+#include <QSignalSpy>
+#include <QUuid>
+#include <QtTest>
 
 // add necessary includes here
 #include "WebDAVGetFileInfoJob"
@@ -19,6 +20,8 @@ private slots:
     void cleanupTestCase();
     void getRootItemFileInfo();
     void getRootItemFileInfo_data();
+    void getFileInfoForNonExistingFile();
+    void getFileInfoForNonExistingFile_data();
 };
 
 WebDAVGetFileInfoJobTest::WebDAVGetFileInfoJobTest() {}
@@ -48,6 +51,32 @@ void WebDAVGetFileInfoJobTest::getRootItemFileInfo()
 }
 
 void WebDAVGetFileInfoJobTest::getRootItemFileInfo_data()
+{
+    SynqClient::UnitTest::setupWebDAVTestServerData();
+}
+
+void WebDAVGetFileInfoJobTest::getFileInfoForNonExistingFile()
+{
+    QFETCH(QUrl, url);
+    QFETCH(SynqClient::WebDAVServerType, type);
+
+    auto uid = QUuid::createUuid();
+    auto path = "/WebDAVGetFileInfoJobTest-should-definitely-not-exist-" + uid.toString();
+    QNetworkAccessManager nam;
+    SynqClient::WebDAVGetFileInfoJob job;
+    job.setNetworkAccessManager(&nam);
+    job.setServerType(type);
+    job.setUrl(url);
+    job.setPath(path);
+    job.start();
+    QSignalSpy spy(&job, &SynqClient::AbstractJob::finished);
+    QVERIFY(spy.wait());
+    QCOMPARE(job.error(), SynqClient::JobError::InvalidResponse);
+    auto fileInfo = job.fileInfo();
+    QVERIFY(fileInfo.isEmpty());
+}
+
+void WebDAVGetFileInfoJobTest::getFileInfoForNonExistingFile_data()
 {
     SynqClient::UnitTest::setupWebDAVTestServerData();
 }

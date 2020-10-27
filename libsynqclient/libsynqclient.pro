@@ -16,27 +16,37 @@ SOURCES += \
     src/abstractjobprivate.cpp \
     src/abstractwebdavjob.cpp \
     src/abstractwebdavjobprivate.cpp \
+    src/createdirectoryjob.cpp \
+    src/createdirectoryjobprivate.cpp \
     src/getfileinfojob.cpp \
     src/getfileinfojobprivate.cpp \
     src/libsynqclient.cpp \
+    src/webdavcreatedirectoryjob.cpp \
+    src/webdavcreatedirectoryjobprivate.cpp \
     src/webdavgetfileinfojob.cpp \
     src/webdavgetfileinfojobprivate.cpp
 
 HEADERS += \
     inc/AbstractJob \
     inc/AbstractWebDAVJob \
+    inc/CreateDirectoryJob \
     inc/GetFileInfoJob \
+    inc/WebDAVCreateDirectoryJob \
     inc/WebDAVGetFileInfoJob \
     inc/abstractjob.h \
     inc/abstractwebdavjob.h \
+    inc/createdirectoryjob.h \
     inc/getfileinfojob.h \
     inc/libsynqclient_global.h \
     inc/libsynqclient.h \
+    inc/webdavcreatedirectoryjob.h \
     inc/webdavgetfileinfojob.h \
     src/abstractjobprivate.h \
     src/abstractwebdavjobprivate.h \
     inc/SynqClient \
+    src/createdirectoryjobprivate.h \
     src/getfileinfojobprivate.h \
+    src/webdavcreatedirectoryjobprivate.h \
     src/webdavgetfileinfojobprivate.h
 
 INCLUDEPATH += inc

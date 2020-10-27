@@ -10,6 +10,7 @@ static Q_LOGGING_CATEGORY(log, "SynqClient.AbstractWebDAVJob", QtWarningMsg);
 
 const char* AbstractWebDAVJobPrivate::DefaultEncoding = "text/xml; charset=utf-8";
 const char* AbstractWebDAVJobPrivate::PROPFIND = "PROPFIND";
+const char* AbstractWebDAVJobPrivate::MKCOL = "MKCOL";
 
 AbstractWebDAVJobPrivate::AbstractWebDAVJobPrivate(AbstractWebDAVJob* q)
     : q_ptr(q),

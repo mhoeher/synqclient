@@ -8,12 +8,17 @@ from datetime import datetime
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("ClassName")
+    parser.add_argument(
+        "--base-class", type=str, default=None,
+        help="The class the new class derives from.")
     options = parser.parse_args()
     path = pathlib.Path(__file__).parent.parent
     path = path / "libsynqclient"
+
     ClassName : str = options.ClassName
     classname = ClassName.lower()
     CLASSNAME = ClassName.upper()
+
     license_header = dedent(f"""\
         /*
          * Copyright {datetime.now().year} Martin Hoeher <martin@rpdev.net>
@@ -36,96 +41,194 @@ if __name__ == "__main__":
 
         """
     )
-    with open(path / "inc" / (classname + ".h"), "w") as file:
-        file.write(license_header + dedent(f"""\
-            #ifndef SYNQCLIENT_{CLASSNAME}_H
-            #define SYNQCLIENT_{CLASSNAME}_H
 
-            #include <QObject>
-            #include <QScopedPointer>
-            #include <QtGlobal>
+    if options.base_class is not None:
+        BaseClass: str = options.base_class
+        baseclass = BaseClass.lower()
+        with open(path / "inc" / (classname + ".h"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #ifndef SYNQCLIENT_{CLASSNAME}_H
+                #define SYNQCLIENT_{CLASSNAME}_H
 
-            #include "libsynqclient_global.h"
+                #include <QObject>
+                #include <QScopedPointer>
+                #include <QtGlobal>
 
-            namespace SynqClient {{
+                #include "{BaseClass}"
+                #include "libsynqclient_global.h"
 
-            class {ClassName}Private;
+                namespace SynqClient {{
 
-            class LIBSYNQCLIENT_EXPORT {ClassName} : public QObject
-            {{
-                Q_OBJECT 
-            public: 
+                class {ClassName}Private;
 
-                explicit {ClassName}(QObject* parent = nullptr);
-                ~{ClassName}() override;
+                class LIBSYNQCLIENT_EXPORT {ClassName} : public {BaseClass}
+                {{
+                    Q_OBJECT
+                public:
 
-            protected:
-                explicit {ClassName}({ClassName}Private* d, QObject* parent = nullptr);
+                    explicit {ClassName}(QObject* parent = nullptr);
+                    ~{ClassName}() override;
 
-                QScopedPointer<{ClassName}Private> d_ptr;
-                Q_DECLARE_PRIVATE({ClassName});
-            }};
+                protected:
+                    explicit {ClassName}({ClassName}Private* d, QObject* parent = nullptr);
 
-            }} // namespace SynqClient
+                    Q_DECLARE_PRIVATE({ClassName});
+                }};
 
-            #endif // SYNQCLIENT_{CLASSNAME}_H
-            """
-        ))
-    with open(path / "inc" / ClassName, "w") as file:
-        file.write(dedent(f"""\
-            #include "{classname}.h"
-            """
-        ))
-    with open(path / "src" / (classname + ".cpp"), "w") as file:
-        file.write(license_header + dedent(f"""\
-            #include "../inc/{classname}.h"
+                }} // namespace SynqClient
 
-            #include "{classname}private.h"
+                #endif // SYNQCLIENT_{CLASSNAME}_H
+                """
+            ))
+        with open(path / "inc" / ClassName, "w") as file:
+            file.write(dedent(f"""\
+                #include "{classname}.h"
+                """
+            ))
+        with open(path / "src" / (classname + ".cpp"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #include "../inc/{classname}.h"
 
-            namespace SynqClient {{
+                #include "{classname}private.h"
 
-            {ClassName}::{ClassName}(QObject* parent) : QObject(parent), d_ptr(new {ClassName}Private(this)) {{}}
+                namespace SynqClient {{
 
-            {ClassName}::~{ClassName}() {{}}
+                {ClassName}::{ClassName}(QObject* parent) : {BaseClass}(new {ClassName}Private(this), parent) {{}}
 
-            {ClassName}::{ClassName}({ClassName}Private* d, QObject* parent) : QObject(parent), d_ptr(d) {{}}
+                {ClassName}::~{ClassName}() {{}}
 
-            }} // namespace SynqClient
-            """
-        ))
-    with open(path / "src" / (classname + "private.h"), "w") as file:
-        file.write(license_header + dedent(f"""\
-            #ifndef SYNQCLIENT_{CLASSNAME}PRIVATE_H
-            #define SYNQCLIENT_{CLASSNAME}PRIVATE_H
+                {ClassName}::{ClassName}({ClassName}Private* d, QObject* parent) : {BaseClass}(d, parent) {{}}
 
-            #include "{classname}.h"
+                }} // namespace SynqClient
+                """
+            ))
+        with open(path / "src" / (classname + "private.h"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #ifndef SYNQCLIENT_{CLASSNAME}PRIVATE_H
+                #define SYNQCLIENT_{CLASSNAME}PRIVATE_H
 
-            namespace SynqClient {{
+                #include "{baseclass}private.h"
+                #include "{classname}.h"
 
-            class {ClassName}Private
-            {{
-            public:
-                explicit {ClassName}Private({ClassName}* q);
+                namespace SynqClient {{
 
-                {ClassName} *q_ptr;
-                Q_DECLARE_PUBLIC({ClassName});
-            }};
+                class {ClassName}Private : public {BaseClass}Private
+                {{
+                public:
+                    explicit {ClassName}Private({ClassName}* q);
 
-            }} // namespace SynqClient
+                    Q_DECLARE_PUBLIC({ClassName});
+                }};
 
-            #endif // SYNQCLIENT_{CLASSNAME}PRIVATE_H
-            """
-        ))
-    with open(path / "src" / (classname + "private.cpp"), "w") as file:
-        file.write(license_header + dedent(f"""\
-            #include "{classname}private.h"
+                }} // namespace SynqClient
 
-            namespace SynqClient {{
+                #endif // SYNQCLIENT_{CLASSNAME}PRIVATE_H
+                """
+            ))
+        with open(path / "src" / (classname + "private.cpp"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #include "{classname}private.h"
 
-            {ClassName}Private::{ClassName}Private({ClassName}* q) : q_ptr(q)
-            {{
-            }}
+                namespace SynqClient {{
 
-            }} // namespace SynqClient
-            """
-        ))
+                {ClassName}Private::{ClassName}Private({ClassName}* q) : {BaseClass}Private(q)
+                {{
+                }}
+
+                }} // namespace SynqClient
+                """
+            ))
+    else:
+        with open(path / "inc" / (classname + ".h"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #ifndef SYNQCLIENT_{CLASSNAME}_H
+                #define SYNQCLIENT_{CLASSNAME}_H
+
+                #include <QObject>
+                #include <QScopedPointer>
+                #include <QtGlobal>
+
+                #include "libsynqclient_global.h"
+
+                namespace SynqClient {{
+
+                class {ClassName}Private;
+
+                class LIBSYNQCLIENT_EXPORT {ClassName} : public QObject
+                {{
+                    Q_OBJECT
+                public:
+
+                    explicit {ClassName}(QObject* parent = nullptr);
+                    ~{ClassName}() override;
+
+                protected:
+                    explicit {ClassName}({ClassName}Private* d, QObject* parent = nullptr);
+
+                    QScopedPointer<{ClassName}Private> d_ptr;
+                    Q_DECLARE_PRIVATE({ClassName});
+                }};
+
+                }} // namespace SynqClient
+
+                #endif // SYNQCLIENT_{CLASSNAME}_H
+                """
+            ))
+        with open(path / "inc" / ClassName, "w") as file:
+            file.write(dedent(f"""\
+                #include "{classname}.h"
+                """
+            ))
+        with open(path / "src" / (classname + ".cpp"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #include "../inc/{classname}.h"
+
+                #include "{classname}private.h"
+
+                namespace SynqClient {{
+
+                {ClassName}::{ClassName}(QObject* parent) : QObject(parent), d_ptr(new {ClassName}Private(this)) {{}}
+
+                {ClassName}::~{ClassName}() {{}}
+
+                {ClassName}::{ClassName}({ClassName}Private* d, QObject* parent) : QObject(parent), d_ptr(d) {{}}
+
+                }} // namespace SynqClient
+                """
+            ))
+        with open(path / "src" / (classname + "private.h"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #ifndef SYNQCLIENT_{CLASSNAME}PRIVATE_H
+                #define SYNQCLIENT_{CLASSNAME}PRIVATE_H
+
+                #include "{classname}.h"
+
+                namespace SynqClient {{
+
+                class {ClassName}Private
+                {{
+                public:
+                    explicit {ClassName}Private({ClassName}* q);
+
+                    {ClassName} *q_ptr;
+                    Q_DECLARE_PUBLIC({ClassName});
+                }};
+
+                }} // namespace SynqClient
+
+                #endif // SYNQCLIENT_{CLASSNAME}PRIVATE_H
+                """
+            ))
+        with open(path / "src" / (classname + "private.cpp"), "w") as file:
+            file.write(license_header + dedent(f"""\
+                #include "{classname}private.h"
+
+                namespace SynqClient {{
+
+                {ClassName}Private::{ClassName}Private({ClassName}* q) : q_ptr(q)
+                {{
+                }}
+
+                }} // namespace SynqClient
+                """
+            ))

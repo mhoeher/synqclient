@@ -18,7 +18,9 @@ class AbstractWebDAVJobPrivate
 public:
     static const char* DefaultEncoding;
     static const char* PROPFIND;
+    static const char* MKCOL;
     static const int WebDAVMultiStatus = 207;
+    static const int WebDAVCreated = 201;
 
     explicit AbstractWebDAVJobPrivate(AbstractWebDAVJob* q);
     virtual ~AbstractWebDAVJobPrivate();
