@@ -5,45 +5,12 @@
 #include <QScopedPointer>
 #include <QtGlobal>
 
+#include "libsynqclient.h"
 #include "libsynqclient_global.h"
 
 namespace SynqClient {
 
-Q_NAMESPACE_EXPORT(LIBSYNQCLIENT_EXPORT)
-
 class AbstractJobPrivate;
-
-enum class LIBSYNQCLIENT_EXPORT JobError : quint32 {
-    NoError = 0, //!< Indicates that no error occurred.
-    Stopped, //!< The job has been stopped by the user.
-    MissingParameter, //!< Some parameters required to run the job are missing.
-    InvalidParameter, //!< Some parameters have values which are invalid.
-    InvalidResponse //!< Received an invalid response during an operation
-};
-
-Q_ENUM_NS(JobError);
-
-enum class LIBSYNQCLIENT_EXPORT JobState : quint32 { Ready = 0, Running, Finished };
-
-Q_ENUM_NS(JobState);
-
-class LIBSYNQCLIENT_EXPORT ItemProperty
-{
-public:
-    static const char* Valid;
-    static const char* Type;
-    static const char* SyncAttribute;
-    static const char* Name;
-    static const char* URL;
-};
-
-class LIBSYNQCLIENT_EXPORT ItemType
-{
-public:
-    static const char* Directory;
-    static const char* File;
-    static const char* Invalid;
-};
 
 class LIBSYNQCLIENT_EXPORT AbstractJob : public QObject
 {
@@ -64,7 +31,7 @@ signals:
     void finished();
 
 protected:
-    AbstractJob(AbstractJobPrivate* d, QObject* parent = nullptr);
+    explicit AbstractJob(AbstractJobPrivate* d, QObject* parent = nullptr);
 
     QScopedPointer<AbstractJobPrivate> d_ptr;
     Q_DECLARE_PRIVATE(AbstractJob);
