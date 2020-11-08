@@ -12,6 +12,7 @@ class AbstractJobPrivate
 {
 public:
     explicit AbstractJobPrivate(AbstractJob* q);
+    virtual ~AbstractJobPrivate();
 
     AbstractJob* q_ptr;
     Q_DECLARE_PUBLIC(AbstractJob);

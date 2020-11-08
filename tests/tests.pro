@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
     abstractjob \
     webdavcreatedirectoryjob \
-    webdavgetfileinfojob
+    webdavgetfileinfojob \
+    webdavuploadfilejob

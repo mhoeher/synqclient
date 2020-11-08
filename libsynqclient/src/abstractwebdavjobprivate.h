@@ -17,8 +17,12 @@ class AbstractWebDAVJobPrivate
 {
 public:
     static const char* DefaultEncoding;
+    static const char* OctetStreamEncoding;
     static const char* PROPFIND;
     static const char* MKCOL;
+    static const int HTTPOkay = 200;
+    static const int HTTPCreated = 201;
+    static const int HTTPNoContent = 204;
     static const int WebDAVMultiStatus = 207;
     static const int WebDAVCreated = 201;
 

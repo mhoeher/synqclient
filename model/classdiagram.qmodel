@@ -411,9 +411,14 @@
                                      </DElement>
                                     </base-DElement>
                                     <object>{0075b7b2-21e9-42cf-8c2e-7565f040bc9c}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
                                     <name>WebDAVServerType</name>
                                     <pos>x:45;y:110</pos>
-                                    <rect>x:-65;y:-50;w:130;h:100</rect>
+                                    <rect>x:-65;y:-55;w:130;h:110</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -1174,6 +1179,11 @@
                              <base-MElement>
                               <MElement>
                                <uid>{0075b7b2-21e9-42cf-8c2e-7565f040bc9c}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
                               </MElement>
                              </base-MElement>
                              <name>WebDAVServerType</name>
@@ -1183,21 +1193,21 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{2835e0fc-dc7c-4b90-9d99-c18c69272577}</uid>
+                               <uid>{f4b5e3c2-c44a-4171-b406-5ba6f9c3b714}</uid>
                                <type>1</type>
                                <declaration>Generic</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{8eb72bfa-71e9-4016-89da-2a4c2727d42a}</uid>
+                               <uid>{1068be50-92f7-49cc-ae5a-4f9466366871}</uid>
                                <type>1</type>
                                <declaration>NextCloud</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{9600ef36-03f7-4ad0-9e29-84c1c1f396a8}</uid>
+                               <uid>{f72c6cdd-207b-4808-8356-f57689944fa0}</uid>
                                <type>1</type>
                                <declaration>OwnCloud</declaration>
                               </MClassMember>
@@ -1660,9 +1670,14 @@
                                      </DElement>
                                     </base-DElement>
                                     <object>{44f6882e-86d5-418c-8f31-395bc9049bcd}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
                                     <name>JobError</name>
                                     <pos>x:420;y:115</pos>
-                                    <rect>x:-60;y:-60;w:120;h:120</rect>
+                                    <rect>x:-60;y:-70;w:120;h:140</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -1706,9 +1721,14 @@
                                      </DElement>
                                     </base-DElement>
                                     <object>{040c58ac-ac37-4baf-956d-9cc7f070dc6c}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
                                     <name>JobState</name>
                                     <pos>x:160;y:120</pos>
-                                    <rect>x:-40;y:-50;w:80;h:100</rect>
+                                    <rect>x:-40;y:-55;w:80;h:110</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -1795,10 +1815,11 @@
                                     <object>{7160e9e0-76c5-4582-9313-b102c7d89de3}</object>
                                     <name>UploadFileJob</name>
                                     <pos>x:340;y:535</pos>
-                                    <rect>x:-45;y:-30;w:90;h:60</rect>
+                                    <rect>x:-80;y:-55;w:160;h:110</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
+                                  <show-all-members>true</show-all-members>
                                  </DClass>
                                 </instance>
                                </item>
@@ -1943,12 +1964,13 @@
                                      </DElement>
                                     </base-DElement>
                                     <object>{ae7a0560-d88c-499a-a5f7-46a100aa53b9}</object>
-                                    <name>ItemProperties</name>
+                                    <name>ItemProperty</name>
                                     <pos>x:655;y:160</pos>
-                                    <rect>x:-50;y:-30;w:100;h:60</rect>
+                                    <rect>x:-100;y:-60;w:200;h:120</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
+                                  <show-all-members>true</show-all-members>
                                  </DClass>
                                 </instance>
                                </item>
@@ -1963,12 +1985,13 @@
                                      </DElement>
                                     </base-DElement>
                                     <object>{77a64311-a25b-4d74-abe9-d7a370f79bd4}</object>
-                                    <name>ItemTypes</name>
+                                    <name>ItemType</name>
                                     <pos>x:725;y:280</pos>
-                                    <rect>x:-40;y:-30;w:80;h:60</rect>
+                                    <rect>x:-85;y:-50;w:170;h:100</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
+                                  <show-all-members>true</show-all-members>
                                  </DClass>
                                 </instance>
                                </item>
@@ -2013,7 +2036,7 @@
                                </item>
                               </qlist>
                              </elements>
-                             <last-modified>1603828815701</last-modified>
+                             <last-modified>1604352168228</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -2182,6 +2205,11 @@
                              <base-MElement>
                               <MElement>
                                <uid>{44f6882e-86d5-418c-8f31-395bc9049bcd}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
                               </MElement>
                              </base-MElement>
                              <name>JobError</name>
@@ -2191,35 +2219,35 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{49cf0f24-268a-40a9-93e1-1777b5b86fdd}</uid>
+                               <uid>{582fc21f-e84a-47be-8c00-05a53e3372ec}</uid>
                                <type>1</type>
                                <declaration>NoError</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{65f38da3-8b88-4078-87d4-127998993603}</uid>
+                               <uid>{045628ef-fcf4-4d1e-9f4e-7b0df40d4855}</uid>
                                <type>1</type>
                                <declaration>Stopped</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a9d9f983-b8f9-4472-9fb7-9ced25c0fad3}</uid>
+                               <uid>{c86ae184-1f7e-4c26-ba48-dcbcc88c2e30}</uid>
                                <type>1</type>
                                <declaration>MissingParameter</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a92388c7-40da-45d6-b26b-796e12b3e24f}</uid>
+                               <uid>{16e8537d-f7fc-4fec-b1f8-6a4a5fef2599}</uid>
                                <type>1</type>
                                <declaration>InvalidParameter</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{4a05070c-5efc-469d-9169-04f52d20949a}</uid>
+                               <uid>{d6a30ec0-d4de-4964-b2bd-268c53bd2fbe}</uid>
                                <type>1</type>
                                <declaration>InvalidResponse</declaration>
                               </MClassMember>
@@ -2242,6 +2270,11 @@
                              <base-MElement>
                               <MElement>
                                <uid>{040c58ac-ac37-4baf-956d-9cc7f070dc6c}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
                               </MElement>
                              </base-MElement>
                              <name>JobState</name>
@@ -2251,21 +2284,21 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{0d3efcd5-dd87-4db7-b36f-bbdf96b43737}</uid>
+                               <uid>{e0329007-a176-482d-9a66-1ea0e73468d2}</uid>
                                <type>1</type>
                                <declaration>Ready</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{d440f1de-e547-4ba8-880e-a4ad760349fb}</uid>
+                               <uid>{b1083214-2161-4f24-b0ee-237285d1c0d7}</uid>
                                <type>1</type>
                                <declaration>Running</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{3ff02f9e-e914-43d2-a7c4-f33808442712}</uid>
+                               <uid>{72ed86b0-3ad6-4d48-8849-8695b2e1c7d1}</uid>
                                <type>1</type>
                                <declaration>Finished</declaration>
                               </MClassMember>
@@ -2327,14 +2360,14 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{0a865ae0-dd01-47d2-b379-636e1b45c358}</uid>
+                               <uid>{66638462-7994-4da5-8011-d021d63cf160}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{bc1c0f0d-f825-4379-a361-2e53b74ec45f}</uid>
+                               <uid>{98d46c52-f4da-4da8-9466-358ebf72d0df}</uid>
                                <type>1</type>
                                <declaration>QVariantMap fileInfo</declaration>
                               </MClassMember>
@@ -2443,6 +2476,38 @@
                              </relations>
                             </MObject>
                            </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{360c8c6f-f4dc-41b8-9904-abf34193cd2e}</uid>
+                               <type>1</type>
+                               <declaration>QString localFilename</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{f96454bc-dd69-443a-b2ba-09a4633905bd}</uid>
+                               <type>1</type>
+                               <declaration>QIODevice* input</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{7d99c8a6-5830-48cf-b6e0-4570a1711802}</uid>
+                               <type>1</type>
+                               <declaration>QByteArray data</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{1d7f928b-3f2d-4675-bed3-adc376990fdb}</uid>
+                               <type>1</type>
+                               <declaration>QString remoteFilename</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>
@@ -2563,9 +2628,53 @@
                                <uid>{ae7a0560-d88c-499a-a5f7-46a100aa53b9}</uid>
                               </MElement>
                              </base-MElement>
-                             <name>ItemProperties</name>
+                             <name>ItemProperty</name>
                             </MObject>
                            </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{563ef259-159c-436e-8369-a29a57550a64}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* Valid</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{3917ef13-991f-4b79-9069-f07a06ae9acf}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* Type</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{90f9fb06-d545-44d1-b994-ae54b430912a}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* SyncAttribute</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{29a2f918-b71d-4b76-97b6-17257a50c728}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* Name</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{1c466eb5-6d9b-4b44-9504-002d210725da}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* URL</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>
@@ -2584,9 +2693,37 @@
                                <uid>{77a64311-a25b-4d74-abe9-d7a370f79bd4}</uid>
                               </MElement>
                              </base-MElement>
-                             <name>ItemTypes</name>
+                             <name>ItemType</name>
                             </MObject>
                            </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{845e0e97-8de4-454a-9355-073e86aa33e1}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* Directory</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{ca8499c7-3137-474a-af84-ab428d839ae4}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* File</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{3087899d-b547-46c8-8780-07799bd9cf61}</uid>
+                               <type>1</type>
+                               <properties>64</properties>
+                               <declaration>const char* Invalid</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>
@@ -2642,7 +2779,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{7c655a65-e0d9-4ec6-8745-6b97e404b3a6}</uid>
+                               <uid>{9191c8d0-3d97-4122-bb1f-cea1304e2516}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>

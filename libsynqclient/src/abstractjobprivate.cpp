@@ -7,4 +7,6 @@ AbstractJobPrivate::AbstractJobPrivate(AbstractJob* q)
 {
 }
 
+AbstractJobPrivate::~AbstractJobPrivate() {}
+
 } // namespace SynqClient
