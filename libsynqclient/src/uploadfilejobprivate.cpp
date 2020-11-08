@@ -23,7 +23,10 @@
 
 namespace SynqClient {
 
-UploadFileJobPrivate::UploadFileJobPrivate(UploadFileJob* q) : AbstractJobPrivate(q) {}
+UploadFileJobPrivate::UploadFileJobPrivate(UploadFileJob* q)
+    : AbstractJobPrivate(q), sourceType(UploadSource::Invalid)
+{
+}
 
 UploadFileJobPrivate::~UploadFileJobPrivate() {}
 
