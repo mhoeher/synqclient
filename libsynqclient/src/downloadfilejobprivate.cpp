@@ -17,22 +17,20 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "uploadfilejobprivate.h"
-
-#include <QIODevice>
+#include "downloadfilejobprivate.h"
 
 namespace SynqClient {
 
-UploadFileJobPrivate::UploadFileJobPrivate(UploadFileJob* q)
+DownloadFileJobPrivate::DownloadFileJobPrivate(DownloadFileJob* q)
     : AbstractJobPrivate(q),
       localFilename(),
-      input(),
+      output(),
       data(),
       remoteFilename(),
-      sourceType(UploadSource::Invalid)
+      targetType(DownloadTarget::Data)
 {
 }
 
-UploadFileJobPrivate::~UploadFileJobPrivate() {}
+DownloadFileJobPrivate::~DownloadFileJobPrivate() {}
 
 } // namespace SynqClient

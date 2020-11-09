@@ -17,22 +17,33 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "uploadfilejobprivate.h"
+#ifndef SYNQCLIENT_DOWNLOADFILEJOBPRIVATE_H
+#define SYNQCLIENT_DOWNLOADFILEJOBPRIVATE_H
 
-#include <QIODevice>
+#include <QPointer>
+
+#include "abstractjobprivate.h"
+#include "downloadfilejob.h"
 
 namespace SynqClient {
 
-UploadFileJobPrivate::UploadFileJobPrivate(UploadFileJob* q)
-    : AbstractJobPrivate(q),
-      localFilename(),
-      input(),
-      data(),
-      remoteFilename(),
-      sourceType(UploadSource::Invalid)
+class DownloadFileJobPrivate : public AbstractJobPrivate
 {
-}
+public:
+    enum class DownloadTarget { Path, IODevice, Data };
 
-UploadFileJobPrivate::~UploadFileJobPrivate() {}
+    explicit DownloadFileJobPrivate(DownloadFileJob* q);
+    ~DownloadFileJobPrivate() override;
+
+    Q_DECLARE_PUBLIC(DownloadFileJob);
+
+    QString localFilename;
+    QPointer<QIODevice> output;
+    QByteArray data;
+    QString remoteFilename;
+    DownloadTarget targetType;
+};
 
 } // namespace SynqClient
+
+#endif // SYNQCLIENT_DOWNLOADFILEJOBPRIVATE_H

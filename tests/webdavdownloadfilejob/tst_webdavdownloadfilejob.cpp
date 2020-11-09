@@ -8,40 +8,38 @@
 // add necessary includes here
 #include "../shared/utils.h"
 #include "WebDAVCreateDirectoryJob"
+#include "WebDAVDownloadFileJob"
 #include "WebDAVGetFileInfoJob"
 #include "WebDAVUploadFileJob"
 
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
+using SynqClient::WebDAVDownloadFileJob;
 using SynqClient::WebDAVGetFileInfoJob;
 using SynqClient::WebDAVUploadFileJob;
 
-class WebDAVUploadFileJobTest : public QObject
+class WebDAVDownloadFileJobTest : public QObject
 {
     Q_OBJECT
 
 public:
-    WebDAVUploadFileJobTest();
-    ~WebDAVUploadFileJobTest();
+    WebDAVDownloadFileJobTest();
+    ~WebDAVDownloadFileJobTest();
 
 private slots:
     void initTestCase();
-    void uploadLocalFile();
-    void uploadLocalFile_data();
-    void uploadDevice();
-    void uploadDevice_data();
-    void uploadData();
-    void uploadData_data();
+    void downloadLocalFile();
+    void downloadLocalFile_data();
+    void downloadDevice();
+    void downloadDevice_data();
+    void downloadData();
+    void downloadData_data();
     void cleanupTestCase();
 };
 
-WebDAVUploadFileJobTest::WebDAVUploadFileJobTest() {}
+WebDAVDownloadFileJobTest::WebDAVDownloadFileJobTest() {}
 
-WebDAVUploadFileJobTest::~WebDAVUploadFileJobTest() {}
-
-void WebDAVUploadFileJobTest::initTestCase() {}
-
-void WebDAVUploadFileJobTest::uploadLocalFile()
+void WebDAVDownloadFileJobTest::downloadLocalFile()
 {
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
@@ -51,6 +49,7 @@ void WebDAVUploadFileJobTest::uploadLocalFile()
     QTemporaryDir tmpDir;
     QDir dir(tmpDir.path());
     auto localFileName = dir.absoluteFilePath("test.txt");
+    auto localFileName2 = dir.absoluteFilePath("test.txt");
 
     QFile localFile(localFileName);
     QVERIFY(localFile.open(QIODevice::WriteOnly));
@@ -87,24 +86,30 @@ void WebDAVUploadFileJobTest::uploadLocalFile()
     }
 
     {
-        WebDAVGetFileInfoJob job;
+        WebDAVDownloadFileJob job;
         job.setNetworkAccessManager(&nam);
         job.setUrl(url);
         job.setServerType(type);
-        job.setPath(remoteFileName);
+        job.setLocalFilename(localFileName2);
+        job.setRemoteFilename(remoteFileName);
         QSignalSpy spy(&job, &WebDAVGetFileInfoJob::finished);
         job.start();
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
+        QFile f1(localFileName);
+        QVERIFY(f1.open(QIODevice::ReadOnly));
+        QFile f2(localFileName2);
+        QVERIFY(f2.open(QIODevice::ReadOnly));
+        QCOMPARE(f2.readAll(), f1.readAll());
     }
 }
 
-void WebDAVUploadFileJobTest::uploadLocalFile_data()
+void WebDAVDownloadFileJobTest::downloadLocalFile_data()
 {
     SynqClient::UnitTest::setupWebDAVTestServerData();
 }
 
-void WebDAVUploadFileJobTest::uploadDevice()
+void WebDAVDownloadFileJobTest::downloadDevice()
 {
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
@@ -145,24 +150,29 @@ void WebDAVUploadFileJobTest::uploadDevice()
     }
 
     {
-        WebDAVGetFileInfoJob job;
+        WebDAVDownloadFileJob job;
         job.setNetworkAccessManager(&nam);
         job.setUrl(url);
         job.setServerType(type);
-        job.setPath(remoteFileName);
+        QByteArray localData;
+        QBuffer buffer2(&localData);
+        QVERIFY(buffer2.open(QIODevice::ReadWrite));
+        job.setOutput(&buffer2);
+        job.setRemoteFilename(remoteFileName);
         QSignalSpy spy(&job, &WebDAVGetFileInfoJob::finished);
         job.start();
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
+        QCOMPARE(localData, data);
     }
 }
 
-void WebDAVUploadFileJobTest::uploadDevice_data()
+void WebDAVDownloadFileJobTest::downloadDevice_data()
 {
     SynqClient::UnitTest::setupWebDAVTestServerData();
 }
 
-void WebDAVUploadFileJobTest::uploadData()
+void WebDAVDownloadFileJobTest::downloadData()
 {
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
@@ -199,25 +209,30 @@ void WebDAVUploadFileJobTest::uploadData()
     }
 
     {
-        WebDAVGetFileInfoJob job;
+        WebDAVDownloadFileJob job;
         job.setNetworkAccessManager(&nam);
         job.setUrl(url);
         job.setServerType(type);
-        job.setPath(remoteFileName);
+        job.setRemoteFilename(remoteFileName);
         QSignalSpy spy(&job, &WebDAVGetFileInfoJob::finished);
         job.start();
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
+        QCOMPARE(job.data(), "Hello World!\n");
     }
 }
 
-void WebDAVUploadFileJobTest::uploadData_data()
+void WebDAVDownloadFileJobTest::downloadData_data()
 {
     SynqClient::UnitTest::setupWebDAVTestServerData();
 }
 
-void WebDAVUploadFileJobTest::cleanupTestCase() {}
+WebDAVDownloadFileJobTest::~WebDAVDownloadFileJobTest() {}
 
-QTEST_MAIN(WebDAVUploadFileJobTest)
+void WebDAVDownloadFileJobTest::initTestCase() {}
 
-#include "tst_webdavuploadfilejob.moc"
+void WebDAVDownloadFileJobTest::cleanupTestCase() {}
+
+QTEST_MAIN(WebDAVDownloadFileJobTest)
+
+#include "tst_webdavdownloadfilejob.moc"

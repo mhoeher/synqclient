@@ -17,8 +17,8 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYNQCLIENT_UPLOADFILEJOB_H
-#define SYNQCLIENT_UPLOADFILEJOB_H
+#ifndef SYNQCLIENT_DOWNLOADFILEJOB_H
+#define SYNQCLIENT_DOWNLOADFILEJOB_H
 
 #include <QByteArray>
 #include <QObject>
@@ -33,35 +33,34 @@ class QIODevice;
 
 namespace SynqClient {
 
-class UploadFileJobPrivate;
+class DownloadFileJobPrivate;
 
-class LIBSYNQCLIENT_EXPORT UploadFileJob : public AbstractJob
+class LIBSYNQCLIENT_EXPORT DownloadFileJob : public AbstractJob
 {
     Q_OBJECT
 public:
-    explicit UploadFileJob(QObject* parent = nullptr);
-    ~UploadFileJob() override;
+    explicit DownloadFileJob(QObject* parent = nullptr);
+    ~DownloadFileJob() override;
 
     QString localFilename() const;
     void setLocalFilename(const QString& localFilename);
 
-    QIODevice* input() const;
-    void setInput(QIODevice* input);
+    QIODevice* output() const;
+    void setOutput(QIODevice* output);
 
     QByteArray data() const;
-    void setData(const QByteArray& data);
 
     QString remoteFilename() const;
     void setRemoteFilename(const QString& remoteFilename);
 
 protected:
-    explicit UploadFileJob(UploadFileJobPrivate* d, QObject* parent = nullptr);
+    explicit DownloadFileJob(DownloadFileJobPrivate* d, QObject* parent = nullptr);
 
-    Q_DECLARE_PRIVATE(UploadFileJob);
+    Q_DECLARE_PRIVATE(DownloadFileJob);
 
-    QSharedPointer<QIODevice> getUploadDevice();
+    QIODevice* getDownloadDevice();
 };
 
 } // namespace SynqClient
 
-#endif // SYNQCLIENT_UPLOADFILEJOB_H
+#endif // SYNQCLIENT_DOWNLOADFILEJOB_H

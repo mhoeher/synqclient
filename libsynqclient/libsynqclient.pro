@@ -18,6 +18,8 @@ SOURCES += \
     src/abstractwebdavjobprivate.cpp \
     src/createdirectoryjob.cpp \
     src/createdirectoryjobprivate.cpp \
+    src/downloadfilejob.cpp \
+    src/downloadfilejobprivate.cpp \
     src/getfileinfojob.cpp \
     src/getfileinfojobprivate.cpp \
     src/libsynqclient.cpp \
@@ -25,6 +27,8 @@ SOURCES += \
     src/uploadfilejobprivate.cpp \
     src/webdavcreatedirectoryjob.cpp \
     src/webdavcreatedirectoryjobprivate.cpp \
+    src/webdavdownloadfilejob.cpp \
+    src/webdavdownloadfilejobprivate.cpp \
     src/webdavgetfileinfojob.cpp \
     src/webdavgetfileinfojobprivate.cpp \
     src/webdavuploadfilejob.cpp \
@@ -34,28 +38,34 @@ HEADERS += \
     inc/AbstractJob \
     inc/AbstractWebDAVJob \
     inc/CreateDirectoryJob \
+    inc/DownloadFileJob \
     inc/GetFileInfoJob \
     inc/UploadFileJob \
     inc/WebDAVCreateDirectoryJob \
+    inc/WebDAVDownloadFileJob \
     inc/WebDAVGetFileInfoJob \
     inc/WebDAVUploadFileJob \
     inc/abstractjob.h \
     inc/abstractwebdavjob.h \
     inc/createdirectoryjob.h \
+    inc/downloadfilejob.h \
     inc/getfileinfojob.h \
     inc/libsynqclient_global.h \
     inc/libsynqclient.h \
     inc/uploadfilejob.h \
     inc/webdavcreatedirectoryjob.h \
+    inc/webdavdownloadfilejob.h \
     inc/webdavgetfileinfojob.h \
     inc/webdavuploadfilejob.h \
     src/abstractjobprivate.h \
     src/abstractwebdavjobprivate.h \
     inc/SynqClient \
     src/createdirectoryjobprivate.h \
+    src/downloadfilejobprivate.h \
     src/getfileinfojobprivate.h \
     src/uploadfilejobprivate.h \
     src/webdavcreatedirectoryjobprivate.h \
+    src/webdavdownloadfilejobprivate.h \
     src/webdavgetfileinfojobprivate.h \
     src/webdavuploadfilejobprivate.h
 

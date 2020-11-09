@@ -17,22 +17,27 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "uploadfilejobprivate.h"
+#ifndef SYNQCLIENT_WEBDAVDOWNLOADFILEJOBPRIVATE_H
+#define SYNQCLIENT_WEBDAVDOWNLOADFILEJOBPRIVATE_H
 
-#include <QIODevice>
+#include "downloadfilejobprivate.h"
+#include "webdavdownloadfilejob.h"
 
 namespace SynqClient {
 
-UploadFileJobPrivate::UploadFileJobPrivate(UploadFileJob* q)
-    : AbstractJobPrivate(q),
-      localFilename(),
-      input(),
-      data(),
-      remoteFilename(),
-      sourceType(UploadSource::Invalid)
+class WebDAVDownloadFileJobPrivate : public DownloadFileJobPrivate
 {
-}
+public:
+    explicit WebDAVDownloadFileJobPrivate(WebDAVDownloadFileJob* q);
 
-UploadFileJobPrivate::~UploadFileJobPrivate() {}
+    Q_DECLARE_PUBLIC(WebDAVDownloadFileJob);
+
+    QIODevice* downloadDevice;
+
+    void checkParameters();
+    void handleRequestFinished();
+};
 
 } // namespace SynqClient
+
+#endif // SYNQCLIENT_WEBDAVDOWNLOADFILEJOBPRIVATE_H
