@@ -48,7 +48,10 @@ void WebDAVCreateDirectoryJobPrivate::handleRequestFinished()
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
-        if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
+        if (reply->error() != QNetworkReply::NoError) {
+            q->setError(JobError::NetworkRequestFailed, reply->errorString());
+            q->finishLater();
+        } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
             // Encountered redirect not handled by Qt, follow:
             q->start();
             return;

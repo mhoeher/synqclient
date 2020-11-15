@@ -15,7 +15,8 @@ enum class LIBSYNQCLIENT_EXPORT JobError : quint32 {
     Stopped, //!< The job has been stopped by the user.
     MissingParameter, //!< Some parameters required to run the job are missing.
     InvalidParameter, //!< Some parameters have values which are invalid.
-    InvalidResponse //!< Received an invalid response during an operation
+    InvalidResponse, //!< Received an invalid response during an operation.
+    NetworkRequestFailed, //!< A request to a server via the network failed with an error.
 };
 
 Q_ENUM_NS(JobError);
