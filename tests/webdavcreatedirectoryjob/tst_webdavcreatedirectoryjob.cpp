@@ -83,7 +83,7 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
     mkdirJob.start();
     QSignalSpy mkdirSpy(&mkdirJob, &SynqClient::WebDAVCreateDirectoryJob::finished);
     QVERIFY(mkdirSpy.wait());
-    QCOMPARE(mkdirJob.error(), SynqClient::JobError::InvalidResponse);
+    QCOMPARE(mkdirJob.error(), SynqClient::JobError::NetworkRequestFailed);
 
     SynqClient::WebDAVGetFileInfoJob getFileInfoJob;
     getFileInfoJob.setNetworkAccessManager(&nam);
@@ -93,7 +93,7 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
     getFileInfoJob.start();
     QSignalSpy getFileInfoSpy(&getFileInfoJob, &SynqClient::AbstractJob::finished);
     QVERIFY(getFileInfoSpy.wait());
-    QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::InvalidResponse);
+    QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::NetworkRequestFailed);
     auto fileInfo = getFileInfoJob.fileInfo();
     QVERIFY(fileInfo.isEmpty());
 }

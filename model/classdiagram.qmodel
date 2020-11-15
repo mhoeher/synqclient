@@ -1677,7 +1677,7 @@
                                     </stereotypes>
                                     <name>JobError</name>
                                     <pos>x:420;y:115</pos>
-                                    <rect>x:-60;y:-70;w:120;h:140</rect>
+                                    <rect>x:-70;y:-75;w:140;h:150</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -2220,37 +2220,44 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{582fc21f-e84a-47be-8c00-05a53e3372ec}</uid>
+                               <uid>{21737d16-d6cf-4f21-997c-c671867ccde4}</uid>
                                <type>1</type>
                                <declaration>NoError</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{045628ef-fcf4-4d1e-9f4e-7b0df40d4855}</uid>
+                               <uid>{c08a2e90-c151-45d9-9854-c641fff70c23}</uid>
                                <type>1</type>
                                <declaration>Stopped</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c86ae184-1f7e-4c26-ba48-dcbcc88c2e30}</uid>
+                               <uid>{99a1392d-105c-425a-82b5-55b3f429cd9a}</uid>
                                <type>1</type>
                                <declaration>MissingParameter</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{16e8537d-f7fc-4fec-b1f8-6a4a5fef2599}</uid>
+                               <uid>{3c335bed-2cd4-4ae3-9faa-a033b03297a6}</uid>
                                <type>1</type>
                                <declaration>InvalidParameter</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{d6a30ec0-d4de-4964-b2bd-268c53bd2fbe}</uid>
+                               <uid>{06336738-6a3b-41c8-8574-67ca5a29360f}</uid>
                                <type>1</type>
                                <declaration>InvalidResponse</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{f0fbfe1a-6780-451c-8d69-7fa033423d12}</uid>
+                               <type>1</type>
+                               <declaration>NetworkRequestFailed</declaration>
                               </MClassMember>
                              </item>
                             </qlist>
