@@ -14,6 +14,7 @@ fi
 doxygen
 cd doc
 make html
+cd ..
 
 if [ -n "$CI" ]; then
     mkdir public
