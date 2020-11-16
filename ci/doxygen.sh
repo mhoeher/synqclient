@@ -7,7 +7,7 @@ cd "$SCRIPT_DIR"
 cd ..
 
 if [ -n "$CI" ]; then
-    dnf install -y doxygen python3-pip
+    dnf install -y doxygen python3-pip make
     pip install sphinx sphinx_rtd_theme breathe
 fi
 
