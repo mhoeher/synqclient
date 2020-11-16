@@ -36,7 +36,7 @@ pages:
         paths:
             - public
     only:
-    - master
+    - development
 
 doxygen:
     stage: build
@@ -44,7 +44,7 @@ doxygen:
     script:
         - ./ci/doxygen.sh
     except:
-        - master
+        - development
 
 cppcheck:
     stage: build
