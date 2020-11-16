@@ -6,11 +6,19 @@
 
 #include "libsynqclient_global.h"
 
+/**
+ * @file
+ * @brief Global type and constant definitions.
+ */
+
 namespace SynqClient {
 
 Q_NAMESPACE_EXPORT(LIBSYNQCLIENT_EXPORT);
 
-enum class LIBSYNQCLIENT_EXPORT JobError : quint32 {
+/**
+ * @brief Used to encode the type of error a job had during its execution.
+ */
+enum class JobError : quint32 {
     NoError = 0, //!< Indicates that no error occurred.
     Stopped, //!< The job has been stopped by the user.
     MissingParameter, //!< Some parameters required to run the job are missing.
@@ -21,14 +29,46 @@ enum class LIBSYNQCLIENT_EXPORT JobError : quint32 {
 
 Q_ENUM_NS(JobError);
 
-enum class LIBSYNQCLIENT_EXPORT JobState : quint32 { Ready = 0, Running, Finished };
+/**
+ * @enum SynqClient::JobState
+ * @brief JobError
+ */
+enum class JobState : quint32 { Ready = 0, Running, Finished };
 
 Q_ENUM_NS(JobState);
 
-enum class LIBSYNQCLIENT_EXPORT WebDAVServerType : quint32 {
+/**
+ * @brief The type of WebDAV server to talk to.
+ *
+ * It is used to finetune the behaviour depending on the concrete implementation
+ * if a WebDAV server we are talking to.
+ */
+enum class WebDAVServerType : quint32 {
     Generic = 0,
+    /**<
+     * @brief Do not assume any special server type.
+     *
+     * Use this if you have an absolute path to the WebDAV server and want to
+     * talk to it "as-is".
+     */
+
     NextCloud = 1,
+    /**<
+     * @brief Assume we talk to a NextCloud instance.
+     *
+     * Use this is the root URL used points to a NextCloud installation. In this
+     * case, the WebDAV specific enpoint part of the URL is appended automatically
+     * to the root URL.
+     */
+
     OwnCloud = 2
+    /**<
+     * @brief Assume we talk to an ownCloud instance.
+     *
+     * Use this is the root URL used points to an ownCloud installation. In this
+     * case, the WebDAV specific enpoint part of the URL is appended automatically
+     * to the root URL.
+     */
 };
 
 Q_ENUM_NS(WebDAVServerType);
