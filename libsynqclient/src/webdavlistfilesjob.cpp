@@ -17,30 +17,23 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/webdavgetfileinfojob.h"
-
-#include <QNetworkRequest>
+#include "../inc/webdavlistfilesjob.h"
 
 #include "abstractwebdavjobprivate.h"
-#include "webdavgetfileinfojobprivate.h"
+#include "webdavlistfilesjobprivate.h"
 
 namespace SynqClient {
 
-WebDAVGetFileInfoJob::WebDAVGetFileInfoJob(QObject* parent)
-    : GetFileInfoJob(new WebDAVGetFileInfoJobPrivate(this), parent), AbstractWebDAVJob()
+WebDAVListFilesJob::WebDAVListFilesJob(QObject* parent)
+    : ListFilesJob(new WebDAVListFilesJobPrivate(this), parent), AbstractWebDAVJob()
 {
 }
 
-WebDAVGetFileInfoJob::~WebDAVGetFileInfoJob() {}
+WebDAVListFilesJob::~WebDAVListFilesJob() {}
 
-WebDAVGetFileInfoJob::WebDAVGetFileInfoJob(WebDAVGetFileInfoJobPrivate* d, QObject* parent)
-    : GetFileInfoJob(d, parent), AbstractWebDAVJob()
+void WebDAVListFilesJob::start()
 {
-}
-
-void WebDAVGetFileInfoJob::start()
-{
-    Q_D(WebDAVGetFileInfoJob);
+    Q_D(WebDAVListFilesJob);
     d->state = JobState::Running;
 
     // Check for missing parameters:
@@ -54,7 +47,7 @@ void WebDAVGetFileInfoJob::start()
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
     req.setUrl(url);
-    req.setRawHeader("Depth", "0");
+    req.setRawHeader("Depth", "1");
     req.setHeader(QNetworkRequest::ContentLengthHeader,
                   AbstractWebDAVJobPrivate::PropFindRequestData.size());
     req.setHeader(QNetworkRequest::ContentTypeHeader, d_ptr2->DefaultEncoding);
@@ -70,7 +63,7 @@ void WebDAVGetFileInfoJob::start()
     }
 }
 
-void WebDAVGetFileInfoJob::stop()
+void WebDAVListFilesJob::stop()
 {
     auto reply = d_ptr2->reply;
     if (reply) {
@@ -80,6 +73,11 @@ void WebDAVGetFileInfoJob::stop()
     }
     setError(JobError::Stopped, "The job has been stopped");
     finishLater();
+}
+
+WebDAVListFilesJob::WebDAVListFilesJob(WebDAVListFilesJobPrivate* d, QObject* parent)
+    : ListFilesJob(d, parent), AbstractWebDAVJob()
+{
 }
 
 } // namespace SynqClient

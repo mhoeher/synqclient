@@ -1794,11 +1794,12 @@
                                     </base-DElement>
                                     <object>{a59b0689-1a88-4f7c-8954-eb1b8b4231c4}</object>
                                     <name>ListFilesJob</name>
-                                    <pos>x:200;y:525</pos>
-                                    <rect>x:-40;y:-30;w:80;h:60</rect>
+                                    <pos>x:155;y:570</pos>
+                                    <rect>x:-65;y:-45;w:130;h:90</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
+                                  <show-all-members>true</show-all-members>
                                  </DClass>
                                 </instance>
                                </item>
@@ -2037,7 +2038,7 @@
                                </item>
                               </qlist>
                              </elements>
-                             <last-modified>1604957583251</last-modified>
+                             <last-modified>1605817884496</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -2433,6 +2434,24 @@
                              </relations>
                             </MObject>
                            </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{9b610ce6-5a40-4014-bb14-f775392be4e1}</uid>
+                               <type>1</type>
+                               <declaration>QString path</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{69125469-825e-4b46-9415-79881abc016b}</uid>
+                               <type>1</type>
+                               <declaration>QVariantList entries</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>

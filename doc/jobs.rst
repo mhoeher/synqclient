@@ -24,6 +24,13 @@ GetFileInfoJob
     :members:
 
 
+ListFilesJob
+------------
+
+.. doxygenclass:: SynqClient::ListFilesJob
+    :members:
+
+
 CreateDirectoryJob
 ------------------
 

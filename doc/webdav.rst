@@ -18,6 +18,13 @@ WebDAVGetFileInfoJob
     :members:
 
 
+WebDAVListFilesJob
+------------------
+
+.. doxygenclass:: SynqClient::WebDAVListFilesJob
+    :members:
+
+
 WebDAVCreateDirectoryJob
 ------------------------
 

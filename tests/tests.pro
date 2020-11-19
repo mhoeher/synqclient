@@ -5,4 +5,5 @@ SUBDIRS += \
     webdavcreatedirectoryjob \
     webdavdownloadfilejob \
     webdavgetfileinfojob \
+    webdavlistfilesjob \
     webdavuploadfilejob
