@@ -45,12 +45,12 @@ public:
     QUrl urlFromPath(const QString& path);
     void prepareNetworkRequest(QNetworkRequest& request);
     bool shouldFollowUnhandledRedirect();
-    QVariantList parseEntryList(const QUrl& url, const QByteArray& reply);
+    QVariantList parseEntryList(const QUrl& url, const QByteArray& reply, bool& ok);
 
 private:
-    QVariantList parsePropFindResponse(const QUrl& baseUrl, const QDomDocument& response);
-    QVariant parseResponseEntry(const QUrl& url, const QDomElement& element,
-                                const QString& baseDir);
+    QVariantList parsePropFindResponse(const QUrl& baseUrl, const QDomDocument& response, bool& ok);
+    QVariant parseResponseEntry(const QUrl& url, const QDomElement& element, const QString& baseDir,
+                                bool& ok);
 };
 
 } // namespace SynqClient

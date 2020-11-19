@@ -95,14 +95,17 @@ bool AbstractWebDAVJobPrivate::shouldFollowUnhandledRedirect()
     return false;
 }
 
-QVariantList AbstractWebDAVJobPrivate::parseEntryList(const QUrl& url, const QByteArray& reply)
+QVariantList AbstractWebDAVJobPrivate::parseEntryList(const QUrl& url, const QByteArray& reply,
+                                                      bool& ok)
 {
     QVariantList result;
     QDomDocument doc;
     QString errorMsg;
     int errorLine;
+    ok = false;
     if (doc.setContent(reply, true, &errorMsg, &errorLine)) {
-        result = parsePropFindResponse(url, doc);
+        ok = true;
+        result = parsePropFindResponse(url, doc, ok);
     } else {
         qCWarning(log) << "Failed to parse WebDAV response:" << errorMsg << "in line" << errorLine;
     }
@@ -110,7 +113,7 @@ QVariantList AbstractWebDAVJobPrivate::parseEntryList(const QUrl& url, const QBy
 }
 
 QVariantList AbstractWebDAVJobPrivate::parsePropFindResponse(const QUrl& baseUrl,
-                                                             const QDomDocument& response)
+                                                             const QDomDocument& response, bool& ok)
 {
     QVariantList result;
     auto baseDir = QDir::cleanPath("/" + baseUrl.path());
@@ -119,7 +122,7 @@ QVariantList AbstractWebDAVJobPrivate::parsePropFindResponse(const QUrl& baseUrl
     if (rootTagName == "multistatus") {
         auto resp = root.firstChildElement("response");
         while (resp.isElement()) {
-            auto entry = parseResponseEntry(baseUrl, resp, baseDir);
+            auto entry = parseResponseEntry(baseUrl, resp, baseDir, ok);
             if (entry.isValid()) {
                 result << entry;
             }
@@ -129,12 +132,13 @@ QVariantList AbstractWebDAVJobPrivate::parsePropFindResponse(const QUrl& baseUrl
         qCWarning(log) << "Received invalid WebDAV response from"
                           "server starting with element"
                        << rootTagName;
+        ok = false;
     }
     return result;
 }
 
 QVariant AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDomElement& element,
-                                                      const QString& baseDir)
+                                                      const QString& baseDir, bool& ok)
 {
     QVariantMap result;
     result[ItemProperty::Type] = ItemType::File;
@@ -160,6 +164,7 @@ QVariant AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDo
             }
         } else {
             qCWarning(log) << "Properties not retrieved -" << status.text();
+            ok = false;
         }
     }
 
