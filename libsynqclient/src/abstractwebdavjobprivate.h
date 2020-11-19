@@ -26,6 +26,8 @@ public:
     static const int WebDAVMultiStatus = 207;
     static const int WebDAVCreated = 201;
 
+    static const QByteArray PropFindRequestData;
+
     explicit AbstractWebDAVJobPrivate(AbstractWebDAVJob* q);
     virtual ~AbstractWebDAVJobPrivate();
 
