@@ -89,6 +89,12 @@ void DownloadFileJob::setRemoteFilename(const QString& remoteFilename)
     d->remoteFilename = remoteFilename;
 }
 
+QVariantMap DownloadFileJob::fileInfo() const
+{
+    Q_D(const DownloadFileJob);
+    return d->fileInfo;
+}
+
 DownloadFileJob::DownloadFileJob(DownloadFileJobPrivate* d, QObject* parent)
     : AbstractJob(d, parent)
 {
@@ -144,6 +150,12 @@ QIODevice* DownloadFileJob::getDownloadDevice()
 
     setError(JobError::InvalidParameter, "Unexpected configuration for download");
     return nullptr;
+}
+
+void DownloadFileJob::setFileInfo(const QVariantMap& fileInfo)
+{
+    Q_D(DownloadFileJob);
+    d->fileInfo = fileInfo;
 }
 
 } // namespace SynqClient

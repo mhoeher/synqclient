@@ -63,8 +63,12 @@ void WebDAVDownloadFileJobPrivate::handleRequestFinished()
                     downloadDevice->write(reply->readAll());
                     downloadDevice->close();
                 }
-                // Pass!
-                // TODO: Check if we have an etag and report it somehow
+                auto etag = reply->header(QNetworkRequest::ETagHeader);
+                QVariantMap fileInfo;
+                if (etag.isValid()) {
+                    fileInfo[ItemProperty::SyncAttribute] = etag;
+                }
+                q->setFileInfo(fileInfo);
             } else {
                 q->setError(JobError::InvalidResponse,
                             QString("Received invalid response from server: %1").arg(code));

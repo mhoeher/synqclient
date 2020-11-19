@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QScopedPointer>
 #include <QString>
+#include <QVariantMap>
 #include <QtGlobal>
 
 #include "AbstractJob"
@@ -53,12 +54,16 @@ public:
     QString remoteFilename() const;
     void setRemoteFilename(const QString& remoteFilename);
 
+    QVariantMap fileInfo() const;
+
 protected:
     explicit DownloadFileJob(DownloadFileJobPrivate* d, QObject* parent = nullptr);
 
     Q_DECLARE_PRIVATE(DownloadFileJob);
 
     QIODevice* getDownloadDevice();
+
+    void setFileInfo(const QVariantMap& fileInfo);
 };
 
 } // namespace SynqClient

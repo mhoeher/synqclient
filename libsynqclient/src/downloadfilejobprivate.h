@@ -21,6 +21,7 @@
 #define SYNQCLIENT_DOWNLOADFILEJOBPRIVATE_H
 
 #include <QPointer>
+#include <QVariantMap>
 
 #include "abstractjobprivate.h"
 #include "downloadfilejob.h"
@@ -42,6 +43,7 @@ public:
     QByteArray data;
     QString remoteFilename;
     DownloadTarget targetType;
+    QVariantMap fileInfo;
 };
 
 } // namespace SynqClient

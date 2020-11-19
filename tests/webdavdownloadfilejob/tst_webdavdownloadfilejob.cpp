@@ -12,6 +12,7 @@
 #include "WebDAVGetFileInfoJob"
 #include "WebDAVUploadFileJob"
 
+using SynqClient::ItemProperty;
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVDownloadFileJob;
@@ -101,6 +102,7 @@ void WebDAVDownloadFileJobTest::downloadLocalFile()
         QFile f2(localFileName2);
         QVERIFY(f2.open(QIODevice::ReadOnly));
         QCOMPARE(f2.readAll(), f1.readAll());
+        QVERIFY(!job.fileInfo().value(ItemProperty::SyncAttribute).toString().isEmpty());
     }
 }
 
@@ -164,6 +166,7 @@ void WebDAVDownloadFileJobTest::downloadDevice()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(localData, data);
+        QVERIFY(!job.fileInfo().value(ItemProperty::SyncAttribute).toString().isEmpty());
     }
 }
 
@@ -219,6 +222,7 @@ void WebDAVDownloadFileJobTest::downloadData()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(job.data(), "Hello World!\n");
+        QVERIFY(!job.fileInfo().value(ItemProperty::SyncAttribute).toString().isEmpty());
     }
 }
 
