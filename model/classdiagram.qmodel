@@ -1837,7 +1837,7 @@
                                     <object>{da94e358-fbe1-45d4-9dfe-a4d7a38ff71e}</object>
                                     <name>DownloadFileJob</name>
                                     <pos>x:520;y:535</pos>
-                                    <rect>x:-80;y:-55;w:160;h:110</rect>
+                                    <rect>x:-80;y:-60;w:160;h:120</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -2590,30 +2590,37 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{baa263b7-a784-4b48-8835-3be4e5258840}</uid>
+                               <uid>{e799a1ff-4734-4378-895e-6416448cd43e}</uid>
                                <type>1</type>
                                <declaration>QString localFilename</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{ebe2c392-8fdb-43ac-a1b2-ddee07409c20}</uid>
+                               <uid>{19a8a561-afc6-40c6-81ff-4a2b6a1500b8}</uid>
                                <type>1</type>
                                <declaration>QIODevice* output</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{5d365e4c-01bc-4dd1-855e-55db2e848965}</uid>
+                               <uid>{01c65935-07f4-4e9e-847a-ad98a81cc211}</uid>
                                <type>1</type>
                                <declaration>QByteArray data</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c6f245cf-0fad-485d-aa37-7050111be5bf}</uid>
+                               <uid>{db73457f-79f3-4dab-9ec2-5f8a8277d941}</uid>
                                <type>1</type>
                                <declaration>QString remoteFilename</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{d7c7538d-ad45-49c4-94f3-66cfaf53542f}</uid>
+                               <type>1</type>
+                               <declaration>QVariantMap fileInfo</declaration>
                               </MClassMember>
                              </item>
                             </qlist>

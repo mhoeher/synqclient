@@ -27,7 +27,8 @@ DownloadFileJobPrivate::DownloadFileJobPrivate(DownloadFileJob* q)
       output(),
       data(),
       remoteFilename(),
-      targetType(DownloadTarget::Data)
+      targetType(DownloadTarget::Data),
+      fileInfo()
 {
 }
 
