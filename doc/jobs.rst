@@ -52,6 +52,13 @@ DownloadFileJob
     :members:
 
 
+DeleteJob
+---------
+
+.. doxygenclass:: SynqClient::DeleteJob
+    :members:
+
+
 Additional Type Definitions and Functions
 -----------------------------------------
 

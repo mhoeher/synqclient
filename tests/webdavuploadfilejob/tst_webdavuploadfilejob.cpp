@@ -116,7 +116,7 @@ void WebDAVUploadFileJobTest::uploadDevice()
     QVERIFY(buffer->open(QIODevice::ReadOnly));
 
     auto testDirUid = QUuid::createUuid();
-    auto remotePath = "/WebDAVUploadFileJobTest-uploadLocalFile-" + testDirUid.toString();
+    auto remotePath = "/WebDAVUploadFileJobTest-uploadDevice-" + testDirUid.toString();
     auto remoteFileName = remotePath + "/hello.txt";
 
     {

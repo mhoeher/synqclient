@@ -71,7 +71,7 @@ void WebDAVGetFileInfoJobTest::getFileInfoForNonExistingFile()
     job.start();
     QSignalSpy spy(&job, &SynqClient::AbstractJob::finished);
     QVERIFY(spy.wait());
-    QCOMPARE(job.error(), SynqClient::JobError::NetworkRequestFailed);
+    QCOMPARE(job.error(), SynqClient::JobError::ResourceNotFound);
     auto fileInfo = job.fileInfo();
     QVERIFY(fileInfo.isEmpty());
 }

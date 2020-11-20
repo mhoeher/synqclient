@@ -46,7 +46,7 @@ void WebDAVListFilesJobTest::listFiles()
     QNetworkAccessManager nam;
 
     auto testDirUid = QUuid::createUuid();
-    auto remotePath = "/WebDAVUploadFileJobTest-uploadData-" + testDirUid.toString();
+    auto remotePath = "/WebDAVListFilesJobTest-listFiles-" + testDirUid.toString();
 
     {
         WebDAVCreateDirectoryJob job;

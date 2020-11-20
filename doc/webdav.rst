@@ -46,6 +46,13 @@ WebDAVDownloadFileJob
     :members:
 
 
+WebDAVDeleteJob
+---------------
+
+.. doxygenclass:: SynqClient::WebDAVDeleteJob
+    :members:
+
+
 WebDAV Specific Types And Functions
 -----------------------------------
 
