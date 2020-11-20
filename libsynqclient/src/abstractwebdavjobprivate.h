@@ -23,6 +23,7 @@ public:
     static const int HTTPOkay = 200;
     static const int HTTPCreated = 201;
     static const int HTTPNoContent = 204;
+    static const int HTTPForbidden = 403;
     static const int WebDAVMultiStatus = 207;
     static const int WebDAVCreated = 201;
 

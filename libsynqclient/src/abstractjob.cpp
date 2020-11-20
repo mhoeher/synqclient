@@ -1,6 +1,7 @@
 #include "../inc/abstractjob.h"
 
 #include <QTimer>
+#include <QNetworkReply>
 
 #include "abstractjobprivate.h"
 
@@ -79,6 +80,26 @@ void AbstractJob::finishLater()
         timer->deleteLater();
     });
     timer->start();
+}
+
+/**
+ * @brief Map network errors to job errors.
+ *
+ * This utility method checks the network @p reply and maps its error code
+ * to a JobError.
+ */
+JobError AbstractJob::fromNetworkError(const QNetworkReply& reply)
+{
+    switch (reply.error()) {
+    case QNetworkReply::NoError:
+        return JobError::NoError;
+    case QNetworkReply::ContentConflictError:
+        return JobError::ServerContentConflict;
+    case QNetworkReply::ContentNotFoundError:
+        return JobError::ResourceNotFound;
+    default:
+        return JobError::NetworkRequestFailed;
+    }
 }
 
 } // namespace SynqClient

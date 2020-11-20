@@ -19,7 +19,6 @@ private slots:
     void initTestCase();
     void mkdir();
     void mkdir_data();
-
     void mkdirInvalidPath();
     void mkdirInvalidPath_data();
     void cleanupTestCase();
@@ -74,7 +73,7 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
 
     QNetworkAccessManager nam;
     auto uuid = QUuid::createUuid();
-    auto path = "/WebDAVCreateDirectoryJobTest-mkdir-" + uuid.toString();
+    auto path = "/WebDAVCreateDirectoryJobTest-mkdirInvalidPath-" + uuid.toString();
     SynqClient::WebDAVCreateDirectoryJob mkdirJob;
     mkdirJob.setNetworkAccessManager(&nam);
     mkdirJob.setServerType(type);
@@ -83,7 +82,7 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
     mkdirJob.start();
     QSignalSpy mkdirSpy(&mkdirJob, &SynqClient::WebDAVCreateDirectoryJob::finished);
     QVERIFY(mkdirSpy.wait());
-    QCOMPARE(mkdirJob.error(), SynqClient::JobError::NetworkRequestFailed);
+    QCOMPARE(mkdirJob.error(), SynqClient::JobError::ServerContentConflict);
 
     SynqClient::WebDAVGetFileInfoJob getFileInfoJob;
     getFileInfoJob.setNetworkAccessManager(&nam);
@@ -93,7 +92,7 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
     getFileInfoJob.start();
     QSignalSpy getFileInfoSpy(&getFileInfoJob, &SynqClient::AbstractJob::finished);
     QVERIFY(getFileInfoSpy.wait());
-    QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::NetworkRequestFailed);
+    QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::ResourceNotFound);
     auto fileInfo = getFileInfoJob.fileInfo();
     QVERIFY(fileInfo.isEmpty());
 }

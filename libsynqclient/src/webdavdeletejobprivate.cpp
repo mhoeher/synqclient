@@ -17,34 +17,28 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "webdavdownloadfilejobprivate.h"
+#include "webdavdeletejobprivate.h"
 
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
 
-WebDAVDownloadFileJobPrivate::WebDAVDownloadFileJobPrivate(WebDAVDownloadFileJob* q)
-    : DownloadFileJobPrivate(q), downloadDevice(nullptr)
-{
-}
+WebDAVDeleteJobPrivate::WebDAVDeleteJobPrivate(WebDAVDeleteJob* q) : DeleteJobPrivate(q) {}
 
-void WebDAVDownloadFileJobPrivate::checkParameters()
+void WebDAVDeleteJobPrivate::checkParameters()
 {
-    Q_Q(WebDAVDownloadFileJob);
+    Q_Q(WebDAVDeleteJob);
     if (!q->networkAccessManager()) {
         q->setError(JobError::MissingParameter, "No QNetworkAccessManager set");
     }
     if (!q->url().isValid()) {
         q->setError(JobError::MissingParameter, "No URL set");
     }
-    if (q->remoteFilename().isEmpty()) {
-        q->setError(JobError::MissingParameter, "No remote file name set");
-    }
 }
 
-void WebDAVDownloadFileJobPrivate::handleRequestFinished()
+void WebDAVDeleteJobPrivate::handleRequestFinished()
 {
-    Q_Q(WebDAVDownloadFileJob);
+    Q_Q(WebDAVDeleteJob);
     auto reply = q->d_ptr2->reply;
     q->d_ptr2->reply = nullptr;
     if (reply) {
@@ -57,21 +51,16 @@ void WebDAVDownloadFileJobPrivate::handleRequestFinished()
             q->start();
             return;
         } else {
-            auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            if (code == q->d_ptr2->HTTPOkay) {
-                if (downloadDevice) {
-                    downloadDevice->write(reply->readAll());
-                    downloadDevice->close();
-                }
-                auto etag = reply->header(QNetworkRequest::ETagHeader);
-                QVariantMap fileInfo;
-                if (etag.isValid()) {
-                    fileInfo[ItemProperty::SyncAttribute] = etag;
-                }
-                q->setFileInfo(fileInfo);
+            auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            if (code.toInt() == q->d_ptr2->HTTPOkay || code.toInt() == q->d_ptr2->HTTPNoContent) {
+                // All done!
+            } else if (code.toInt() == q->d_ptr2->HTTPForbidden) {
+                // The user is not allowed to delete the file/folder:
+                q->setError(JobError::Forbidden,
+                            QString("Delete operation is forbidden for user on that resource"));
             } else {
                 q->setError(JobError::InvalidResponse,
-                            QString("Received invalid response from server: %1").arg(code));
+                            QString("Received invalid response from server: %1").arg(code.toInt()));
             }
             q->finishLater();
         }

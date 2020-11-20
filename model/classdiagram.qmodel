@@ -1858,10 +1858,11 @@
                                     <object>{de027435-b8b8-4e64-9f42-c7343e5e0afc}</object>
                                     <name>DeleteJob</name>
                                     <pos>x:670;y:435</pos>
-                                    <rect>x:-40;y:-30;w:80;h:60</rect>
+                                    <rect>x:-45;y:-35;w:90;h:70</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
+                                  <show-all-members>true</show-all-members>
                                  </DClass>
                                 </instance>
                                </item>
@@ -2038,7 +2039,7 @@
                                </item>
                               </qlist>
                              </elements>
-                             <last-modified>1605817884496</last-modified>
+                             <last-modified>1605902208884</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -2676,6 +2677,17 @@
                              </relations>
                             </MObject>
                            </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{e2653f37-7255-44ea-8453-2d4a3b4f3ea6}</uid>
+                               <type>1</type>
+                               <declaration>QString path</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>

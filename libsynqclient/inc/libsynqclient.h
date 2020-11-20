@@ -25,6 +25,9 @@ enum class JobError : quint32 {
     InvalidParameter, //!< Some parameters have values which are invalid.
     InvalidResponse, //!< Received an invalid response during an operation.
     NetworkRequestFailed, //!< A request to a server via the network failed with an error.
+    Forbidden, //!< A request has been rejected because the user is not allowed to run it.
+    ResourceNotFound, //!< The specified resource was not found on the server.
+    ServerContentConflict, //!< The server encountered a content conflict.
 };
 
 Q_ENUM_NS(JobError);

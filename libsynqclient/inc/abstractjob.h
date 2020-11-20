@@ -8,6 +8,8 @@
 #include "libsynqclient.h"
 #include "libsynqclient_global.h"
 
+class QNetworkReply;
+
 namespace SynqClient {
 
 class AbstractJobPrivate;
@@ -39,6 +41,8 @@ protected:
     void setError(JobError error, const QString& errorString);
     void setState(JobState state);
     void finishLater();
+
+    static JobError fromNetworkError(const QNetworkReply& reply);
 };
 
 } // namespace SynqClient

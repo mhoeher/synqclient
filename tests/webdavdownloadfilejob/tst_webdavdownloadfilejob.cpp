@@ -58,7 +58,7 @@ void WebDAVDownloadFileJobTest::downloadLocalFile()
     localFile.close();
 
     auto testDirUid = QUuid::createUuid();
-    auto remotePath = "/WebDAVUploadFileJobTest-uploadLocalFile-" + testDirUid.toString();
+    auto remotePath = "/WebDAVDownloadFileJobTest-downloadLocalFile-" + testDirUid.toString();
     auto remoteFileName = remotePath + "/hello.txt";
 
     {
@@ -123,7 +123,7 @@ void WebDAVDownloadFileJobTest::downloadDevice()
     QVERIFY(buffer->open(QIODevice::ReadOnly));
 
     auto testDirUid = QUuid::createUuid();
-    auto remotePath = "/WebDAVUploadFileJobTest-uploadLocalFile-" + testDirUid.toString();
+    auto remotePath = "/WebDAVDownloadFileJobTest-downloadDevice-" + testDirUid.toString();
     auto remoteFileName = remotePath + "/hello.txt";
 
     {
@@ -183,7 +183,7 @@ void WebDAVDownloadFileJobTest::downloadData()
     QNetworkAccessManager nam;
 
     auto testDirUid = QUuid::createUuid();
-    auto remotePath = "/WebDAVUploadFileJobTest-uploadData-" + testDirUid.toString();
+    auto remotePath = "/WebDAVDownloadFileJobTest-downloadData-" + testDirUid.toString();
     auto remoteFileName = remotePath + "/hello.txt";
 
     {

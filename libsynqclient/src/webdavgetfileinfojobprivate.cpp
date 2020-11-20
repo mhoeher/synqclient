@@ -47,7 +47,7 @@ void WebDAVGetFileInfoJobPrivate::handleRequestFinished()
     if (reply) {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            q->setError(JobError::NetworkRequestFailed, reply->errorString());
+            q->setError(q->fromNetworkError(*reply), reply->errorString());
             q->finishLater();
         } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
             // Encountered redirect not handled by Qt, follow:
