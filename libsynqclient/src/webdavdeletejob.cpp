@@ -49,6 +49,10 @@ void WebDAVDeleteJob::start()
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
     req.setUrl(url);
+    auto etag = syncAttribute();
+    if (etag.isValid()) {
+        req.setHeader(QNetworkRequest::IfMatchHeader, etag);
+    }
     auto reply = networkAccessManager()->deleteResource(req);
     if (reply) {
         reply->setParent(this);

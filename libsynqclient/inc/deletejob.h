@@ -41,6 +41,9 @@ public:
     QString path() const;
     void setPath(const QString& path);
 
+    QVariant syncAttribute() const;
+    void setSyncAttribute(const QVariant& syncAttribute);
+
 protected:
     explicit DeleteJob(DeleteJobPrivate* d, QObject* parent = nullptr);
 

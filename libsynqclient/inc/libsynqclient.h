@@ -28,6 +28,7 @@ enum class JobError : quint32 {
     Forbidden, //!< A request has been rejected because the user is not allowed to run it.
     ResourceNotFound, //!< The specified resource was not found on the server.
     ServerContentConflict, //!< The server encountered a content conflict.
+    SyncAttributeMismatch, //!< Encountered a lost update during upload.
 };
 
 Q_ENUM_NS(JobError);
