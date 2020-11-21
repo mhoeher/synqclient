@@ -21,6 +21,6 @@
 
 namespace SynqClient {
 
-DeleteJobPrivate::DeleteJobPrivate(DeleteJob* q) : AbstractJobPrivate(q), path() {}
+DeleteJobPrivate::DeleteJobPrivate(DeleteJob* q) : AbstractJobPrivate(q), path(), syncAttribute() {}
 
 } // namespace SynqClient

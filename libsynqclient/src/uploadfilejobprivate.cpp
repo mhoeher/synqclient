@@ -29,7 +29,9 @@ UploadFileJobPrivate::UploadFileJobPrivate(UploadFileJob* q)
       input(),
       data(),
       remoteFilename(),
-      sourceType(UploadSource::Invalid)
+      sourceType(UploadSource::Invalid),
+      fileInfo(),
+      syncAttribute()
 {
 }
 

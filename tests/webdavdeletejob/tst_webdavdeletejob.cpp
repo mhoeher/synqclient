@@ -8,6 +8,7 @@
 #include "WebDAVListFilesJob"
 #include "WebDAVUploadFileJob"
 
+using SynqClient::ItemProperty;
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVDeleteJob;
@@ -31,6 +32,8 @@ private slots:
     void deleteEmptyFolder_data();
     void deleteFolderRecursively();
     void deleteFolderRecursively_data();
+    void syncAttribute();
+    void syncAttribute_data();
     void cleanupTestCase();
 };
 
@@ -310,6 +313,78 @@ void WebDAVDeleteJobTest::deleteFolderRecursively()
 }
 
 void WebDAVDeleteJobTest::deleteFolderRecursively_data()
+{
+    SynqClient::UnitTest::setupWebDAVTestServerData();
+}
+
+void WebDAVDeleteJobTest::syncAttribute()
+{
+    QFETCH(QUrl, url);
+    QFETCH(SynqClient::WebDAVServerType, type);
+
+    QNetworkAccessManager nam;
+
+    auto testDirUid = QUuid::createUuid();
+    auto remotePath = "/WebDAVDeleteJobTest-syncAttribute-" + testDirUid.toString();
+    auto remoteFileName = remotePath + "/hello.txt";
+    QVariant originalSyncAttribute;
+
+    {
+        WebDAVCreateDirectoryJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setPath(remotePath);
+        QSignalSpy spy(&job, &WebDAVCreateDirectoryJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+    }
+
+    {
+        WebDAVUploadFileJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setData("Hello World!\n");
+        job.setRemoteFilename(remoteFileName);
+        QSignalSpy spy(&job, &WebDAVUploadFileJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+        QCOMPARE(job.errorString(), QString());
+        QCOMPARE(job.error(), JobError::NoError);
+        originalSyncAttribute = job.fileInfo()[ItemProperty::SyncAttribute];
+        QThread::sleep(5); // Wait, otherwise we don't get a new etag (?!)
+    }
+
+    {
+        WebDAVUploadFileJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setData("Ciao!\n");
+        job.setRemoteFilename(remoteFileName);
+        QSignalSpy spy(&job, &WebDAVUploadFileJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+        QCOMPARE(job.errorString(), QString());
+        QCOMPARE(job.error(), JobError::NoError);
+    }
+
+    {
+        WebDAVDeleteJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setPath(remoteFileName);
+        job.setSyncAttribute(originalSyncAttribute);
+        QSignalSpy spy(&job, &WebDAVDeleteJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+        QCOMPARE(job.error(), JobError::SyncAttributeMismatch);
+    }
+}
+
+void WebDAVDeleteJobTest::syncAttribute_data()
 {
     SynqClient::UnitTest::setupWebDAVTestServerData();
 }

@@ -21,6 +21,7 @@
 #define SYNQCLIENT_DELETEJOBPRIVATE_H
 
 #include <QString>
+#include <QVariant>
 
 #include "abstractjobprivate.h"
 #include "deletejob.h"
@@ -35,6 +36,7 @@ public:
     Q_DECLARE_PUBLIC(DeleteJob);
 
     QString path;
+    QVariant syncAttribute;
 };
 
 } // namespace SynqClient

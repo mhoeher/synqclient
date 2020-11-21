@@ -39,6 +39,31 @@ void DeleteJob::setPath(const QString& path)
     d->path = path;
 }
 
+/**
+ * @brief Delete only if the remote file's sync attribute matches.
+ *
+ * If this property is set to a valid (i.e. non-null) FileProperty::SyncAttribute,
+ * then the request shall only succeed if the remote file's sync attribute matches
+ * the set one.
+ *
+ * @note This might or might not work, depending on the concrete protocol in
+ * question.
+ */
+QVariant DeleteJob::syncAttribute() const
+{
+    Q_D(const DeleteJob);
+    return d->syncAttribute;
+}
+
+/**
+ * @brief Set the @p syncAttribute we expect on the remote file.
+ */
+void DeleteJob::setSyncAttribute(const QVariant& syncAttribute)
+{
+    Q_D(DeleteJob);
+    d->syncAttribute = syncAttribute;
+}
+
 DeleteJob::DeleteJob(DeleteJobPrivate* d, QObject* parent) : AbstractJob(d, parent) {}
 
 } // namespace SynqClient

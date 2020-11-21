@@ -43,15 +43,20 @@ void WebDAVDeleteJobPrivate::handleRequestFinished()
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
+        auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         if (reply->error() != QNetworkReply::NoError) {
-            q->setError(q->fromNetworkError(*reply), reply->errorString());
+            if (code == AbstractWebDAVJobPrivate::HTTPPreconditionFailed) {
+                q->setError(JobError::SyncAttributeMismatch,
+                            "Cannot delete due to remote file or folder was updated");
+            } else {
+                q->setError(q->fromNetworkError(*reply), reply->errorString());
+            }
             q->finishLater();
         } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
             // Encountered redirect not handled by Qt, follow:
             q->start();
             return;
         } else {
-            auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
             if (code.toInt() == q->d_ptr2->HTTPOkay || code.toInt() == q->d_ptr2->HTTPNoContent) {
                 // All done!
             } else if (code.toInt() == q->d_ptr2->HTTPForbidden) {

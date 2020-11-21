@@ -54,12 +54,19 @@ public:
     QString remoteFilename() const;
     void setRemoteFilename(const QString& remoteFilename);
 
+    QVariantMap fileInfo() const;
+
+    QVariant syncAttribute() const;
+    void setSyncAttribute(const QVariant& syncAttribute);
+
 protected:
     explicit UploadFileJob(UploadFileJobPrivate* d, QObject* parent = nullptr);
 
     Q_DECLARE_PRIVATE(UploadFileJob);
 
     QSharedPointer<QIODevice> getUploadDevice();
+
+    void setFileInfo(const QVariantMap& fileInfo);
 };
 
 } // namespace SynqClient

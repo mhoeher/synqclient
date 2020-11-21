@@ -49,15 +49,25 @@ void WebDAVUploadFileJobPrivate::handleRequestFinished()
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
+        auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (reply->error() != QNetworkReply::NoError) {
-            q->setError(q->fromNetworkError(*reply), reply->errorString());
+            if (code == AbstractWebDAVJobPrivate::HTTPPreconditionFailed) {
+                q->setError(JobError::SyncAttributeMismatch, "The file on the server was updated");
+            } else {
+                q->setError(q->fromNetworkError(*reply), reply->errorString());
+            }
             q->finishLater();
         } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
             // Encountered redirect not handled by Qt, follow:
             q->start();
             return;
         } else {
-            auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            QVariantMap fileInfo;
+            QVariant etag = reply->header(QNetworkRequest::ETagHeader);
+            if (etag.isValid()) {
+                fileInfo[ItemProperty::SyncAttribute] = etag;
+            }
+            q->setFileInfo(fileInfo);
             if (code == q->d_ptr2->HTTPOkay || code == q->d_ptr2->HTTPCreated
                 || code == q->d_ptr2->HTTPNoContent) {
                 // Pass!

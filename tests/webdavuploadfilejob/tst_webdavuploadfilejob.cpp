@@ -11,6 +11,7 @@
 #include "WebDAVGetFileInfoJob"
 #include "WebDAVUploadFileJob"
 
+using SynqClient::ItemProperty;
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVGetFileInfoJob;
@@ -32,6 +33,8 @@ private slots:
     void uploadDevice_data();
     void uploadData();
     void uploadData_data();
+    void uploadSyncAttribute();
+    void uploadSyncAttribute_data();
     void cleanupTestCase();
 };
 
@@ -212,6 +215,84 @@ void WebDAVUploadFileJobTest::uploadData()
 }
 
 void WebDAVUploadFileJobTest::uploadData_data()
+{
+    SynqClient::UnitTest::setupWebDAVTestServerData();
+}
+
+void WebDAVUploadFileJobTest::uploadSyncAttribute()
+{
+    QFETCH(QUrl, url);
+    QFETCH(SynqClient::WebDAVServerType, type);
+
+    QNetworkAccessManager nam;
+
+    auto testDirUid = QUuid::createUuid();
+    auto remotePath = "/WebDAVUploadFileJobTest-uploadSyncAttribute-" + testDirUid.toString();
+    auto remoteFileName = remotePath + "/hello.txt";
+
+    QVariant originalEtag;
+
+    {
+        WebDAVCreateDirectoryJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setPath(remotePath);
+        QSignalSpy spy(&job, &WebDAVCreateDirectoryJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+    }
+
+    {
+        WebDAVUploadFileJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setData("Hello World!\n");
+        job.setRemoteFilename(remoteFileName);
+        QSignalSpy spy(&job, &WebDAVUploadFileJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+        QCOMPARE(job.errorString(), QString());
+        QCOMPARE(job.error(), JobError::NoError);
+        originalEtag = job.fileInfo()[ItemProperty::SyncAttribute];
+        QThread::sleep(
+                5); // Wait for some time, otherwise a re-upload won't generate a new etag (?!)
+    }
+
+    {
+        // Override the file without checking for etag (i.e. update by other client).
+        WebDAVUploadFileJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setData("Ciao!\n");
+        job.setRemoteFilename(remoteFileName);
+        QSignalSpy spy(&job, &WebDAVUploadFileJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+        QCOMPARE(job.errorString(), QString());
+        QCOMPARE(job.error(), JobError::NoError);
+    }
+
+    {
+        // "First" client uploads again, but does not know about the
+        // update of the other one, i.e. update should fail:
+        WebDAVUploadFileJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setData("Hello again!\n");
+        job.setRemoteFilename(remoteFileName);
+        job.setSyncAttribute(originalEtag);
+        QSignalSpy spy(&job, &WebDAVUploadFileJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+        QCOMPARE(job.error(), JobError::SyncAttributeMismatch);
+    }
+}
+
+void WebDAVUploadFileJobTest::uploadSyncAttribute_data()
 {
     SynqClient::UnitTest::setupWebDAVTestServerData();
 }

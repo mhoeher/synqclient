@@ -21,6 +21,8 @@
 #define SYNQCLIENT_UPLOADFILEJOBPRIVATE_H
 
 #include <QSharedPointer>
+#include <QVariant>
+#include <QVariantMap>
 
 #include "abstractjobprivate.h"
 #include "uploadfilejob.h"
@@ -44,6 +46,8 @@ public:
     QByteArray data;
     QString remoteFilename;
     UploadSource sourceType;
+    QVariantMap fileInfo;
+    QVariant syncAttribute;
 };
 
 } // namespace SynqClient
