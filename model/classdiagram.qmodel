@@ -89,7 +89,27 @@
                          </base-DElement>
                          <object>{a27fdc95-9501-444f-adb3-9053ceac8c36}</object>
                          <name>Core</name>
-                         <pos>x:320;y:245</pos>
+                         <pos>x:275;y:250</pos>
+                         <rect>x:-50;y:-35;w:100;h:70</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DPackage>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DPackage">
+                      <DPackage>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{7fb62564-2279-494b-8f76-c57bebd17d44}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{51be3633-7c01-4b18-88fd-d9cb885e24ce}</object>
+                         <name>Utils</name>
+                         <pos>x:520;y:240</pos>
                          <rect>x:-50;y:-35;w:100;h:70</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -99,7 +119,7 @@
                     </item>
                    </qlist>
                   </elements>
-                  <last-modified>1603308882544</last-modified>
+                  <last-modified>1606419474989</last-modified>
                   <toolbarid>Classes</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
@@ -158,7 +178,7 @@
                                     </base-DElement>
                                     <object>{4391c6cd-1bb5-4963-a88b-adc45a8d34ef}</object>
                                     <name>WebDAVListFilesJob</name>
-                                    <pos>x:540;y:720</pos>
+                                    <pos>x:580;y:485</pos>
                                     <rect>x:-65;y:-30;w:130;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -178,7 +198,7 @@
                                     </base-DElement>
                                     <object>{d7aeaa6e-d369-439b-91d2-6562581f806c}</object>
                                     <name>WebDAVUploadFileJob</name>
-                                    <pos>x:820;y:710</pos>
+                                    <pos>x:650;y:365</pos>
                                     <rect>x:-70;y:-30;w:140;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -198,7 +218,7 @@
                                     </base-DElement>
                                     <object>{04ce97b3-8852-4061-be6d-5914b462642b}</object>
                                     <name>WebDAVDownloadFileJob</name>
-                                    <pos>x:195;y:690</pos>
+                                    <pos>x:245;y:590</pos>
                                     <rect>x:-80;y:-30;w:160;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -218,7 +238,7 @@
                                     </base-DElement>
                                     <object>{1b5542f6-1ef8-4b63-885f-95396f852b08}</object>
                                     <name>WebDAVDeleteJob</name>
-                                    <pos>x:370;y:785</pos>
+                                    <pos>x:425;y:580</pos>
                                     <rect>x:-60;y:-30;w:120;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -238,7 +258,7 @@
                                     </base-DElement>
                                     <object>{b42759d6-7ffa-4e8b-9e21-05a343fbbc27}</object>
                                     <name>WebDAVJobFactory</name>
-                                    <pos>x:725;y:215</pos>
+                                    <pos>x:660;y:160</pos>
                                     <rect>x:-60;y:-30;w:120;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -374,7 +394,7 @@
                                     </base-DElement>
                                     <object>{65f1441c-f216-4063-80b9-08e4842992bd}</object>
                                     <name>WebDAVGetFileInfoJob</name>
-                                    <pos>x:-125;y:640</pos>
+                                    <pos>x:85;y:480</pos>
                                     <rect>x:-70;y:-30;w:140;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -417,7 +437,7 @@
                                      </qlist>
                                     </stereotypes>
                                     <name>WebDAVServerType</name>
-                                    <pos>x:45;y:110</pos>
+                                    <pos>x:140;y:120</pos>
                                     <rect>x:-65;y:-55;w:130;h:110</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -463,7 +483,7 @@
                                     </base-DElement>
                                     <object>{80520813-38de-4378-97ec-bede171dcae1}</object>
                                     <name>WebDAVCreateDirectoryJob</name>
-                                    <pos>x:-135;y:320</pos>
+                                    <pos>x:45;y:290</pos>
                                     <rect>x:-85;y:-30;w:170;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -491,7 +511,7 @@
                                </item>
                               </qlist>
                              </elements>
-                             <last-modified>1603492013282</last-modified>
+                             <last-modified>1606419513050</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -1062,28 +1082,28 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{1999509f-92d7-4c61-984b-7dd3270146e9}</uid>
+                               <uid>{c7e55855-fcbd-49c8-ad7d-e5e14c072517}</uid>
                                <type>1</type>
                                <declaration>QNetworkAccessManager *networkAccessManager</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c1f2defa-a4a5-4a06-8790-2d61f422d985}</uid>
+                               <uid>{ca8acf00-e987-4b98-abc2-0599d4c4fd68}</uid>
                                <type>1</type>
                                <declaration>QUrl url</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c36511b0-3851-43f7-a028-c5662574d3f7}</uid>
+                               <uid>{b00baed7-8c66-43d9-a2a5-744a348e0900}</uid>
                                <type>1</type>
                                <declaration>WebDAVServerType serverType</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a38fec42-0ec4-488e-856f-19effac7c6fe}</uid>
+                               <uid>{b8f64d0c-155d-48d9-b715-f84a67a34d7e}</uid>
                                <type>1</type>
                                <declaration>QString userAgent</declaration>
                               </MClassMember>
@@ -1193,21 +1213,21 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{f4b5e3c2-c44a-4171-b406-5ba6f9c3b714}</uid>
+                               <uid>{d9e31b29-269e-408e-b625-b0ea4636a385}</uid>
                                <type>1</type>
                                <declaration>Generic</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{1068be50-92f7-49cc-ae5a-4f9466366871}</uid>
+                               <uid>{fcb89446-da94-4267-9186-d418999db690}</uid>
                                <type>1</type>
                                <declaration>NextCloud</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{f72c6cdd-207b-4808-8356-f57689944fa0}</uid>
+                               <uid>{c7bc6490-2a08-40f1-8f2c-31d2b526abc1}</uid>
                                <type>1</type>
                                <declaration>OwnCloud</declaration>
                               </MClassMember>
@@ -2874,6 +2894,168 @@
                                <uid>{9191c8d0-3d97-4122-bb1f-cea1304e2516}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </children>
+                 </MObject>
+                </base-MObject>
+               </MPackage>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{51be3633-7c01-4b18-88fd-d9cb885e24ce}</uid>
+             <target>
+              <instance type="MPackage">
+               <MPackage>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{51be3633-7c01-4b18-88fd-d9cb885e24ce}</uid>
+                   </MElement>
+                  </base-MElement>
+                  <name>Utils</name>
+                  <children>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{6a82b160-5d45-4226-aae4-c9f82b528c9d}</uid>
+                        <target>
+                         <instance type="MCanvasDiagram">
+                          <MCanvasDiagram>
+                           <base-MDiagram>
+                            <MDiagram>
+                             <base-MObject>
+                              <MObject>
+                               <base-MElement>
+                                <MElement>
+                                 <uid>{6a82b160-5d45-4226-aae4-c9f82b528c9d}</uid>
+                                </MElement>
+                               </base-MElement>
+                               <name>Utils</name>
+                              </MObject>
+                             </base-MObject>
+                             <elements>
+                              <qlist>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{317c6109-95fe-4689-9171-610bce61482b}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{a1259fc3-3f45-454d-865f-c20a256acd56}</object>
+                                    <name>NextCloudLoginFlow</name>
+                                    <pos>x:460;y:170</pos>
+                                    <rect>x:-280;y:-80;w:560;h:160</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                              </qlist>
+                             </elements>
+                             <last-modified>1606419603756</last-modified>
+                             <toolbarid>Classes</toolbarid>
+                            </MDiagram>
+                           </base-MDiagram>
+                          </MCanvasDiagram>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{a1259fc3-3f45-454d-865f-c20a256acd56}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{a1259fc3-3f45-454d-865f-c20a256acd56}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>NextCloudLoginFlow</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{76abf066-a78e-4b89-8c86-1d68fcaee3b8}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>bool flowRunning</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{ba8ad733-7bc0-4647-8f56-069d75f80232}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QNetworkAccessManager *networkAccessManager</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{3f122d70-8e37-4a89-b28e-0950a0719a9a}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QString userAgent</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{8d246d00-793a-4634-ab5d-d19bc2f9399e}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <declaration>bool startLoginFlow(const QUrl &amp;url)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{0e167fbe-4ae1-481d-a3ec-3c8a6b0eca20}</uid>
+                               <visibility>4</visibility>
+                               <type>2</type>
+                               <declaration>void finished()</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{5ce077f4-97e9-407a-8750-e3d4fefd9868}</uid>
+                               <visibility>4</visibility>
+                               <type>2</type>
+                               <declaration>void receivedLogin(const QString &amp;username, const QString &amp;password, const QString &amp;server)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{1d7db1ff-f45c-48e8-a161-378a41e10760}</uid>
+                               <visibility>4</visibility>
+                               <type>2</type>
+                               <declaration>void receivedLoginUrl(const QUrl&amp; &amp;loginUrl)</declaration>
                               </MClassMember>
                              </item>
                             </qlist>

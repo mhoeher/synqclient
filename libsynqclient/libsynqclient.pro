@@ -27,6 +27,8 @@ SOURCES += \
     src/libsynqclient.cpp \
     src/listfilesjob.cpp \
     src/listfilesjobprivate.cpp \
+    src/nextcloudloginflow.cpp \
+    src/nextcloudloginflowprivate.cpp \
     src/uploadfilejob.cpp \
     src/uploadfilejobprivate.cpp \
     src/webdavcreatedirectoryjob.cpp \
@@ -50,6 +52,7 @@ HEADERS += \
     inc/DownloadFileJob \
     inc/GetFileInfoJob \
     inc/ListFilesJob \
+    inc/NextCloudLoginFlow \
     inc/UploadFileJob \
     inc/WebDAVCreateDirectoryJob \
     inc/WebDAVDeleteJob \
@@ -66,6 +69,7 @@ HEADERS += \
     inc/libsynqclient_global.h \
     inc/libsynqclient.h \
     inc/listfilesjob.h \
+    inc/nextcloudloginflow.h \
     inc/uploadfilejob.h \
     inc/webdavcreatedirectoryjob.h \
     inc/webdavdeletejob.h \
@@ -81,6 +85,7 @@ HEADERS += \
     src/downloadfilejobprivate.h \
     src/getfileinfojobprivate.h \
     src/listfilesjobprivate.h \
+    src/nextcloudloginflowprivate.h \
     src/uploadfilejobprivate.h \
     src/webdavcreatedirectoryjobprivate.h \
     src/webdavdeletejobprivate.h \
