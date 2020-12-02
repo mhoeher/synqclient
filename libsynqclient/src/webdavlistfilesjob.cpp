@@ -44,6 +44,17 @@ void WebDAVListFilesJob::start()
     }
 
     auto url = d_ptr2->urlFromPath(d->path);
+    if (!d_ptr2->nextUrl.isValid()) {
+        // This is the initial try to create the directory (after redirection).
+        // Make sure that the URL ends with a slash (see
+        // https://gitlab.com/rpdev/synqclient/-/issues/14 for details). Otherwise
+        // we likely might get redirects:
+        auto urlPath = url.path();
+        if (!urlPath.endsWith("/")) {
+            urlPath.append("/");
+            url.setPath(urlPath);
+        }
+    }
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
     req.setUrl(url);
