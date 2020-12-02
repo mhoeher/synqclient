@@ -13,6 +13,8 @@ const char* AbstractWebDAVJobPrivate::OctetStreamEncoding = "application/octet-s
 const char* AbstractWebDAVJobPrivate::PROPFIND = "PROPFIND";
 const char* AbstractWebDAVJobPrivate::MKCOL = "MKCOL";
 
+const char* AbstractWebDAVJobPrivate::DefaultUserAgent = "SynqClient";
+
 const QByteArray AbstractWebDAVJobPrivate::PropFindRequestData = "<?xml version=\"1.0\"?>"
                                                                  "<a:propfind xmlns:a=\"DAV:\">"
                                                                  "<a:prop>"
@@ -23,7 +25,7 @@ const QByteArray AbstractWebDAVJobPrivate::PropFindRequestData = "<?xml version=
 
 AbstractWebDAVJobPrivate::AbstractWebDAVJobPrivate(AbstractWebDAVJob* q)
     : q_ptr(q),
-      userAgent("SynqClient"),
+      userAgent(DefaultUserAgent),
       networkAccessManager(nullptr),
       url(),
       serverType(WebDAVServerType::Generic),

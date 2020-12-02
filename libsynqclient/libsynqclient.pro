@@ -13,6 +13,8 @@ CONFIG += c++14 hide_symbols create_prl create_pc
 
 SOURCES += \
     src/abstractjob.cpp \
+    src/abstractjobfactory.cpp \
+    src/abstractjobfactoryprivate.cpp \
     src/abstractjobprivate.cpp \
     src/abstractwebdavjob.cpp \
     src/abstractwebdavjobprivate.cpp \
@@ -39,6 +41,8 @@ SOURCES += \
     src/webdavdownloadfilejobprivate.cpp \
     src/webdavgetfileinfojob.cpp \
     src/webdavgetfileinfojobprivate.cpp \
+    src/webdavjobfactory.cpp \
+    src/webdavjobfactoryprivate.cpp \
     src/webdavlistfilesjob.cpp \
     src/webdavlistfilesjobprivate.cpp \
     src/webdavuploadfilejob.cpp \
@@ -46,6 +50,7 @@ SOURCES += \
 
 HEADERS += \
     inc/AbstractJob \
+    inc/AbstractJobFactory \
     inc/AbstractWebDAVJob \
     inc/CreateDirectoryJob \
     inc/DeleteJob \
@@ -58,9 +63,11 @@ HEADERS += \
     inc/WebDAVDeleteJob \
     inc/WebDAVDownloadFileJob \
     inc/WebDAVGetFileInfoJob \
+    inc/WebDAVJobFactory \
     inc/WebDAVListFilesJob \
     inc/WebDAVUploadFileJob \
     inc/abstractjob.h \
+    inc/abstractjobfactory.h \
     inc/abstractwebdavjob.h \
     inc/createdirectoryjob.h \
     inc/deletejob.h \
@@ -75,8 +82,10 @@ HEADERS += \
     inc/webdavdeletejob.h \
     inc/webdavdownloadfilejob.h \
     inc/webdavgetfileinfojob.h \
+    inc/webdavjobfactory.h \
     inc/webdavlistfilesjob.h \
     inc/webdavuploadfilejob.h \
+    src/abstractjobfactoryprivate.h \
     src/abstractjobprivate.h \
     src/abstractwebdavjobprivate.h \
     inc/SynqClient \
@@ -91,6 +100,7 @@ HEADERS += \
     src/webdavdeletejobprivate.h \
     src/webdavdownloadfilejobprivate.h \
     src/webdavgetfileinfojobprivate.h \
+    src/webdavjobfactoryprivate.h \
     src/webdavlistfilesjobprivate.h \
     src/webdavuploadfilejobprivate.h
 

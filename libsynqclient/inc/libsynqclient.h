@@ -34,6 +34,21 @@ enum class JobError : quint32 {
 Q_ENUM_NS(JobError);
 
 /**
+ * @brief Used to identify a specific type of jobs.
+ */
+enum class JobType : quint32 {
+    Invalid = 0, //!< Indicates an invalid job.
+    CreateDirectory, //!< A job to create a new directory.
+    DeleteResource, //!< A job to delete a file or directory.
+    DownloadFile, //!< A job to download a file.
+    UploadFile, //!< A job to upload a file.
+    GetFileInfo, //!< A job to get information about a single file or directory.
+    ListFiles //!< A job to get information about entries in a folder.
+};
+
+Q_ENUM_NS(JobType);
+
+/**
  * @enum SynqClient::JobState
  * @brief JobError
  */

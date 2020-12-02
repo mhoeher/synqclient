@@ -26,6 +26,8 @@
 #include <QTimer>
 #include <QUrlQuery>
 
+#include "abstractwebdavjobprivate.h"
+
 namespace SynqClient {
 
 static Q_LOGGING_CATEGORY(log, "SynqClient.NextCloudLoginFlow", QtWarningMsg);
@@ -37,7 +39,7 @@ NextCloudLoginFlowPrivate::NextCloudLoginFlowPrivate(NextCloudLoginFlow* q)
       pollTimer(nullptr),
       token(),
       endpoint(),
-      userAgent("SynqClient"),
+      userAgent(AbstractWebDAVJobPrivate::DefaultUserAgent),
       flowRunning(false)
 {
 }
