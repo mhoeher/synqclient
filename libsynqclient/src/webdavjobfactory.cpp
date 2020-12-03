@@ -142,19 +142,20 @@ WebDAVJobFactory::WebDAVJobFactory(WebDAVJobFactoryPrivate* d, QObject* parent)
  */
 AbstractJob* WebDAVJobFactory::createJob(JobType type, QObject* parent)
 {
+    Q_D(WebDAVJobFactory);
     switch (type) {
     case JobType::CreateDirectory:
-        return new WebDAVCreateDirectoryJob(parent);
+        return d->createJob<WebDAVCreateDirectoryJob>(parent);
     case JobType::DeleteResource:
-        return new WebDAVDeleteJob(parent);
+        return d->createJob<WebDAVDeleteJob>(parent);
     case JobType::DownloadFile:
-        return new WebDAVDownloadFileJob(parent);
+        return d->createJob<WebDAVDownloadFileJob>(parent);
     case JobType::UploadFile:
-        return new WebDAVUploadFileJob(parent);
+        return d->createJob<WebDAVUploadFileJob>(parent);
     case JobType::GetFileInfo:
-        return new WebDAVGetFileInfoJob(parent);
+        return d->createJob<WebDAVGetFileInfoJob>(parent);
     case JobType::ListFiles:
-        return new WebDAVListFilesJob(parent);
+        return d->createJob<WebDAVListFilesJob>(parent);
     default:
         return nullptr;
     }

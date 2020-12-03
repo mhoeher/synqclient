@@ -88,7 +88,7 @@ CreateDirectoryJob* AbstractJobFactory::createDirectory(QObject* parent)
  */
 DeleteJob* AbstractJobFactory::deleteResource(QObject* parent)
 {
-    return checkJob<DeleteJob>(createJob(JobType::CreateDirectory, parent));
+    return checkJob<DeleteJob>(createJob(JobType::DeleteResource, parent));
 }
 
 /**
@@ -100,7 +100,7 @@ DeleteJob* AbstractJobFactory::deleteResource(QObject* parent)
  */
 DownloadFileJob* AbstractJobFactory::downloadFile(QObject* parent)
 {
-    return checkJob<DownloadFileJob>(createJob(JobType::CreateDirectory, parent));
+    return checkJob<DownloadFileJob>(createJob(JobType::DownloadFile, parent));
 }
 
 /**
@@ -112,7 +112,7 @@ DownloadFileJob* AbstractJobFactory::downloadFile(QObject* parent)
  */
 UploadFileJob* AbstractJobFactory::uploadFile(QObject* parent)
 {
-    return checkJob<UploadFileJob>(createJob(JobType::CreateDirectory, parent));
+    return checkJob<UploadFileJob>(createJob(JobType::UploadFile, parent));
 }
 
 /**
@@ -125,7 +125,7 @@ UploadFileJob* AbstractJobFactory::uploadFile(QObject* parent)
  */
 GetFileInfoJob* AbstractJobFactory::getFileInfo(QObject* parent)
 {
-    return checkJob<GetFileInfoJob>(createJob(JobType::CreateDirectory, parent));
+    return checkJob<GetFileInfoJob>(createJob(JobType::GetFileInfo, parent));
 }
 
 /**
@@ -138,7 +138,7 @@ GetFileInfoJob* AbstractJobFactory::getFileInfo(QObject* parent)
  */
 ListFilesJob* AbstractJobFactory::listFiles(QObject* parent)
 {
-    return checkJob<ListFilesJob>(createJob(JobType::CreateDirectory, parent));
+    return checkJob<ListFilesJob>(createJob(JobType::ListFiles, parent));
 }
 
 /**

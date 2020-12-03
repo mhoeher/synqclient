@@ -39,6 +39,17 @@ public:
     QUrl url;
     QString userAgent;
     WebDAVServerType serverType;
+
+    template<typename T>
+    T* createJob(QObject* parent)
+    {
+        auto result = new T(parent);
+        result->setNetworkAccessManager(networkAccessManager);
+        result->setUrl(url);
+        result->setUserAgent(userAgent);
+        result->setServerType(serverType);
+        return result;
+    }
 };
 
 } // namespace SynqClient

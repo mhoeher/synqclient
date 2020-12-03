@@ -6,5 +6,6 @@ SUBDIRS += \
     webdavdeletejob \
     webdavdownloadfilejob \
     webdavgetfileinfojob \
+    webdavjobfactory \
     webdavlistfilesjob \
     webdavuploadfilejob
