@@ -1052,28 +1052,28 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{9cf73865-8659-48db-a9e5-e45b842b3f11}</uid>
+                               <uid>{8d2f7008-83a3-4e85-9d42-41eef257b95d}</uid>
                                <type>1</type>
                                <declaration>QNetworkAccessManager* networkAccessManager</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{d89af4e5-7434-4476-8ff5-dd752cc11990}</uid>
+                               <uid>{0a9c7c66-e50a-40f3-9379-b2a5584c0b63}</uid>
                                <type>1</type>
                                <declaration>QUrl url</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{75fdb996-5a47-441f-bb4a-00eb4e1b6119}</uid>
+                               <uid>{87a08b12-40e9-4d95-b4e9-264f122b2c75}</uid>
                                <type>1</type>
                                <declaration>WebDAVServerType serverType</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{966d5fcd-706f-4c94-8986-1c8a52a0d52f}</uid>
+                               <uid>{0d3b60c2-ad69-4eea-88b0-a637621eae93}</uid>
                                <type>1</type>
                                <declaration>QString userAgend</declaration>
                               </MClassMember>
@@ -1433,7 +1433,7 @@
                                     </base-DElement>
                                     <object>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</object>
                                     <name>DirectorySynchronizer</name>
-                                    <pos>x:210;y:190</pos>
+                                    <pos>x:170;y:180</pos>
                                     <rect>x:-70;y:-30;w:140;h:60</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
@@ -1475,7 +1475,7 @@
                                     <object>{b42759d6-7ffa-4e8b-9e21-05a343fbbc27}</object>
                                     <context>WebDAV</context>
                                     <name>WebDAVJobFactory</name>
-                                    <pos>x:575;y:395</pos>
+                                    <pos>x:580;y:350</pos>
                                     <rect>x:-60;y:-30;w:120;h:60</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
@@ -1573,9 +1573,198 @@
                                  </DAssociation>
                                 </instance>
                                </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{f4ba8a87-8be1-4aa6-9096-676b636cb8d6}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{1a36d116-c0ff-40ca-a805-4e47a175117c}</object>
+                                    <name>SyncStateDatabase</name>
+                                    <pos>x:550;y:490</pos>
+                                    <rect>x:-265;y:-75;w:530;h:150</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{9924edeb-872e-4f3c-84c4-4c64b38c1b7d}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{b123fe42-22d4-49fd-ae2b-07a63c9c49ac}</object>
+                                    <name>SQLSyncStateDatabase</name>
+                                    <pos>x:430;y:625</pos>
+                                    <rect>x:-75;y:-30;w:150;h:60</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{932182fc-d007-43ff-b304-97fc117142a8}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{a4b28f01-6fa5-4da0-8b40-3dcd02bc7ecd}</object>
+                                    <name>JSONSyncStateDatabase</name>
+                                    <pos>x:690;y:625</pos>
+                                    <rect>x:-80;y:-30;w:160;h:60</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{75fc154c-e939-439c-8819-9518f80b234d}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{5e1bfa95-116b-453f-852f-f2a663aba80d}</object>
+                                    <a>{9924edeb-872e-4f3c-84c4-4c64b38c1b7d}</a>
+                                    <b>{f4ba8a87-8be1-4aa6-9096-676b636cb8d6}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{37b58c70-d6eb-46a7-ac15-50b05e179d23}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{7afc05f7-af03-425f-bca9-1e15c6421c57}</object>
+                                    <a>{932182fc-d007-43ff-b304-97fc117142a8}</a>
+                                    <b>{f4ba8a87-8be1-4aa6-9096-676b636cb8d6}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{15066fba-f719-4fd2-82e6-54b5f9b5bf21}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{6672dcbb-636a-41ba-b675-5224719772de}</object>
+                                    <name>SyncStateEntry</name>
+                                    <pos>x:85;y:490</pos>
+                                    <rect>x:-95;y:-50;w:190;h:100</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{4d01fb47-4f6e-4f6e-ad13-8d82f4dcd255}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{2c48a1d7-a5f2-406c-9147-580df57ce337}</object>
+                                    <a>{f4ba8a87-8be1-4aa6-9096-676b636cb8d6}</a>
+                                    <b>{15066fba-f719-4fd2-82e6-54b5f9b5bf21}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <navigable>true</navigable>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{dbbcf20f-941a-407e-a1ea-eeaddbaac8d0}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{80c4f60c-4784-4c1e-9e8e-5495cbfe196f}</object>
+                                    <a>{02a43034-f807-43c5-a8e6-e5d0e775aa89}</a>
+                                    <b>{15066fba-f719-4fd2-82e6-54b5f9b5bf21}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <navigable>true</navigable>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{e4c7fc7d-3af1-4926-84cc-47e5483641e2}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{bec21f85-e81d-490d-b18e-0442a3d81f04}</object>
+                                    <a>{02a43034-f807-43c5-a8e6-e5d0e775aa89}</a>
+                                    <b>{f4ba8a87-8be1-4aa6-9096-676b636cb8d6}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <cradinality>*</cradinality>
+                                    <navigable>true</navigable>
+                                    <kind>1</kind>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
                               </qlist>
                              </elements>
-                             <last-modified>1606943351385</last-modified>
+                             <last-modified>1607550386071</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -1680,6 +1869,89 @@
                                       <a>
                                        <MAssociationEnd>
                                         <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{e31da2a4-1944-49b3-9b1e-825c4d892783}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{e31da2a4-1944-49b3-9b1e-825c4d892783}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</a>
+                                        <b>{1a36d116-c0ff-40ca-a805-4e47a175117c}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{80c4f60c-4784-4c1e-9e8e-5495cbfe196f}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{80c4f60c-4784-4c1e-9e8e-5495cbfe196f}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</a>
+                                        <b>{6672dcbb-636a-41ba-b675-5224719772de}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{bec21f85-e81d-490d-b18e-0442a3d81f04}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{bec21f85-e81d-490d-b18e-0442a3d81f04}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</a>
+                                        <b>{1a36d116-c0ff-40ca-a805-4e47a175117c}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <cardinality>*</cardinality>
+                                        <navigable>true</navigable>
+                                        <kind>1</kind>
                                        </MAssociationEnd>
                                       </a>
                                      </MAssociation>
@@ -1927,6 +2199,280 @@
                                <uid>{ab31a7e7-d2f0-4b2a-a2c4-96adfe6e580b}</uid>
                                <type>1</type>
                                <declaration>ListFiles</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{1a36d116-c0ff-40ca-a805-4e47a175117c}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{1a36d116-c0ff-40ca-a805-4e47a175117c}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>SyncStateDatabase</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{2c48a1d7-a5f2-406c-9147-580df57ce337}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{2c48a1d7-a5f2-406c-9147-580df57ce337}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{1a36d116-c0ff-40ca-a805-4e47a175117c}</a>
+                                        <b>{6672dcbb-636a-41ba-b675-5224719772de}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{a80a0874-cf36-48d0-85bb-5c04aa96eb4a}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>1</properties>
+                               <declaration>bool openDatabase()</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{027fe510-cb38-417f-81a5-f92f26f744c2}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>3</properties>
+                               <declaration>bool addEntry(const SyncStateEntry &amp;entry)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{e5ddc5a3-86b9-4e58-8a61-654f7a629e70}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>3</properties>
+                               <declaration>SyncStateEntry getEntry(const QString &amp;path)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{de58b451-53de-43cc-975c-ab03c213aa7f}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>3</properties>
+                               <declaration>QVector&lt;SyncStateEntry&gt; findEntries(const QString &amp;path, bool ok* = nullptr)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{f19f65c7-0348-412e-a6bf-b73d9b2028c9}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>3</properties>
+                               <declaration>void removeEntries(const QString &amp;path)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{11e1c8b3-b932-484a-aa1b-cefbb0e9b9c1}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>3</properties>
+                               <declaration>void removeEntry(const QString &amp;path)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{06b07da9-d2a7-4521-844c-c195d0862ccb}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>1</properties>
+                               <declaration>bool closeDatabase()</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{b123fe42-22d4-49fd-ae2b-07a63c9c49ac}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{b123fe42-22d4-49fd-ae2b-07a63c9c49ac}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>SQLSyncStateDatabase</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{5e1bfa95-116b-453f-852f-f2a663aba80d}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{5e1bfa95-116b-453f-852f-f2a663aba80d}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{b123fe42-22d4-49fd-ae2b-07a63c9c49ac}</a>
+                                        <b>{1a36d116-c0ff-40ca-a805-4e47a175117c}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{a4b28f01-6fa5-4da0-8b40-3dcd02bc7ecd}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{a4b28f01-6fa5-4da0-8b40-3dcd02bc7ecd}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>JSONSyncStateDatabase</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{7afc05f7-af03-425f-bca9-1e15c6421c57}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{7afc05f7-af03-425f-bca9-1e15c6421c57}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{a4b28f01-6fa5-4da0-8b40-3dcd02bc7ecd}</a>
+                                        <b>{1a36d116-c0ff-40ca-a805-4e47a175117c}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{6672dcbb-636a-41ba-b675-5224719772de}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{6672dcbb-636a-41ba-b675-5224719772de}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>SyncStateEntry</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{b4154392-1f41-4d9d-a697-8d7c852edede}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QString path</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{a20ee67c-f436-480a-9741-2b182d30ed3c}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QDateTime modificationTime</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{770b9255-08ca-42f6-9e59-b3093395327c}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QString syncProperty</declaration>
                               </MClassMember>
                              </item>
                             </qlist>

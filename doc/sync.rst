@@ -1,13 +1,23 @@
 Synchronization
 ===============
 
-The main task of SynqClient is to provide means to synchronize a local and a remote directory over arbitrary protocols. The synchronization itself is implemented on top of the job framework - meaning: It does not use specific properties of a dedicated protocol or server, but entirely relies on the information which is available via the various defined jobs.
+The main goal of SynqClient is to provide means to synchronize a local and a remote folder. This chapter will list all the ingredients we need to get to this target.
 
-For this reason, the synchronization code itself is written against the abstract job base classes, like :any:`SynqClient::GetFileInfoJob`, :any:`SynqClient::ListFilesJob` and :any:`SynqClient::DownloadFileJob`. In order to make these classes available to the sync code, a factory class is used.
 
+
+Remote Access
++++++++++++++
+
+The most important ingredient is access to the "remote" folder. For this, the library provides a job based interface which should allow to implement access against a wide range of servers and protocols. The base class for all jobs is :any:`SynqClient::AbstractJob`. From this, specific (but still abstract) job types like the :any:`SynqClient::GetFileInfoJob`, :any:`SynqClient::DownloadFileJob` or :any:`SynqClient::DeleteJob` are derived. To implement access to a concrete server or talk over a specific protocol, these abstract classes need to be implemented. These concrete implementations can either be part of the SynqClient library or can be part of the host application (or a higher level library) which uses SynqClient.
+
+
+Factories
++++++++++
+
+The actual sync functionality is written in a high level manner, meaning: On that level, no details about the underlying protocol to access remote files is used (or desired). Consequentially, this part is written entirely against the abstract job classes mentioned above. However, as the sync functionality needs to create jobs on the fly, *factories* are used. Factories are subclasses of the :any:`SynqClient::AbstractJobFactory` class.
 
 AbstractJobFactory
-++++++++++++++++++
+------------------
 
 The AbstractJobFactory class is the base class for concrete factories that are then used in conjunction with the code for the actual synchronization. It just defines the available protocol but on its own it does not provide any functionality.
 
@@ -24,9 +34,36 @@ concrete kind of job shall be created:
 
 
 Concrete Factories
-++++++++++++++++++
+------------------
 
 The following concrete factory classes are provided by SynqClient in order to allow synchronization against specific backend servers and protocols:
 
 .. doxygenclass:: SynqClient::WebDAVJobFactory
     :members:
+
+
+
+Synchronization State Database
+++++++++++++++++++++++++++++++
+
+The next very important ingredient for the sync is the *Sate Database*. In order to implement proper synchronization, we need to keep track of some information between sync runs. This information must be saved persistently. In order to be as flexible as possible, the functionality to interact with such a database is done via another interface: The :any:`SynqClient::SyncStateDatabase` class.
+
+
+SyncStateDatabase
+-----------------
+
+.. doxygenclass:: SynqClient::SyncStateDatabase
+
+The :any:`SynqClient::SyncStateEntry` class is used to store information about a single entry in the sync database:
+
+.. doxygenclass:: SynqClient::SyncStateEntry
+
+
+Concrete Databases
+------------------
+
+Often, the functionality of such a synchronization database won't be different between applications. For this reason, SynqClient comes with the following default implementations, which can be used out of the box instead of implementing own ones:
+
+.. doxygenclass:: SynqClient::SQLSyncStateDatabase
+
+.. doxygenclass:: SynqClient::JSONSyncStateDatabase
