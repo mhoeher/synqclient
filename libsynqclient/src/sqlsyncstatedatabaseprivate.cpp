@@ -36,13 +36,19 @@ SQLSyncStateDatabasePrivate::SQLSyncStateDatabasePrivate(SQLSyncStateDatabase* q
 bool SQLSyncStateDatabasePrivate::initializeDbV1()
 {
     QSqlQuery query(db);
-    query.prepare("CREATE TABLE IF NOT EXISTS "
-                  "version (key string PRIMARY KEY, value);");
+    if (!query.prepare("CREATE TABLE IF NOT EXISTS "
+                       "version (key string PRIMARY KEY, value);")) {
+        qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+        return false;
+    }
     if (!query.exec()) {
         qCWarning(log) << "Failed to create version table:" << query.lastError().text();
         return false;
     }
-    query.prepare("SELECT value FROM version WHERE key == 'version';");
+    if (!query.prepare("SELECT value FROM version WHERE key == 'version';")) {
+        qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+        return false;
+    }
     int version = 0;
     if (query.exec()) {
         if (query.first()) {
@@ -56,19 +62,25 @@ bool SQLSyncStateDatabasePrivate::initializeDbV1()
     if (version == 0) {
         // Note: We call the syncProperty "etag" - this is to be compatible
         // with OpenTodoList, where this code has been factored out from.
-        query.prepare("CREATE TABLE files ("
-                      "`parent` string, "
-                      "`entry` string NOT NULL, "
-                      "`modificationDate` date not null, "
-                      "`etag` string not null, "
-                      "PRIMARY KEY(`parent`, `entry`)"
-                      ");");
+        if (!query.prepare("CREATE TABLE files ("
+                           "`parent` string, "
+                           "`entry` string NOT NULL, "
+                           "`modificationDate` date not null, "
+                           "`etag` string not null, "
+                           "PRIMARY KEY(`parent`, `entry`)"
+                           ");")) {
+            qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+            return false;
+        }
         if (!query.exec()) {
             qCWarning(log) << "Failed to create files table:" << query.lastError().text();
             return false;
         }
-        query.prepare("INSERT OR REPLACE INTO version(key, value) "
-                      "VALUES ('version', 1);");
+        if (!query.prepare("INSERT OR REPLACE INTO version(key, value) "
+                           "VALUES ('version', 1);")) {
+            qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+            return false;
+        }
         if (!query.exec()) {
             qCWarning(log) << "Failed to insert version into DB:" << query.lastError().text();
             return false;

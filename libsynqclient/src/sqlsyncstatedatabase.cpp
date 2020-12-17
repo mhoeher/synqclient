@@ -161,9 +161,12 @@ bool SQLSyncStateDatabase::addEntry(const SyncStateEntry& entry)
     auto parts = d->splitPath(entry.path());
 
     QSqlQuery query(d->db);
-    query.prepare("INSERT OR REPLACE INTO files "
-                  "(parent, entry, modificationDate, etag) "
-                  "VALUES (?, ?, ?, ?);");
+    if (!query.prepare("INSERT OR REPLACE INTO files "
+                       "(parent, entry, modificationDate, etag) "
+                       "VALUES (?, ?, ?, ?);")) {
+        qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+        return false;
+    }
     query.addBindValue(std::get<0>(parts));
     query.addBindValue(std::get<1>(parts));
     query.addBindValue(entry.modificationTime());
@@ -181,8 +184,11 @@ SyncStateEntry SQLSyncStateDatabase::getEntry(const QString& path)
 
     SyncStateEntry result;
     QSqlQuery query(d->db);
-    query.prepare("SELECT parent, entry, modificationDate, etag "
-                  "FROM files WHERE parent = ? and entry = ?;");
+    if (!query.prepare("SELECT parent, entry, modificationDate, etag "
+                       "FROM files WHERE parent = ? and entry = ?;")) {
+        qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+        return result;
+    }
     auto dbPath = d->splitPath(path);
     query.addBindValue(std::get<0>(dbPath));
     query.addBindValue(std::get<1>(dbPath));
@@ -210,8 +216,14 @@ QVector<SyncStateEntry> SQLSyncStateDatabase::findEntries(const QString& parent,
 
     QVector<SyncStateEntry> result;
     QSqlQuery query(d->db);
-    query.prepare("SELECT parent, entry, modificationDate, etag "
-                  "FROM files WHERE parent = ?;");
+    if (!query.prepare("SELECT parent, entry, modificationDate, etag "
+                       "FROM files WHERE parent = ?;")) {
+        qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+        if (ok) {
+            *ok = false;
+        }
+        return result;
+    }
     query.addBindValue(std::get<0>(
             d->splitPath(parent, SQLSyncStateDatabasePrivate::SplitPathMode::NameExcluded)));
     if (query.exec()) {
@@ -239,8 +251,11 @@ bool SQLSyncStateDatabase::removeEntries(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);
     QSqlQuery query(d->db);
-    query.prepare("DELETE FROM files "
-                  "WHERE parent LIKE ? || '%' OR (parent = ? AND entry = ?);");
+    if (!query.prepare("DELETE FROM files "
+                       "WHERE parent LIKE ? || '%' OR (parent = ? AND entry = ?);")) {
+        qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+        return false;
+    }
     auto dbPath = d->splitPath(path);
     auto parent = std::get<0>(dbPath);
     auto entry = std::get<1>(dbPath);
@@ -261,8 +276,11 @@ bool SQLSyncStateDatabase::removeEntry(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);
     QSqlQuery query(d->db);
-    query.prepare("DELETE FROM files "
-                  "WHERE parent = ? AND entry = ?;");
+    if (!query.prepare("DELETE FROM files "
+                       "WHERE parent = ? AND entry = ?;")) {
+        qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
+        return false;
+    }
     auto dbPath = d->splitPath(path);
     auto parent = std::get<0>(dbPath);
     auto entry = std::get<1>(dbPath);
