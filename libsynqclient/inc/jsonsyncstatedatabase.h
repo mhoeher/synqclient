@@ -35,14 +35,27 @@ class LIBSYNQCLIENT_EXPORT JSONSyncStateDatabase : public SyncStateDatabase
 {
     Q_OBJECT
 public:
-
+    explicit JSONSyncStateDatabase(const QString& filename, QObject* parent = nullptr);
     explicit JSONSyncStateDatabase(QObject* parent = nullptr);
     ~JSONSyncStateDatabase() override;
+
+    QString filename() const;
+    void setFilename(const QString& filename);
 
 protected:
     explicit JSONSyncStateDatabase(JSONSyncStateDatabasePrivate* d, QObject* parent = nullptr);
 
     Q_DECLARE_PRIVATE(JSONSyncStateDatabase);
+
+    // SyncStateDatabase interface
+public:
+    bool openDatabase() override;
+    bool closeDatabase() override;
+    bool addEntry(const SyncStateEntry& entry) override;
+    SyncStateEntry getEntry(const QString& path) override;
+    QVector<SyncStateEntry> findEntries(const QString& parent, bool* ok) override;
+    bool removeEntries(const QString& path) override;
+    bool removeEntry(const QString& path) override;
 };
 
 } // namespace SynqClient

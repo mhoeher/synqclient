@@ -36,7 +36,10 @@ class LIBSYNQCLIENT_EXPORT SyncStateEntry
 public:
     SyncStateEntry();
     SyncStateEntry(const SyncStateEntry& other);
+    SyncStateEntry(const QString& path, const QDateTime& modificationTime,
+                   const QString& syncProperty);
     virtual ~SyncStateEntry();
+    SyncStateEntry& operator=(const SyncStateEntry& other);
 
     bool isValid() const;
     void setValid(bool valid);
@@ -49,6 +52,8 @@ public:
 
     QString syncProperty() const;
     void setSyncProperty(const QString& syncProperty);
+
+    static QString makePath(const QString& path);
 
 protected:
     explicit SyncStateEntry(SyncStateEntryPrivate* d);

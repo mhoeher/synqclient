@@ -21,8 +21,6 @@
 
 namespace SynqClient {
 
-SyncStateDatabasePrivate::SyncStateDatabasePrivate(SyncStateDatabase* q) : q_ptr(q)
-{
-}
+SyncStateDatabasePrivate::SyncStateDatabasePrivate(SyncStateDatabase* q) : q_ptr(q), open(false) {}
 
 } // namespace SynqClient

@@ -45,9 +45,34 @@ SyncStateEntry::SyncStateEntry() : d(new SyncStateEntryPrivate) {}
 SyncStateEntry::SyncStateEntry(const SyncStateEntry& other) : d(other.d) {}
 
 /**
+ * @brief Constructor.
+ *
+ * Creates a new entry with the given @p path, @p modificationTime and @p syncProperty. The entry
+ * will be valid (i.e. isValid() returns true).
+ */
+SyncStateEntry::SyncStateEntry(const QString& path, const QDateTime& modificationTime,
+                               const QString& syncProperty)
+    : d(new SyncStateEntryPrivate)
+{
+    d->modificationTime = modificationTime;
+    d->path = path;
+    d->syncProperty = syncProperty;
+    d->valid = true;
+}
+
+/**
  * @brief Destructor.
  */
 SyncStateEntry::~SyncStateEntry() {}
+
+/**
+ * @brief Assignment operator.
+ */
+SyncStateEntry& SyncStateEntry::operator=(const SyncStateEntry& other)
+{
+    d = other.d;
+    return *this;
+}
 
 /**
  * @brief Used to indicate if the entry is valid.
@@ -94,14 +119,7 @@ QString SyncStateEntry::path() const
  */
 void SyncStateEntry::setPath(const QString& path)
 {
-    auto p = path;
-    if (!p.startsWith("/")) {
-        p = "/" + p;
-    }
-    while (p.length() > 1 && p.endsWith("/")) {
-        p.chop(1);
-    }
-    d->path = QDir::cleanPath(p);
+    d->path = makePath(path);
 }
 
 /**
@@ -143,6 +161,28 @@ QString SyncStateEntry::syncProperty() const
 void SyncStateEntry::setSyncProperty(const QString& syncProperty)
 {
     d->syncProperty = syncProperty;
+}
+
+/**
+ * @brief Convert a path to a sync entry path.
+ *
+ * This is a helper function which returns a path suitable to be used with the sync state
+ * database API. Internally, this is used by setPath() to make sure paths set are stored in
+ * a suitable format internally.
+ *
+ * This method can also be used by other parts to create suitable paths similar to the ones used
+ * internally by this class.
+ */
+QString SyncStateEntry::makePath(const QString& path)
+{
+    auto p = path;
+    if (!p.startsWith("/")) {
+        p = "/" + p;
+    }
+    while (p.length() > 1 && p.endsWith("/")) {
+        p.chop(1);
+    }
+    return QDir::cleanPath(p);
 }
 
 SyncStateEntry::SyncStateEntry(SyncStateEntryPrivate* d) : d(d) {}

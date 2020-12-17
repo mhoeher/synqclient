@@ -47,11 +47,15 @@ public:
     virtual bool removeEntry(const QString& path) = 0;
     virtual bool closeDatabase();
 
+    bool isOpen() const;
+
 protected:
     explicit SyncStateDatabase(SyncStateDatabasePrivate* d, QObject* parent = nullptr);
 
     QScopedPointer<SyncStateDatabasePrivate> d_ptr;
     Q_DECLARE_PRIVATE(SyncStateDatabase);
+
+    void setOpen(bool open);
 };
 
 } // namespace SynqClient

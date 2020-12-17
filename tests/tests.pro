@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     abstractjob \
+    syncstatedatabase \
     webdavcreatedirectoryjob \
     webdavdeletejob \
     webdavdownloadfilejob \

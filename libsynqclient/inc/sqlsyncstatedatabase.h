@@ -27,6 +27,8 @@
 #include "SyncStateDatabase"
 #include "libsynqclient_global.h"
 
+class QSqlDatabase;
+
 namespace SynqClient {
 
 class SQLSyncStateDatabasePrivate;
@@ -35,14 +37,29 @@ class LIBSYNQCLIENT_EXPORT SQLSyncStateDatabase : public SyncStateDatabase
 {
     Q_OBJECT
 public:
-
     explicit SQLSyncStateDatabase(QObject* parent = nullptr);
+    explicit SQLSyncStateDatabase(const QSqlDatabase& db, QObject* parent = nullptr);
+    explicit SQLSyncStateDatabase(const QString& path, QObject* parent = nullptr);
     ~SQLSyncStateDatabase() override;
+
+    QSqlDatabase database() const;
+    void setDatabase(const QSqlDatabase& database);
+    void setDatabase(const QString& path);
 
 protected:
     explicit SQLSyncStateDatabase(SQLSyncStateDatabasePrivate* d, QObject* parent = nullptr);
 
     Q_DECLARE_PRIVATE(SQLSyncStateDatabase);
+
+    // SyncStateDatabase interface
+public:
+    bool openDatabase() override;
+    bool addEntry(const SyncStateEntry& entry) override;
+    SyncStateEntry getEntry(const QString& path) override;
+    QVector<SyncStateEntry> findEntries(const QString& parent, bool* ok) override;
+    bool removeEntries(const QString& path) override;
+    bool removeEntry(const QString& path) override;
+    bool closeDatabase() override;
 };
 
 } // namespace SynqClient

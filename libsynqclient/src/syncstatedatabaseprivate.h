@@ -29,8 +29,10 @@ class SyncStateDatabasePrivate
 public:
     explicit SyncStateDatabasePrivate(SyncStateDatabase* q);
 
-    SyncStateDatabase *q_ptr;
+    SyncStateDatabase* q_ptr;
     Q_DECLARE_PUBLIC(SyncStateDatabase);
+
+    bool open;
 };
 
 } // namespace SynqClient

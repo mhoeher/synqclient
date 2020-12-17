@@ -20,6 +20,10 @@
 #ifndef SYNQCLIENT_SQLSYNCSTATEDATABASEPRIVATE_H
 #define SYNQCLIENT_SQLSYNCSTATEDATABASEPRIVATE_H
 
+#include <tuple>
+
+#include <QSqlDatabase>
+
 #include "syncstatedatabaseprivate.h"
 #include "sqlsyncstatedatabase.h"
 
@@ -28,9 +32,18 @@ namespace SynqClient {
 class SQLSyncStateDatabasePrivate : public SyncStateDatabasePrivate
 {
 public:
+    enum class SplitPathMode { NameIncluded, NameExcluded };
+
     explicit SQLSyncStateDatabasePrivate(SQLSyncStateDatabase* q);
 
     Q_DECLARE_PUBLIC(SQLSyncStateDatabase);
+
+    QSqlDatabase db;
+
+    bool initializeDbV1();
+
+    std::tuple<QString, QString> splitPath(const QString& path,
+                                           SplitPathMode mode = SplitPathMode::NameIncluded);
 };
 
 } // namespace SynqClient

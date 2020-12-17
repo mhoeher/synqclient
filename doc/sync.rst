@@ -46,7 +46,7 @@ The following concrete factory classes are provided by SynqClient in order to al
 Synchronization State Database
 ++++++++++++++++++++++++++++++
 
-The next very important ingredient for the sync is the *Sate Database*. In order to implement proper synchronization, we need to keep track of some information between sync runs. This information must be saved persistently. In order to be as flexible as possible, the functionality to interact with such a database is done via another interface: The :any:`SynqClient::SyncStateDatabase` class.
+The next very important ingredient for the sync is the *State Database*. In order to implement proper synchronization, we need to keep track of some information between sync runs. This information must be saved persistently. In order to be as flexible as possible, the functionality to interact with such a database is done via another interface: The :any:`SynqClient::SyncStateDatabase` class.
 
 
 SyncStateDatabase

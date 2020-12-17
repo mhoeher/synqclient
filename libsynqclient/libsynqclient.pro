@@ -1,5 +1,5 @@
 QT -= gui
-QT += network xml
+QT += network xml sql
 
 TARGET = synqclient
 TEMPLATE = lib

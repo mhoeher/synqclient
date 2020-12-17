@@ -20,17 +20,54 @@
 #ifndef SYNQCLIENT_JSONSYNCSTATEDATABASEPRIVATE_H
 #define SYNQCLIENT_JSONSYNCSTATEDATABASEPRIVATE_H
 
+#include <QVariantMap>
+
 #include "syncstatedatabaseprivate.h"
 #include "jsonsyncstatedatabase.h"
+
+class QJsonObject;
 
 namespace SynqClient {
 
 class JSONSyncStateDatabasePrivate : public SyncStateDatabasePrivate
 {
 public:
+    enum class FindNodeMode { Find, FindAndCreate };
+
+    struct Node
+    {
+        SyncStateEntry entry;
+        QMap<QString, Node> children;
+
+        void clear()
+        {
+            entry = SyncStateEntry();
+            children.clear();
+        }
+    };
+
+    static const char* EntryProperty;
+    static const char* ChildrenProperty;
+    static const char* ModificationTimeProperty;
+    static const char* SyncPropertyProperty;
+    static const char* VersionProperty;
+
+    static const char* Version_1_0;
+    static const char* CurrentVersion;
+
     explicit JSONSyncStateDatabasePrivate(JSONSyncStateDatabase* q);
 
     Q_DECLARE_PUBLIC(JSONSyncStateDatabase);
+
+    QString filename;
+    Node data;
+
+    Node* findNode(const SyncStateEntry& entry, FindNodeMode mode = FindNodeMode::Find);
+    Node* findNode(const QString& path, FindNodeMode mode = FindNodeMode::Find);
+
+    bool jsonToNode(const QJsonObject& object, Node& node);
+    QVariantMap nodeToJson(const Node& node);
+    bool checkCanHandleVersion(const QJsonObject& object);
 };
 
 } // namespace SynqClient

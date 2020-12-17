@@ -59,6 +59,7 @@ SyncStateDatabase::~SyncStateDatabase() {}
  */
 bool SyncStateDatabase::openDatabase()
 {
+    setOpen(true);
     return true;
 }
 
@@ -123,6 +124,9 @@ bool SyncStateDatabase::removeEntries(const QString& path)
  *
  * This removes the entry identified by the @p path from the database. On success, this returns
  * true. On error, false is returned.
+ *
+ * @note If the path refers to a directory, this will only remove the information about
+ *       the directory itself. Data about children will still be kept in the database.
  */
 bool SyncStateDatabase::removeEntry(const QString& path)
 {
@@ -143,7 +147,19 @@ bool SyncStateDatabase::removeEntry(const QString& path)
  */
 bool SyncStateDatabase::closeDatabase()
 {
+    setOpen(false);
     return true;
+}
+
+/**
+ * @brief Get if the database open.
+ *
+ * This returns true if the database previously has been opened successfully via openDatabase().
+ */
+bool SyncStateDatabase::isOpen() const
+{
+    Q_D(const SyncStateDatabase);
+    return d->open;
 }
 
 /**
@@ -152,6 +168,12 @@ bool SyncStateDatabase::closeDatabase()
 SyncStateDatabase::SyncStateDatabase(SyncStateDatabasePrivate* d, QObject* parent)
     : QObject(parent), d_ptr(d)
 {
+}
+
+void SyncStateDatabase::setOpen(bool open)
+{
+    Q_D(SyncStateDatabase);
+    d->open = open;
 }
 
 } // namespace SynqClient
