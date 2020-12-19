@@ -22,6 +22,8 @@ SOURCES += \
     src/createdirectoryjobprivate.cpp \
     src/deletejob.cpp \
     src/deletejobprivate.cpp \
+    src/directorysynchronizer.cpp \
+    src/directorysynchronizerprivate.cpp \
     src/downloadfilejob.cpp \
     src/downloadfilejobprivate.cpp \
     src/getfileinfojob.cpp \
@@ -62,6 +64,7 @@ HEADERS += \
     inc/AbstractWebDAVJob \
     inc/CreateDirectoryJob \
     inc/DeleteJob \
+    inc/DirectorySynchronizer \
     inc/DownloadFileJob \
     inc/GetFileInfoJob \
     inc/JSONSyncStateDatabase \
@@ -83,6 +86,7 @@ HEADERS += \
     inc/abstractwebdavjob.h \
     inc/createdirectoryjob.h \
     inc/deletejob.h \
+    inc/directorysynchronizer.h \
     inc/downloadfilejob.h \
     inc/getfileinfojob.h \
     inc/jsonsyncstatedatabase.h \
@@ -107,6 +111,7 @@ HEADERS += \
     inc/SynqClient \
     src/createdirectoryjobprivate.h \
     src/deletejobprivate.h \
+    src/directorysynchronizerprivate.h \
     src/downloadfilejobprivate.h \
     src/getfileinfojobprivate.h \
     src/jsonsyncstatedatabaseprivate.h \

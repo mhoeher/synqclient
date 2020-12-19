@@ -67,3 +67,11 @@ Often, the functionality of such a synchronization database won't be different b
 .. doxygenclass:: SynqClient::SQLSyncStateDatabase
 
 .. doxygenclass:: SynqClient::JSONSyncStateDatabase
+
+
+Directory Synchronizer
+++++++++++++++++++++++
+
+With the above mentioned ingredients, we have everything at hand required to implement synchronization of a local and a remote folder. The synchronization part is implemented as a dedicated class - :any:`SynqClient::DirectorySynchronizer` - which is configured appropriately with concrete instances of the functional blocks described above.
+
+.. doxygenclass:: SynqClient::DirectorySynchronizer

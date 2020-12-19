@@ -1433,11 +1433,12 @@
                                     </base-DElement>
                                     <object>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</object>
                                     <name>DirectorySynchronizer</name>
-                                    <pos>x:170;y:180</pos>
-                                    <rect>x:-70;y:-30;w:140;h:60</rect>
+                                    <pos>x:130;y:180</pos>
+                                    <rect>x:-145;y:-60;w:290;h:120</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
                                   </base-DObject>
+                                  <show-all-members>true</show-all-members>
                                  </DClass>
                                 </instance>
                                </item>
@@ -1518,6 +1519,7 @@
                                   </base-DRelation>
                                   <a>
                                    <DAssociationEnd>
+                                    <cradinality>1</cradinality>
                                     <navigable>true</navigable>
                                    </DAssociationEnd>
                                   </a>
@@ -1754,9 +1756,8 @@
                                   </base-DRelation>
                                   <a>
                                    <DAssociationEnd>
-                                    <cradinality>*</cradinality>
+                                    <cradinality>1</cradinality>
                                     <navigable>true</navigable>
-                                    <kind>1</kind>
                                    </DAssociationEnd>
                                   </a>
                                  </DAssociation>
@@ -1764,7 +1765,7 @@
                                </item>
                               </qlist>
                              </elements>
-                             <last-modified>1607550386071</last-modified>
+                             <last-modified>1608408265529</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -1868,6 +1869,7 @@
                                       </base-MRelation>
                                       <a>
                                        <MAssociationEnd>
+                                        <cardinality>1</cardinality>
                                         <navigable>true</navigable>
                                        </MAssociationEnd>
                                       </a>
@@ -1949,9 +1951,8 @@
                                       </base-MRelation>
                                       <a>
                                        <MAssociationEnd>
-                                        <cardinality>*</cardinality>
+                                        <cardinality>1</cardinality>
                                         <navigable>true</navigable>
-                                        <kind>1</kind>
                                        </MAssociationEnd>
                                       </a>
                                      </MAssociation>
@@ -1965,6 +1966,50 @@
                              </relations>
                             </MObject>
                            </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{43687e35-70f2-4546-851f-d5d9e0fdd01b}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>AbstractJobFactory* jobFactory</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{6bd4550c-5da7-4f72-b13c-e02ee38b6630}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>SyncStateDatabase* syncStateDatabase</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{7e584d61-e5fc-4bf5-978f-d84e01d60f91}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QString localDirectoryPath</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{18788f05-575d-48c0-96d1-a42f01098168}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QString remoteDirectoryPath</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{cd4d2f96-05a8-40f5-b4c2-6be613f8d6be}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>std::function&lt;bool(const QString &amp;path)&gt; filter</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>
