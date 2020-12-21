@@ -1,6 +1,8 @@
 #ifndef SYNQCLIENT_UT_UTILS_H_
 #define SYNQCLIENT_UT_UTILS_H_
 
+#include <tuple>
+
 #include <QString>
 #include <QTest>
 #include <QUrl>
@@ -27,32 +29,41 @@ QList<QUrl> getWebDAVServersFromEnv()
     return result;
 }
 
-void setupWebDAVTestServerData()
+QVector<std::tuple<QUrl, SynqClient::WebDAVServerType>> enumerateWebDAVTestServers()
 {
     auto urls = getWebDAVServersFromEnv();
-    QTest::addColumn<QUrl>("url");
-    QTest::addColumn<SynqClient::WebDAVServerType>("type");
+    decltype(enumerateWebDAVTestServers()) result;
 
     for (const auto& url : urls) {
         auto proto = url.scheme();
         if (proto == "nextcloud") {
             auto fixedUrl = url;
             fixedUrl.setScheme("http");
-            QTest::newRow(url.toString().toUtf8())
-                    << fixedUrl << SynqClient::WebDAVServerType::NextCloud;
+            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::NextCloud);
         } else if (proto == "owncloud") {
             auto fixedUrl = url;
             fixedUrl.setScheme("http");
-            QTest::newRow(url.toString().toUtf8())
-                    << fixedUrl << SynqClient::WebDAVServerType::OwnCloud;
+            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::OwnCloud);
         } else if (proto == "generic") {
             auto fixedUrl = url;
             fixedUrl.setScheme("http");
-            QTest::newRow(url.toString().toUtf8())
-                    << fixedUrl << SynqClient::WebDAVServerType::Generic;
+            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::Generic);
         } else {
-            QTest::newRow(url.toString().toUtf8()) << url << SynqClient::WebDAVServerType::Generic;
+            result << std::make_tuple(url, SynqClient::WebDAVServerType::Generic);
         }
+    }
+    return result;
+}
+
+void setupWebDAVTestServerData()
+{
+    QTest::addColumn<QUrl>("url");
+    QTest::addColumn<SynqClient::WebDAVServerType>("type");
+
+    for (const auto& tuple : enumerateWebDAVTestServers()) {
+        auto url = std::get<0>(tuple);
+        auto type = std::get<1>(tuple);
+        QTest::newRow(url.toString().toUtf8()) << url << type;
     }
 }
 

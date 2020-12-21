@@ -27,6 +27,7 @@
 #include <QtGlobal>
 
 #include "libsynqclient_global.h"
+#include "libsynqclient.h"
 
 namespace SynqClient {
 
@@ -58,6 +59,22 @@ public:
 
     Filter filter() const;
     void setFilter(const Filter& filter);
+
+    int maxJobs() const;
+    void setMaxJobs(int maxJobs);
+
+    SyncConflictStrategy syncConflictStrategy() const;
+    void setSyncConflictStrategy(SyncConflictStrategy strategy);
+
+    SynchronizerState state() const;
+    SynchronizerError error() const;
+
+    void start();
+    void stop();
+
+signals:
+
+    void finished();
 
 protected:
     explicit DirectorySynchronizer(DirectorySynchronizerPrivate* d, QObject* parent = nullptr);

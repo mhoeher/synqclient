@@ -23,6 +23,7 @@
 #include <QPointer>
 
 #include "directorysynchronizer.h"
+#include "libsynqclient.h"
 
 namespace SynqClient {
 
@@ -39,6 +40,12 @@ public:
     QString localDirectoryPath;
     QString remoteDirectoryPath;
     DirectorySynchronizer::Filter filter;
+    SynchronizerState state;
+    SynchronizerError error;
+    int maxJobs;
+    SyncConflictStrategy syncConflictStrategy;
+
+    void finishLater();
 };
 
 } // namespace SynqClient

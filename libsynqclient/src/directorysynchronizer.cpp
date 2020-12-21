@@ -169,6 +169,8 @@ void DirectorySynchronizer::setRemoteDirectoryPath(const QString& remoteDirector
  *     return true;
  * });
  * @endcode
+ *
+ * @sa SyncStateEntry::makePath()
  */
 DirectorySynchronizer::Filter DirectorySynchronizer::filter() const
 {
@@ -186,11 +188,146 @@ void DirectorySynchronizer::setFilter(const DirectorySynchronizer::Filter& filte
 }
 
 /**
+ * @brief The maximal number of jobs to spawn in parallel.
+ *
+ * This is the maximal number of jobs that are created in parallel during the sync. By
+ * default, this is set to 12. This is in line with the QNetworkAccessManager API: Internally, it
+ * will establish at most 6 connections to to the same host/port pair in parallel. As jobs might
+ * have some "dead" time during which no other network connection takes place, we use double
+ * that number of jobs to ensure that we utilize parallelization and pipelining in an optimal
+ * way to speed up network transfers.
+ *
+ * When using a job factory which does not internally use QNetworkAccessManager, adjust this
+ * value accordingly. In particular, in case you have a job implementation which requires
+ * sequential access, you should set this value to 1.
+ */
+int DirectorySynchronizer::maxJobs() const
+{
+    Q_D(const DirectorySynchronizer);
+    return d->maxJobs;
+}
+
+/**
+ * @brief Set the maximal number of jobs to spawn in parallel.
+ */
+void DirectorySynchronizer::setMaxJobs(int maxJobs)
+{
+    Q_D(DirectorySynchronizer);
+    d->maxJobs = maxJobs;
+}
+
+/**
+ * @brief The strategy to be used in case a sync conflict is detected.
+ *
+ * This determines how the synchronizer proceeds in case it detects a sync conflict.
+ */
+SyncConflictStrategy DirectorySynchronizer::syncConflictStrategy() const
+{
+    Q_D(const DirectorySynchronizer);
+    return d->syncConflictStrategy;
+}
+
+/**
+ * @brief Set the @p strategy to be used when a sync conflict is detected.
+ */
+void DirectorySynchronizer::setSyncConflictStrategy(SyncConflictStrategy strategy)
+{
+    Q_D(DirectorySynchronizer);
+    d->syncConflictStrategy = strategy;
+}
+
+/**
+ * @brief The state of the synchronizer.
+ *
+ * This returns the current state of the synchronizer. After creation, the synchronizer is in
+ * the SynchronizerState::Ready state. In this state, the start() method can be called to
+ * trigger the synchronization. This causes the synchronizer to change into the
+ * SynchronizerState::Running state. As soon as the sync is done, the synchronizer changes into the
+ * SynchronizerState::Finished state.
+ */
+SynchronizerState DirectorySynchronizer::state() const
+{
+    Q_D(const DirectorySynchronizer);
+    return d->state;
+}
+
+/**
+ * @brief Indicates the status of the finished synchronization.
+ *
+ * This returns the error reason for the sync. If the sync was successful, this is
+ * SynchronizerError::NoError. Otherwise, this is set to a value indicating the reason why the sync
+ * was not successful.
+ */
+SynchronizerError DirectorySynchronizer::error() const
+{
+    Q_D(const DirectorySynchronizer);
+    return d->error;
+}
+
+/**
+ * @brief Start the synchronization.
+ *
+ * This starts synchronizing the configured local and remote folders. Calling this will cause the
+ * synchronizer to change into the SynchronizerState::Running state. Eventually, the synchronization
+ * will finish. This is indicated by emitting the finished() signal. It will then switch to the
+ * SynchronizerState::Finished state.
+ *
+ * @note Calling this method has no effect if the synchronizer is not in the
+ * SynchronizerState::Ready state.
+ */
+void DirectorySynchronizer::start()
+{
+    Q_D(DirectorySynchronizer);
+    if (d->state != SynchronizerState::Ready) {
+        return;
+    }
+
+    d->state = SynchronizerState::Running;
+
+    if (!d->jobFactory || !d->syncStateDatabase || !d->filter || d->localDirectoryPath.isEmpty()
+        || d->remoteDirectoryPath.isEmpty()) {
+        d->error = SynchronizerError::MissingParameter;
+        d->finishLater();
+        return;
+    }
+
+    if (d->maxJobs < 1) {
+        d->error = SynchronizerError::InvalidParameter;
+        d->finishLater();
+        return;
+    }
+}
+
+/**
+ * @brief Stop the running synchronization.
+ *
+ * This method can be used to stop the running synchronization. This will cause currently running
+ * jobs to be stopped. The overall sync will then be finished with a SynchronizerError::Stopped
+ * error.
+ *
+ * @note Calling this method has no effect, if the synchronizer is not in the
+ * SynchronizerState::Running state.
+ */
+void DirectorySynchronizer::stop()
+{
+    // TODO
+}
+
+/**
  * @brief Constructor.
  */
 DirectorySynchronizer::DirectorySynchronizer(DirectorySynchronizerPrivate* d, QObject* parent)
     : QObject(parent), d_ptr(d)
 {
 }
+
+/**
+ * @fn DirectorySynchronizer::finished()
+ * @brief Synchronization has finished.
+ *
+ * This signal is emitted to indicate that the sync has finished - independent on whether it was
+ * successful or not. Check the value returned by the error() function to learn if the sync finished
+ * with a problem or not.
+ */
 
 } // namespace SynqClient

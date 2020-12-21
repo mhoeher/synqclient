@@ -19,6 +19,8 @@
 
 #include "directorysynchronizerprivate.h"
 
+#include <QTimer>
+
 #include "abstractjobfactory.h"
 #include "syncstatedatabase.h"
 
@@ -30,8 +32,21 @@ DirectorySynchronizerPrivate::DirectorySynchronizerPrivate(DirectorySynchronizer
       syncStateDatabase(nullptr),
       localDirectoryPath(),
       remoteDirectoryPath(),
-      filter([](const QString&) { return true; })
+      filter([](const QString&) { return true; }),
+      state(SynchronizerState::Ready),
+      error(SynchronizerError::NoError),
+      maxJobs(12),
+      syncConflictStrategy(SyncConflictStrategy::RemoteWins)
 {
+}
+
+void DirectorySynchronizerPrivate::finishLater()
+{
+    Q_Q(DirectorySynchronizer);
+    QTimer::singleShot(0, q, [=] {
+        state = SynchronizerState::Finished;
+        emit q->finished();
+    });
 }
 
 } // namespace SynqClient

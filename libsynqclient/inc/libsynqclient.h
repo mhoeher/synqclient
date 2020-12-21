@@ -34,6 +34,23 @@ enum class JobError : quint32 {
 Q_ENUM_NS(JobError);
 
 /**
+ * @brief Used to encode the type of error during synchronization.
+ *
+ * This enumeration holds the various types of errors that might occur during a synchronization
+ * between a local and a remote folder.
+ *
+ * @sa DirectorySynchronizer
+ */
+enum class SynchronizerError : quint32 {
+    NoError = 0, //!< The sync was successful - no error occurred.
+    Stopped, //!< The sync has been stopped programatically.
+    MissingParameter, //!< Indicates that some properties required for the sync are missing.
+    InvalidParameter, //!< Indicates that some properties have invalid values set.
+};
+
+Q_ENUM_NS(SynchronizerError);
+
+/**
  * @brief Used to identify a specific type of jobs.
  */
 enum class JobType : quint32 {
@@ -55,6 +72,47 @@ Q_ENUM_NS(JobType);
 enum class JobState : quint32 { Ready = 0, Running, Finished };
 
 Q_ENUM_NS(JobState);
+
+/**
+ * @brief The states of a synchronizer.
+ *
+ * This enum encodes the states a synchronizer runs through.
+ */
+enum class SynchronizerState : quint32 {
+    Ready = 0, //!< The synchronizer is ready and can be started.
+    Running, //!< The synchronization is currently running.
+    Finished, //!< The synchronization has finished.
+};
+
+Q_ENUM_NS(SynchronizerState);
+
+/**
+ * @brief Determines how to proceed in case a sync conflict is detected.
+ *
+ * During a sync operation, it might happen that a sync conflict is detected. A sync conflict
+ * happens if a file is modified both locally and remotely.
+ *
+ * This type is used to instruct the DirectorySynchronizer how to proceed in case of such a
+ * conflict.
+ */
+enum class SyncConflictStrategy : quint32 {
+    /**
+     * @brief Use the version of a file the remote provides.
+     *
+     * Use this strategy if you want remote changes to get precedence over local ones.
+     * Using this strategy, upon a conflict the remote file will be downloaded and local changes be
+     * replaced.
+     */
+    RemoteWins = 0,
+
+    /**
+     * @brief Use the local version of a file.
+     *
+     * If this strategy is used, upon a conflict the local version of a file is used and uploaded to
+     * the remote.
+     */
+    LocalWins,
+};
 
 /**
  * @brief The type of WebDAV server to talk to.

@@ -75,3 +75,15 @@ Directory Synchronizer
 With the above mentioned ingredients, we have everything at hand required to implement synchronization of a local and a remote folder. The synchronization part is implemented as a dedicated class - :any:`SynqClient::DirectorySynchronizer` - which is configured appropriately with concrete instances of the functional blocks described above.
 
 .. doxygenclass:: SynqClient::DirectorySynchronizer
+
+The :any:`SynqClient::SynchronizerError` enumeration is used to encode the various errors that might occur during the sync.
+
+.. doxygenenum:: SynqClient::SynchronizerError
+
+The :any:`SynqClient::SynchronizerState` is used to represent the states a synchronizer runs through.
+
+.. doxygenenum:: SynqClient::SynchronizerState
+
+In case a sync conflict occurs, the :any:`SynqClient::SyncConflictStrategy` enum is used to determine how to proceed.
+
+.. doxygenenum:: SynqClient::SyncConflictStrategy
