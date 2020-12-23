@@ -26,6 +26,8 @@ SOURCES += \
     src/directorysynchronizerprivate.cpp \
     src/downloadfilejob.cpp \
     src/downloadfilejobprivate.cpp \
+    src/fileinfo.cpp \
+    src/fileinfoprivate.cpp \
     src/getfileinfojob.cpp \
     src/getfileinfojobprivate.cpp \
     src/jsonsyncstatedatabase.cpp \
@@ -66,6 +68,7 @@ HEADERS += \
     inc/DeleteJob \
     inc/DirectorySynchronizer \
     inc/DownloadFileJob \
+    inc/FileInfo \
     inc/GetFileInfoJob \
     inc/JSONSyncStateDatabase \
     inc/ListFilesJob \
@@ -88,6 +91,7 @@ HEADERS += \
     inc/deletejob.h \
     inc/directorysynchronizer.h \
     inc/downloadfilejob.h \
+    inc/fileinfo.h \
     inc/getfileinfojob.h \
     inc/jsonsyncstatedatabase.h \
     inc/libsynqclient_global.h \
@@ -113,6 +117,7 @@ HEADERS += \
     src/deletejobprivate.h \
     src/directorysynchronizerprivate.h \
     src/downloadfilejobprivate.h \
+    src/fileinfoprivate.h \
     src/getfileinfojobprivate.h \
     src/jsonsyncstatedatabaseprivate.h \
     src/listfilesjobprivate.h \

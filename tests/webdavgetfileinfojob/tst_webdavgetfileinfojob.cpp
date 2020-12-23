@@ -47,7 +47,7 @@ void WebDAVGetFileInfoJobTest::getRootItemFileInfo()
     QVERIFY(spy.wait());
     QCOMPARE(job.error(), SynqClient::JobError::NoError);
     auto fileInfo = job.fileInfo();
-    QCOMPARE(fileInfo[SynqClient::ItemProperty::Name], ".");
+    QCOMPARE(fileInfo.name(), ".");
 }
 
 void WebDAVGetFileInfoJobTest::getRootItemFileInfo_data()
@@ -73,7 +73,7 @@ void WebDAVGetFileInfoJobTest::getFileInfoForNonExistingFile()
     QVERIFY(spy.wait());
     QCOMPARE(job.error(), SynqClient::JobError::ResourceNotFound);
     auto fileInfo = job.fileInfo();
-    QVERIFY(fileInfo.isEmpty());
+    QVERIFY(!fileInfo.isValid());
 }
 
 void WebDAVGetFileInfoJobTest::getFileInfoForNonExistingFile_data()

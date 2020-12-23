@@ -87,3 +87,15 @@ The :any:`SynqClient::SynchronizerState` is used to represent the states a synch
 In case a sync conflict occurs, the :any:`SynqClient::SyncConflictStrategy` enum is used to determine how to proceed.
 
 .. doxygenenum:: SynqClient::SyncConflictStrategy
+
+Some aspects of the synchronization can be controlled by passing a :any:`SynqClient::SynchronizerFlags` value to the synchronizer:
+
+.. doxygentypedef:: SynqClient::SynchronizerFlags
+
+The valid flags are encoded in the :any:`SynqClient::SynchronizerFlag` enum:
+
+.. doxygenenum:: SynqClient::SynchronizerFlag
+
+Functions suitable for being used as filters to determine of a particular file or folder shall be included in the synchronization are defined by the :any:`SynqClient::DirectorySynchronizer::Filter` type:
+
+.. doxygentypedef:: SynqClient::DirectorySynchronizer::Filter

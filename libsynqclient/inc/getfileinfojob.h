@@ -25,8 +25,9 @@
 #include <QVariantMap>
 #include <QtGlobal>
 
-#include "libsynqclient_global.h"
 #include "AbstractJob"
+#include "FileInfo"
+#include "libsynqclient_global.h"
 
 namespace SynqClient {
 
@@ -42,7 +43,7 @@ public:
     QString path() const;
     void setPath(const QString& path);
 
-    QVariantMap fileInfo() const;
+    FileInfo fileInfo() const;
 
 protected:
     explicit GetFileInfoJob(GetFileInfoJobPrivate* d, QObject* parent = nullptr);

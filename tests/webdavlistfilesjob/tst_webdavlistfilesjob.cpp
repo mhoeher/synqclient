@@ -9,8 +9,6 @@
 #include "WebDAVListFilesJob"
 #include "WebDAVUploadFileJob"
 
-using SynqClient::ItemProperty;
-using SynqClient::ItemType;
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVGetFileInfoJob;
@@ -138,14 +136,13 @@ void WebDAVListFilesJobTest::listFiles()
         QStringList expectedNames { "dir1", "dir2", "file1.txt", "file2.txt" };
         QStringList gotNames;
         for (const auto& entry : job.entries()) {
-            qDebug() << entry;
-            auto name = entry.toMap().value(ItemProperty::Name).toString();
+            auto name = entry.name();
             gotNames << name;
             if (name == "dir1" || name == "dir2") {
-                QCOMPARE(entry.toMap().value(ItemProperty::Type).toString(), ItemType::Directory);
+                QVERIFY(entry.isDirectory());
             }
             if (name == "file1.txt" || name == "file2.txt") {
-                QCOMPARE(entry.toMap().value(ItemProperty::Type).toString(), ItemType::File);
+                QVERIFY(entry.isFile());
             }
         }
         std::sort(gotNames.begin(), gotNames.end());

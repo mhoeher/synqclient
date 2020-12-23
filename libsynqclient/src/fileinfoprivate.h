@@ -17,39 +17,34 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYNQCLIENT_UPLOADFILEJOBPRIVATE_H
-#define SYNQCLIENT_UPLOADFILEJOBPRIVATE_H
+#ifndef SYNQCLIENT_FILEINFOPRIVATE_H
+#define SYNQCLIENT_FILEINFOPRIVATE_H
 
-#include <QSharedPointer>
-#include <QVariant>
+#include <QSharedData>
+#include <QString>
+#include <QUrl>
 #include <QVariantMap>
 
-#include "abstractjobprivate.h"
-#include "uploadfilejob.h"
-
-class QIODevice;
+#include "fileinfo.h"
 
 namespace SynqClient {
 
-class UploadFileJobPrivate : public AbstractJobPrivate
+class FileInfoPrivate : public QSharedData
 {
 public:
-    enum class UploadSource { Invalid, Path, IODevice, Data };
+    enum Type { Invalid, File, Directory };
 
-    explicit UploadFileJobPrivate(UploadFileJob* q);
-    ~UploadFileJobPrivate() override;
+    FileInfoPrivate();
+    FileInfoPrivate(const FileInfoPrivate& other);
+    ~FileInfoPrivate();
 
-    Q_DECLARE_PUBLIC(UploadFileJob);
-
-    QString localFilename;
-    QSharedPointer<QIODevice> input;
-    QByteArray data;
-    QString remoteFilename;
-    UploadSource sourceType;
-    FileInfo fileInfo;
-    QVariant syncAttribute;
+    Type type;
+    QString name;
+    QString syncAttribute;
+    QUrl url;
+    QVariantMap customProperties;
 };
 
 } // namespace SynqClient
 
-#endif // SYNQCLIENT_UPLOADFILEJOBPRIVATE_H
+#endif // SYNQCLIENT_FILEINFOPRIVATE_H

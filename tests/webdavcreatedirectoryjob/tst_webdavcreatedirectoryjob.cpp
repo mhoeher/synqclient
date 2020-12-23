@@ -58,7 +58,9 @@ void WebDAVCreateDirectoryJobTest::mkdir()
     QVERIFY(getFileInfoSpy.wait());
     QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::NoError);
     auto fileInfo = getFileInfoJob.fileInfo();
-    QCOMPARE(fileInfo[SynqClient::ItemProperty::Name], ".");
+    QVERIFY(fileInfo.isValid());
+    QVERIFY(fileInfo.isDirectory());
+    QCOMPARE(fileInfo.name(), ".");
 }
 
 void WebDAVCreateDirectoryJobTest::mkdir_data()
@@ -94,7 +96,7 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
     QVERIFY(getFileInfoSpy.wait());
     QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::ResourceNotFound);
     auto fileInfo = getFileInfoJob.fileInfo();
-    QVERIFY(fileInfo.isEmpty());
+    QVERIFY(!fileInfo.isValid());
 }
 
 void WebDAVCreateDirectoryJobTest::mkdirInvalidPath_data()

@@ -44,6 +44,7 @@ public:
     SynchronizerError error;
     int maxJobs;
     SyncConflictStrategy syncConflictStrategy;
+    SynchronizerFlags flags;
 
     void finishLater();
 };

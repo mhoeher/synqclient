@@ -26,8 +26,9 @@
 #include <QScopedPointer>
 #include <QtGlobal>
 
-#include "libsynqclient_global.h"
+#include "FileInfo"
 #include "libsynqclient.h"
+#include "libsynqclient_global.h"
 
 namespace SynqClient {
 
@@ -40,7 +41,7 @@ class LIBSYNQCLIENT_EXPORT DirectorySynchronizer : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::function<bool(const QString& path)> Filter;
+    typedef std::function<bool(const QString& path, const FileInfo& fileInfo)> Filter;
 
     explicit DirectorySynchronizer(QObject* parent = nullptr);
     ~DirectorySynchronizer() override;
@@ -65,6 +66,9 @@ public:
 
     SyncConflictStrategy syncConflictStrategy() const;
     void setSyncConflictStrategy(SyncConflictStrategy strategy);
+
+    SynchronizerFlags flags() const;
+    void setFlags(const SynchronizerFlags flags);
 
     SynchronizerState state() const;
     SynchronizerError error() const;

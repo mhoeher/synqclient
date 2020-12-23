@@ -39,7 +39,7 @@ void ListFilesJob::setPath(const QString& path)
     d->path = path;
 }
 
-QVariantList ListFilesJob::entries() const
+FileInfos ListFilesJob::entries() const
 {
     Q_D(const ListFilesJob);
     return d->entries;
@@ -47,7 +47,7 @@ QVariantList ListFilesJob::entries() const
 
 ListFilesJob::ListFilesJob(ListFilesJobPrivate* d, QObject* parent) : AbstractJob(d, parent) {}
 
-void ListFilesJob::setEntries(const QVariantList& entries)
+void ListFilesJob::setEntries(const FileInfos& entries)
 {
     Q_D(ListFilesJob);
     d->entries = entries;

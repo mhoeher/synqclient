@@ -105,10 +105,10 @@ bool AbstractWebDAVJobPrivate::shouldFollowUnhandledRedirect()
     return false;
 }
 
-QVariantList AbstractWebDAVJobPrivate::parseEntryList(const QUrl& url, const QByteArray& reply,
-                                                      bool& ok)
+FileInfos AbstractWebDAVJobPrivate::parseEntryList(const QUrl& url, const QByteArray& reply,
+                                                   bool& ok)
 {
-    QVariantList result;
+    FileInfos result;
     QDomDocument doc;
     QString errorMsg;
     int errorLine;
@@ -122,10 +122,10 @@ QVariantList AbstractWebDAVJobPrivate::parseEntryList(const QUrl& url, const QBy
     return result;
 }
 
-QVariantList AbstractWebDAVJobPrivate::parsePropFindResponse(const QUrl& baseUrl,
-                                                             const QDomDocument& response, bool& ok)
+FileInfos AbstractWebDAVJobPrivate::parsePropFindResponse(const QUrl& baseUrl,
+                                                          const QDomDocument& response, bool& ok)
 {
-    QVariantList result;
+    FileInfos result;
     auto baseDir = QDir::cleanPath("/" + baseUrl.path());
     auto root = response.documentElement();
     auto rootTagName = root.tagName();
@@ -147,11 +147,11 @@ QVariantList AbstractWebDAVJobPrivate::parsePropFindResponse(const QUrl& baseUrl
     return result;
 }
 
-QVariant AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDomElement& element,
+FileInfo AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDomElement& element,
                                                       const QString& baseDir, bool& ok)
 {
-    QVariantMap result;
-    result[ItemProperty::Type] = ItemType::File;
+    FileInfo result;
+    result.setIsFile();
 
     auto propstats = element.elementsByTagName("propstat");
     for (int i = 0; i < propstats.length(); ++i) {
@@ -163,10 +163,10 @@ QVariant AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDo
             while (child.isElement()) {
                 if (child.tagName() == "resourcetype") {
                     if (child.firstChildElement().tagName() == "collection") {
-                        result[ItemProperty::Type] = ItemType::Directory;
+                        result.setIsDirectory();
                     }
                 } else if (child.tagName() == "getetag") {
-                    result[ItemProperty::SyncAttribute] = child.text();
+                    result.setSyncAttribute(child.text());
                 } else {
                     qCWarning(log) << "Unknown DAV Property:" << child.tagName();
                 }
@@ -184,9 +184,9 @@ QVariant AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDo
     itemUrl.setUserName(QString());
     itemUrl.setPassword(QString());
     itemUrl.setPath(path);
-    result[ItemProperty::URL] = itemUrl;
+    result.setUrl(itemUrl);
     path = QDir(baseDir).relativeFilePath(path);
-    result[ItemProperty::Name] = path;
+    result.setName(path);
     return result;
 }
 

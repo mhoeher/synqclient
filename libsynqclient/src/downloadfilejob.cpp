@@ -89,7 +89,7 @@ void DownloadFileJob::setRemoteFilename(const QString& remoteFilename)
     d->remoteFilename = remoteFilename;
 }
 
-QVariantMap DownloadFileJob::fileInfo() const
+FileInfo DownloadFileJob::fileInfo() const
 {
     Q_D(const DownloadFileJob);
     return d->fileInfo;
@@ -152,7 +152,7 @@ QIODevice* DownloadFileJob::getDownloadDevice()
     return nullptr;
 }
 
-void DownloadFileJob::setFileInfo(const QVariantMap& fileInfo)
+void DownloadFileJob::setFileInfo(const FileInfo& fileInfo)
 {
     Q_D(DownloadFileJob);
     d->fileInfo = fileInfo;

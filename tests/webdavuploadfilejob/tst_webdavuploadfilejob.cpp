@@ -11,7 +11,6 @@
 #include "WebDAVGetFileInfoJob"
 #include "WebDAVUploadFileJob"
 
-using SynqClient::ItemProperty;
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVGetFileInfoJob;
@@ -255,7 +254,7 @@ void WebDAVUploadFileJobTest::uploadSyncAttribute()
         QVERIFY(spy.wait());
         QCOMPARE(job.errorString(), QString());
         QCOMPARE(job.error(), JobError::NoError);
-        originalEtag = job.fileInfo()[ItemProperty::SyncAttribute];
+        originalEtag = job.fileInfo().syncAttribute();
         QThread::sleep(
                 5); // Wait for some time, otherwise a re-upload won't generate a new etag (?!)
     }

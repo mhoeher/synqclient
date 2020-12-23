@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <QObject>
+#include <QSharedDataPointer>
 
 #include "libsynqclient_global.h"
 
@@ -49,6 +50,48 @@ enum class SynchronizerError : quint32 {
 };
 
 Q_ENUM_NS(SynchronizerError);
+
+/**
+ * @brief Fine tune execution of a sync.
+ *
+ * The values in this enumeration are used to fine tune the behavior of the synchronization.
+ */
+enum class SynchronizerFlag : quint32 {
+    /**
+     * @brief Used to indicate "no" flag.
+     *
+     * This can be used to create an empty flags value. It has no
+     * option turned on.
+     */
+    NoFlags = 0,
+
+    /**
+     * @brief Create the remote folder on the first sync.
+     *
+     * If this option is set, the remote folder will be created upon the first sync if it does not
+     * yet exist.
+     */
+    CreateRemoteFolderOnFirstSync = 0x00000001,
+
+    /**
+     * @brief Default flags used for synchronization.
+     *
+     * This is the default set of flags used for synchronization. It
+     * includes the following list of flags:
+     *
+     * - CreateRemoteFolderOnFirstSync
+     */
+    DefaultFlags = CreateRemoteFolderOnFirstSync,
+};
+
+/**
+ * @typedef SynchronizerFlags
+ * @brief Flags used to fine tune exec execution of a sync.
+ * @sa SynchronizerFlag
+ */
+typedef QFlags<SynchronizerFlag> SynchronizerFlags;
+
+Q_FLAG_NS(SynchronizerFlags);
 
 /**
  * @brief Used to identify a specific type of jobs.
@@ -149,24 +192,6 @@ enum class WebDAVServerType : quint32 {
 };
 
 Q_ENUM_NS(WebDAVServerType);
-
-class LIBSYNQCLIENT_EXPORT ItemProperty
-{
-public:
-    static const char* Valid;
-    static const char* Type;
-    static const char* SyncAttribute;
-    static const char* Name;
-    static const char* URL;
-};
-
-class LIBSYNQCLIENT_EXPORT ItemType
-{
-public:
-    static const char* Directory;
-    static const char* File;
-    static const char* Invalid;
-};
 
 } // namespace SynqClient
 

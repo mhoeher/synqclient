@@ -19,6 +19,8 @@
 
 #include "../inc/directorysynchronizer.h"
 
+#include <QFileInfo>
+
 #include "abstractjobfactory.h"
 #include "syncstatedatabase.h"
 
@@ -143,14 +145,14 @@ void DirectorySynchronizer::setRemoteDirectoryPath(const QString& remoteDirector
  *
  * This returns the filter that is used during the synchronization to determine which files
  * and folders to include in the synchronization. The filter is a simple function which gets the
- * path to the file or folder and returns either true if that file/folder shall be included in the
- * synchronization or false otherwise. The paths passed to the filter are formatted as absolute
- * paths with forward slashes. The path is implicitly relative to the configured local and remote
- * directory.
+ * path to the file or folder and the FileInfo object and returns either true if that file/folder
+ * shall be included in the synchronization or false otherwise. The paths passed to the filter are
+ * formatted as absolute paths with forward slashes. The path is implicitly relative to the
+ * configured local and remote directory.
  *
  * The default filter returns true for every path passed into it.
  *
- * @note If you plan to put the data files for the syncStateDatabase() in the local folder
+ * If you plan to put the data files for the syncStateDatabase() in the local folder
  * that is synchronized, you have to configure a suitable filter as well. Otherwise, the
  * synchronization database is synced as well - which is almost certainly never what you intent.
  *
@@ -160,7 +162,7 @@ void DirectorySynchronizer::setRemoteDirectoryPath(const QString& remoteDirector
  *
  * @code
  * DirectorySynchronizer sync;
- * sync.setFilter([](const QString &path) {
+ * sync.setFilter([](const QString &path, const SynqClient::FileInfo &fileInfo) {
  *     if (path == "/sync.json") {
  *         // Exclude the sync state database file from the sync:
  *         return false;
@@ -237,6 +239,27 @@ void DirectorySynchronizer::setSyncConflictStrategy(SyncConflictStrategy strateg
 }
 
 /**
+ * @brief Settings to fine tune the synchronization.
+ *
+ * This returns the flags which control some aspects of the sync. By default,
+ * this is set to SynchronizerFlag::DefaultFlags.
+ */
+SynchronizerFlags DirectorySynchronizer::flags() const
+{
+    Q_D(const DirectorySynchronizer);
+    return d->flags;
+}
+
+/**
+ * @brief Set the @p flags which control some of the behavior of the sync.
+ */
+void DirectorySynchronizer::setFlags(const SynchronizerFlags flags)
+{
+    Q_D(DirectorySynchronizer);
+    d->flags = flags;
+}
+
+/**
  * @brief The state of the synchronizer.
  *
  * This returns the current state of the synchronizer. After creation, the synchronizer is in
@@ -296,6 +319,12 @@ void DirectorySynchronizer::start()
         d->finishLater();
         return;
     }
+
+    if (!QFileInfo(d->localDirectoryPath).isDir()) {
+        d->error = SynchronizerError::InvalidParameter;
+        d->finishLater();
+        return;
+    }
 }
 
 /**
@@ -328,6 +357,26 @@ DirectorySynchronizer::DirectorySynchronizer(DirectorySynchronizerPrivate* d, QO
  * This signal is emitted to indicate that the sync has finished - independent on whether it was
  * successful or not. Check the value returned by the error() function to learn if the sync finished
  * with a problem or not.
+ */
+
+/**
+ * @typedef DirectorySynchronizer::Filter
+ * @brief Type definition for file filters.
+ *
+ * This typedef defines the signature of callables suitable to be used as file filters. A filter
+ * function gets two parameters:
+ *
+ * - The path to the file or folder. This is usually formatted as an absolute path with forward
+ *   slashes only. This path is interpreted to be relative to the local and/or remote folder
+ *   which is synchronized.
+ * - The FileInfo record, which potentially holds more information about the file or folder.
+ *   In particular, it holds the information if a path refers to a file or a folder.
+ *
+ * The function shall return true if the file or folder shall be included in the sync.
+ *
+ * @note If for a folder the filter returns false, the sync will exclude all files and folders
+ * below that one recursively. Hence, if you need to skip e.g. files directly below a folder but
+ * include ones further down the same hierarchy, you must return true for the folder itself.
  */
 
 } // namespace SynqClient

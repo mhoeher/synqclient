@@ -62,10 +62,11 @@ void WebDAVUploadFileJobPrivate::handleRequestFinished()
             q->start();
             return;
         } else {
-            QVariantMap fileInfo;
+            FileInfo fileInfo;
+            fileInfo.setIsFile();
             QVariant etag = reply->header(QNetworkRequest::ETagHeader);
             if (etag.isValid()) {
-                fileInfo[ItemProperty::SyncAttribute] = etag;
+                fileInfo.setSyncAttribute(etag.toString());
             }
             q->setFileInfo(fileInfo);
             if (code == q->d_ptr2->HTTPOkay || code == q->d_ptr2->HTTPCreated

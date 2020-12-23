@@ -32,11 +32,12 @@ DirectorySynchronizerPrivate::DirectorySynchronizerPrivate(DirectorySynchronizer
       syncStateDatabase(nullptr),
       localDirectoryPath(),
       remoteDirectoryPath(),
-      filter([](const QString&) { return true; }),
+      filter([](const QString&, const FileInfo&) { return true; }),
       state(SynchronizerState::Ready),
       error(SynchronizerError::NoError),
       maxJobs(12),
-      syncConflictStrategy(SyncConflictStrategy::RemoteWins)
+      syncConflictStrategy(SyncConflictStrategy::RemoteWins),
+      flags(SynchronizerFlag::DefaultFlags)
 {
 }
 

@@ -63,9 +63,9 @@ void WebDAVListFilesJobPrivate::handleRequestFinished()
                     q->setError(JobError::InvalidResponse,
                                 "PROPFIND response from server is not valid");
                 } else {
-                    QVariantList entries;
+                    FileInfos entries;
                     for (const auto& entry : entryList) {
-                        if (entry.toMap().value(ItemProperty::Name).toString() != ".") {
+                        if (entry.name() != ".") {
                             entries << entry;
                         }
                     }

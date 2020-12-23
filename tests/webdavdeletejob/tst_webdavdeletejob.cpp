@@ -8,7 +8,6 @@
 #include "WebDAVListFilesJob"
 #include "WebDAVUploadFileJob"
 
-using SynqClient::ItemProperty;
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVDeleteJob;
@@ -352,7 +351,7 @@ void WebDAVDeleteJobTest::syncAttribute()
         QVERIFY(spy.wait());
         QCOMPARE(job.errorString(), QString());
         QCOMPARE(job.error(), JobError::NoError);
-        originalSyncAttribute = job.fileInfo()[ItemProperty::SyncAttribute];
+        originalSyncAttribute = job.fileInfo().syncAttribute();
         QThread::sleep(5); // Wait, otherwise we don't get a new etag (?!)
     }
 
