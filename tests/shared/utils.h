@@ -10,6 +10,33 @@
 
 #include "AbstractWebDAVJob"
 
+/**
+ * @brief Utility macro to verify statements.
+ *
+ * This macro is supposed to be used in helper functions called in unit tests. These helper
+ * functions are supposed to return a boolean indicating success.
+ */
+#define SQ_VERIFY(statement)                                                                       \
+    do {                                                                                           \
+        if (!QTest::qVerify(static_cast<bool>(statement), #statement, "", __FILE__, __LINE__)) {   \
+            return false;                                                                          \
+        }                                                                                          \
+        break;                                                                                     \
+    } while (false)
+
+/**
+ * @brief Utility macro to compare values.
+ *
+ * Similarly, this is used to compare values inside helper functions called in a unit test.
+ */
+#define SQ_COMPARE(actual, expected)                                                               \
+    do {                                                                                           \
+        if (!QTest::qCompare(actual, expected, #actual, #expected, __FILE__, __LINE__)) {          \
+            return false;                                                                          \
+        }                                                                                          \
+        break;                                                                                     \
+    } while (false)
+
 namespace SynqClient {
 namespace UnitTest {
 

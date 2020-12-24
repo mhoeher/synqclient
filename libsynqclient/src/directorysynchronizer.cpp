@@ -325,6 +325,8 @@ void DirectorySynchronizer::start()
         d->finishLater();
         return;
     }
+
+    d->finishLater();
 }
 
 /**
