@@ -30,6 +30,14 @@ enum class JobError : quint32 {
     ResourceNotFound, //!< The specified resource was not found on the server.
     ServerContentConflict, //!< The server encountered a content conflict.
     SyncAttributeMismatch, //!< Encountered a lost update during upload.
+
+    /**
+     * @brief The remote folder already exists.
+     *
+     * This error is used by jobs creating remote folders. It indicates that the remote folder
+     * already exists.
+     */
+    FolderExists,
 };
 
 Q_ENUM_NS(JobError);
@@ -47,6 +55,116 @@ enum class SynchronizerError : quint32 {
     Stopped, //!< The sync has been stopped programatically.
     MissingParameter, //!< Indicates that some properties required for the sync are missing.
     InvalidParameter, //!< Indicates that some properties have invalid values set.
+
+    /**
+     * @brief Opening the sync state database failed.
+     *
+     * This error is reported when the synchronizer was not able to open the sync state database
+     * when starting the sync.
+     *
+     * @sa SyncStateDatabase::open()
+     */
+    FailedOpeningSyncStateDatabase,
+
+    /**
+     * @brief Failed to close the sync state database.
+     *
+     * This error is reported if at the end of the sync, closing the sync state database failed.
+     */
+    FailedClosingSyncStateDatabase,
+
+    /**
+     * @brief Creating the remote folder has failed.
+     *
+     * This error indicates that an error occurred while creating the remote folder. Creating
+     * the remote folder is done when the synchronizer detects we are doing the very first sync.
+     */
+    FailedCreatingRemoteFolder,
+
+    /**
+     * @brief Creating a local folder has failed.
+     */
+    FailedCreatingLocalFolder,
+
+    /**
+     * @brief Getting the remote folder failed.
+     *
+     * This error indicates that querying information about the remote folder failed. This could
+     * mean that the folder has been removed or that it currently is not present.
+     */
+    FailedGettingRemoteFolder,
+
+    /**
+     * @brief Looking up entries from the sync state database failed.
+     *
+     * This error indicates that looking up entries from the sync state database failed.
+     *
+     * @sa SyncStateDatabase::findEntries()
+     */
+    SyncStateDatabaseLookupFailed,
+
+    /**
+     * @brief Writing to the sync state datbase failed.
+     */
+    SyncStateDatabaseWriteFailed,
+
+    /**
+     * @brief Deleting entries from the sync state database failed.
+     */
+    SyncStateDatabaseDeleteFailed,
+
+    /**
+     * @brief Failed to get the local modification time of a file.
+     *
+     * This error indicates that reading the last date and time a file was modified failed. This
+     * property is required in order to check if a file changes locally.
+     */
+    FailedGettingLocalModificationTime,
+
+    /**
+     * @brief Listing a remote folder failed.
+     *
+     * This error indicates that listing the entries in a remote folder failed.
+     */
+    FailedListingRemoteFolder,
+
+    /**
+     * @brief Deleting a local file has failed.
+     */
+    FailedDeletingLocalFile,
+
+    /**
+     * @brief Deleting a local folder has failed.
+     */
+    FailedDeletingLocalFolder,
+
+    /**
+     * @brief The sync got stuck.
+     *
+     * This error indicates that during the sync no further actions could be started due to
+     * unfulfilled dependencies.
+     */
+    Stuck,
+
+    /**
+     * @brief Uploading a file failed.
+     */
+    UploadFailed,
+
+    /**
+     * @brief Downloading a file failed.
+     */
+    DownloadFailed,
+
+    /**
+     * @brief Writing to a local file has failed.
+     */
+    WritingToLocalFileFailed,
+
+    /**
+     * @brief Opening a local file failed.
+     */
+    OpeningLocalFileFailed,
 };
 
 Q_ENUM_NS(SynchronizerError);

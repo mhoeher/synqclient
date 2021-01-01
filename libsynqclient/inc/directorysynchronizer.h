@@ -72,6 +72,7 @@ public:
 
     SynchronizerState state() const;
     SynchronizerError error() const;
+    QString errorString() const;
 
     void start();
     void stop();

@@ -57,7 +57,7 @@ JSONSyncStateDatabasePrivate::findNode(const QString& path,
 {
     Node* result = &data;
     auto parts = path.split("/", Qt::SkipEmptyParts);
-    for (const auto& part : parts) {
+    for (const auto& part : qAsConst(parts)) {
         if (result->children.contains(part)) {
             result = &result->children[part];
         } else {

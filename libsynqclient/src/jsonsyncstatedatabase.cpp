@@ -128,7 +128,7 @@ bool JSONSyncStateDatabase::openDatabase()
             if (file.open(QIODevice::ReadOnly)) {
                 QJsonParseError error;
                 auto content = file.readAll();
-                auto doc = QJsonDocument::fromJson(content);
+                auto doc = QJsonDocument::fromJson(content, &error);
                 if (error.error == QJsonParseError::NoError) {
                     if (doc.isObject()) {
                         file.close();
@@ -233,8 +233,9 @@ QVector<SyncStateEntry> JSONSyncStateDatabase::findEntries(const QString& parent
     auto node = d->findNode(parent);
     QDir dir(parent);
     if (node) {
-        for (const auto& childName : node->children.keys()) {
-            const auto& child = node->children.value(childName);
+        for (auto it = node->children.cbegin(); it != node->children.cend(); ++it) {
+            const auto& childName = it.key();
+            const auto& child = it.value();
             if (child.entry.isValid()) {
                 SyncStateEntry entry;
                 entry.setPath(dir.absoluteFilePath(childName));

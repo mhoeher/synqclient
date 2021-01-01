@@ -66,7 +66,7 @@ void WebDAVDownloadFileJob::start()
     auto reply = networkAccessManager()->get(req);
     if (reply) {
         reply->setParent(this);
-        connect(reply, &QNetworkReply::readyRead, [=]() {
+        connect(reply, &QNetworkReply::readyRead, this, [=]() {
             if (downloadDevice) {
                 downloadDevice->write(reply->readAll());
             }

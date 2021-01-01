@@ -1,8 +1,23 @@
 Synchronization
 ===============
 
-The main goal of SynqClient is to provide means to synchronize a local and a remote folder. This chapter will list all the ingredients we need to get to this target.
+The main goal of SynqClient is to provide means to synchronize a local and a remote folder. Such a folder may contain arbitrary files and also sub-folders. However, it is assumed that the structure to be synchronized is *well-defined* and does not change too much over time. In particular, the sync procedure does not cover the following:
 
+- Moves and copies of files or entire folders are not detected. Hence, if they occur, the library will simply upload/download the duplicate/moved data.
+- Changing a path from being a file to a folder or vice versa is not supported.
+
+This is basically by design: The use case for the synchronization as implemented in SynqClient is to allow a program to store its state in a well defined folder structure and keep it in sync between devices. Such a programatically created structure usually has a quite fixed design. For example, the OpenTodoList app, form which this library has been factored out, used the following approach:
+
+- The app organized various items - notes, images and todo lists - in *libraries*.
+- Each such library is represented as a folder consisting of sub-folders and files.
+- When a new item is created, it gets a path assigned using the following approach: `<library_root_folder>/<year>/<month>/<item_file_name>.txt`.
+  - In other words, inside the library folder, we have in the first level below one folder per year in which an item has been created. Inside each year's folder we have one folder per month. Finally, inside the per-month folder, we put the actual files.
+
+As you can see, this plays well with the *limitations* of the sync procedure: Items never get moved around. Additionally, there will never be a case where a path is converted from a file to a folder or vice versa.
+
+If you can design your app to store its information in a similar manner, than SynqClient should work just fine for you to keep the app state in sync between devices!
+
+The rest of this chapter will list all the ingredients we need to sync a local and a remote folder.
 
 
 Remote Access

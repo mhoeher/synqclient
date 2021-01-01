@@ -20,6 +20,8 @@
 #ifndef SYNQCLIENT_WEBDAVCREATEDIRECTORYJOBPRIVATE_H
 #define SYNQCLIENT_WEBDAVCREATEDIRECTORYJOBPRIVATE_H
 
+#include <QCoreApplication>
+
 #include "webdavcreatedirectoryjob.h"
 #include "createdirectoryjobprivate.h"
 
@@ -27,6 +29,8 @@ namespace SynqClient {
 
 class WebDAVCreateDirectoryJobPrivate : public CreateDirectoryJobPrivate
 {
+    Q_DECLARE_TR_FUNCTIONS(WebDAVCreateDirectoryJobPrivate);
+
 public:
     explicit WebDAVCreateDirectoryJobPrivate(WebDAVCreateDirectoryJob* q);
 

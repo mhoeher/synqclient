@@ -61,7 +61,6 @@ void WebDAVDownloadFileJobPrivate::handleRequestFinished()
             if (code == q->d_ptr2->HTTPOkay) {
                 if (downloadDevice) {
                     downloadDevice->write(reply->readAll());
-                    downloadDevice->close();
                 }
                 auto etag = reply->header(QNetworkRequest::ETagHeader);
                 FileInfo fileInfo;

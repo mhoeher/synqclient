@@ -1434,7 +1434,7 @@
                                     <object>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</object>
                                     <name>DirectorySynchronizer</name>
                                     <pos>x:75;y:180</pos>
-                                    <rect>x:-210;y:-110;w:420;h:220</rect>
+                                    <rect>x:-210;y:-120;w:420;h:240</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -2307,7 +2307,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{6fc4a2d4-d381-4a6e-8b01-e233a5b3ea6b}</uid>
+                               <uid>{a2e0d87d-f3fd-4404-89ae-86577d81b7d9}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>AbstractJobFactory* jobFactory</declaration>
@@ -2315,7 +2315,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{0b838024-eccf-406b-9eb9-7acb6bb21c1d}</uid>
+                               <uid>{1b6fc80c-0ba0-427f-99b0-51a45b0c3ac8}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>SyncStateDatabase* syncStateDatabase</declaration>
@@ -2323,7 +2323,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{3d95950c-d6b9-4927-901a-5c198740daed}</uid>
+                               <uid>{834df1e0-d196-44ef-bbe4-95d3e928a75d}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>QString localDirectoryPath</declaration>
@@ -2331,7 +2331,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{7808cc11-3c50-4b46-b7b1-0d45fc893c86}</uid>
+                               <uid>{9c0f49b1-8678-4fc1-9261-f2584421cc17}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>QString remoteDirectoryPath</declaration>
@@ -2339,7 +2339,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{42ecc3c3-7265-4a3b-b7b3-8ef73db0501d}</uid>
+                               <uid>{4a4c4a56-3a41-47e4-8a54-b6315c29f022}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>std::function&lt;bool(const QString&amp; path, const FileInfo &amp;fileInfo)&gt; filter</declaration>
@@ -2347,7 +2347,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{7101d207-55c9-4a27-8f61-11fe6dc05bfd}</uid>
+                               <uid>{0bab612a-f5d3-45f4-8373-42fc344af70a}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>void start()</declaration>
@@ -2355,7 +2355,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c4e73a6e-72e2-4769-b06c-db55e556181f}</uid>
+                               <uid>{f40d9b7b-1fd8-45a6-ba82-3cde5d6a0c38}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>void stop()</declaration>
@@ -2363,7 +2363,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{2ca3e2a8-87e1-4213-90a0-8cfb327f9852}</uid>
+                               <uid>{6be90866-8ae5-4de9-9775-e8f0ee2d9631}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>int maxJobs</declaration>
@@ -2371,7 +2371,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{3825e742-bc68-44e4-bb49-944c036552da}</uid>
+                               <uid>{40b3aabc-da61-4f16-b722-0c1752006778}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>SyncConflictStrategy syncConflictStrategy</declaration>
@@ -2379,7 +2379,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{cd3c5529-93ac-4e44-9ec2-edc504904e8d}</uid>
+                               <uid>{b08f171d-c881-42d9-a4e4-7fa793366130}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -2388,7 +2388,16 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{4cc2682e-3d94-40d8-bbff-d8a6af78f9c3}</uid>
+                               <uid>{f16d427f-27b8-4dbc-83b3-63b8494bd5e7}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>4</properties>
+                               <declaration>QString errorString()</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{55a0d856-7494-4db3-a954-12a3716270c6}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -2397,7 +2406,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{8b6e9255-33ff-4d43-85a8-d807a5472aee}</uid>
+                               <uid>{296cf311-5f98-48c3-952c-026027d85aa5}</uid>
                                <visibility>4</visibility>
                                <type>2</type>
                                <declaration>void finished()</declaration>

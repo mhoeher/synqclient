@@ -19,6 +19,7 @@
 
 #include "abstractwebdavjobprivate.h"
 #include "webdavcreatedirectoryjobprivate.h"
+#include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
 
@@ -49,7 +50,15 @@ void WebDAVCreateDirectoryJobPrivate::handleRequestFinished()
     if (reply) {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            q->setError(q->fromNetworkError(*reply), reply->errorString());
+            auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            switch (code) {
+            case AbstractWebDAVJobPrivate::HTTPNotAllowed:
+                q->setError(JobError::FolderExists, tr("The remote folder already exists"));
+                break;
+            default:
+                q->setError(q->fromNetworkError(*reply), reply->errorString());
+                break;
+            }
             q->finishLater();
         } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
             // Encountered redirect not handled by Qt, follow:

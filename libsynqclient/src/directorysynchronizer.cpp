@@ -288,6 +288,15 @@ SynchronizerError DirectorySynchronizer::error() const
 }
 
 /**
+ * @brief Get a textual error description for the last error.
+ */
+QString DirectorySynchronizer::errorString() const
+{
+    Q_D(const DirectorySynchronizer);
+    return d->errorString;
+}
+
+/**
  * @brief Start the synchronization.
  *
  * This starts synchronizing the configured local and remote folders. Calling this will cause the
@@ -309,24 +318,35 @@ void DirectorySynchronizer::start()
 
     if (!d->jobFactory || !d->syncStateDatabase || !d->filter || d->localDirectoryPath.isEmpty()
         || d->remoteDirectoryPath.isEmpty()) {
-        d->error = SynchronizerError::MissingParameter;
-        d->finishLater();
+        d->setError(SynchronizerError::MissingParameter, tr("Some parameters are missing"));
         return;
     }
 
     if (d->maxJobs < 1) {
-        d->error = SynchronizerError::InvalidParameter;
-        d->finishLater();
+        d->setError(SynchronizerError::InvalidParameter,
+                    tr("The maximum number of jobs must be at least 1"));
         return;
     }
 
     if (!QFileInfo(d->localDirectoryPath).isDir()) {
-        d->error = SynchronizerError::InvalidParameter;
-        d->finishLater();
+        d->setError(SynchronizerError::MissingParameter,
+                    tr("The local directory to be synced must exist"));
         return;
     }
 
-    d->finishLater();
+    if (!d->syncStateDatabase->openDatabase()) {
+        d->setError(SynchronizerError::FailedOpeningSyncStateDatabase,
+                    tr("Failed to open the sync state database"));
+    }
+
+    // Check if this is the first time sync. If so, ensure the remote folder
+    // exists:
+    auto entry = d->syncStateDatabase->getEntry("/");
+    if (!entry.isValid()) {
+        d->createRemoteFolder();
+    } else {
+        d->createSyncPlan();
+    }
 }
 
 /**
@@ -341,7 +361,10 @@ void DirectorySynchronizer::start()
  */
 void DirectorySynchronizer::stop()
 {
-    // TODO
+    Q_D(DirectorySynchronizer);
+    d->setError(SynchronizerError::Stopped, "The sync has been stopped");
+    d->stopped = true;
+    emit d->stopRequested();
 }
 
 /**
