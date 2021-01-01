@@ -239,9 +239,6 @@ void DirectorySynchronizerTest::sync_data()
         webdavJobFactory->setNetworkAccessManager(nam);
         QTest::newRow(url.toString().toUtf8())
                 << static_cast<AbstractJobFactory*>(webdavJobFactory);
-
-        // TODO: Remote
-        break;
     }
 }
 
