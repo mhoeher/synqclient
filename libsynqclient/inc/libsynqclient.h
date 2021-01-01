@@ -165,6 +165,11 @@ enum class SynchronizerError : quint32 {
      * @brief Opening a local file failed.
      */
     OpeningLocalFileFailed,
+
+    /**
+     * @brief Deleting a remote resource has failed.
+     */
+    FailedDeletingRemoteResource,
 };
 
 Q_ENUM_NS(SynchronizerError);

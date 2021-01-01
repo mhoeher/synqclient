@@ -778,10 +778,29 @@ void DirectorySynchronizerPrivate::runRemoteAction(
         break;
     }
 
-    case DeleteRemote:
+    case DeleteRemote: {
         qCDebug(log) << "Deleting remote" << action->path;
-        // TODO
+        ++runningJobs;
+        auto job = jobFactory->deleteResource(this);
+        job->setPath(remoteDirectoryPath + "/" + action->path);
+        setupDefaultJobSignals(job);
+        connect(job, &AbstractJob::finished, this, [=]() {
+            --runningJobs;
+            switch (job->error()) {
+            case JobError::NoError:
+                syncStateDatabase->removeEntries(action->path);
+                syncStateDatabase->removeEntry(action->path);
+                break;
+            default:
+                setError(SynchronizerError::FailedDeletingRemoteResource,
+                         tr("Failed deleting remote resource %1").arg(action->path));
+                return;
+            }
+            runRemoteActions();
+        });
+        job->start();
         break;
+    }
 
     case MkDirRemote: {
         qCDebug(log) << "Creating remote folder" << action->path;
