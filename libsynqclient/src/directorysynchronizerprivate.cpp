@@ -405,7 +405,16 @@ void DirectorySynchronizerPrivate::resolveChanges(
                 const auto& path = it.key();
                 const auto& change = it.value();
                 if (!remoteChanges.contains(path)) {
-                    addActionsForChange(path, change);
+                    // Special case: If the path is a folder and was deleted locally but has remote
+                    // changes, do not create remote delete actions (but rather add local mkdir
+                    // actions to recreate the structure):
+                    if (change.type == Change::DeletedLocally
+                        && remoteSubFolders.value(path, RemoteUnchanged) == RemoteChanged) {
+                        addSyncAction(new MkDirLocalSyncAction(
+                                path, remoteFoldersSyncAttributes.value(path)));
+                    } else {
+                        addActionsForChange(path, change);
+                    }
                 }
             }
             break;

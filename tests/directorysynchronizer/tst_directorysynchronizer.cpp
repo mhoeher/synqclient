@@ -21,6 +21,8 @@ using SynqClient::FileInfo;
 using SynqClient::JSONSyncStateDatabase;
 using SynqClient::SyncConflictStrategy;
 using SynqClient::SynchronizerError;
+using SynqClient::SynchronizerFlag;
+using SynqClient::SynchronizerFlags;
 using SynqClient::SynchronizerState;
 using SynqClient::WebDAVJobFactory;
 
@@ -34,11 +36,23 @@ public:
 
 private slots:
     void initTestCase();
+
+    // Test individual sync corner cases
+    void failIfNotCreatingRemoteFolders();
+    void failIfNotCreatingRemoteFolders_data() { prepareTestData(); }
+    void simpleSyncAndConflictResolution();
+    void simpleSyncAndConflictResolution_data() { prepareTestData(); }
+    void editVsDeleteConflictResolution();
+    void editVsDeleteConflictResolution_data() { prepareTestData(); }
+
+    // More complex sync of larger directory
     void sync();
-    void sync_data();
+    void sync_data() { prepareTestData(); }
     void cleanupTestCase();
 
 private:
+    void prepareTestData();
+
     bool fillTestFolder(const QString& path);
     bool createRandomFiles(const QString& path);
     QMap<QString, QByteArray> readDirectory(const QString& path);
@@ -46,6 +60,9 @@ private:
     template<SyncConflictStrategy strategy = SyncConflictStrategy::RemoteWins>
     bool syncDir(const QString& localPath, const QString& remotePath, const QString& syncDbPath,
                  AbstractJobFactory* jobFactory);
+
+    bool writeFile(const QString& fileName, const QByteArray& data) const;
+    QByteArray readFile(const QString& fileName) const;
 };
 
 DirectorySynchronizerTest::DirectorySynchronizerTest() {}
@@ -53,6 +70,136 @@ DirectorySynchronizerTest::DirectorySynchronizerTest() {}
 DirectorySynchronizerTest::~DirectorySynchronizerTest() {}
 
 void DirectorySynchronizerTest::initTestCase() {}
+
+void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
+{
+    QFETCH(AbstractJobFactory*, jobFactory);
+
+    QTemporaryDir tmpDir;
+    QTemporaryDir metaTmpDir;
+
+    auto uuid = QUuid::createUuid();
+    auto path = "DirectorySynchronizerTest-failIfNotCreatingRemoteFolders-" + uuid.toString()
+            + "/foo/bar/baz";
+    auto dbPath = metaTmpDir.path() + "/syncdb.json";
+    QVERIFY(writeFile(tmpDir.path() + "/top/sub/test.txt", "Hello World!\n"));
+
+    DirectorySynchronizer sync;
+    sync.setJobFactory(jobFactory);
+    auto flags = sync.flags();
+    flags = flags & ~SynchronizerFlags(SynchronizerFlag::CreateRemoteFolderOnFirstSync);
+    sync.setFlags(flags);
+    sync.setLocalDirectoryPath(tmpDir.path());
+    sync.setRemoteDirectoryPath(path);
+    sync.setSyncStateDatabase(new JSONSyncStateDatabase(dbPath, &sync));
+    sync.start();
+    QSignalSpy spy(&sync, &DirectorySynchronizer::finished);
+    QVERIFY(spy.wait());
+    QCOMPARE(sync.error(), SynchronizerError::FailedGettingRemoteFolder);
+}
+
+void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
+{
+    QFETCH(AbstractJobFactory*, jobFactory);
+
+    QTemporaryDir tmpDir1;
+    QTemporaryDir tmpDir2;
+    QTemporaryDir metaTmpDir;
+
+    auto uuid = QUuid::createUuid();
+    auto path = "DirectorySynchronizerTest-failIfNotCreatingRemoteFolders-" + uuid.toString()
+            + "/foo/bar/baz";
+    auto dbPath1 = metaTmpDir.path() + "/syncdb1.json";
+    auto dbPath2 = metaTmpDir.path() + "/syncdb2.json";
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Hello World!\n"));
+
+    // Sync from path1 -> server -> path2
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir(tmpDir2.path(), path, dbPath2, jobFactory));
+
+    // Check if file is present in second path and if the content matches:
+    QCOMPARE(readFile(tmpDir2.path() + "/top/sub/test.txt"), "Hello World!\n");
+
+    // Generate a sync conflict: Both clients modify the file, the first one wins (via server-first
+    // conflict resolution):
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Edited by client 1\n"));
+    QVERIFY(writeFile(tmpDir2.path() + "/top/sub/test.txt", "Edited by client 2\n"));
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir(tmpDir2.path(), path, dbPath2, jobFactory));
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QCOMPARE(readFile(tmpDir1.path() + "/top/sub/test.txt"), "Edited by client 1\n");
+    QCOMPARE(readFile(tmpDir2.path() + "/top/sub/test.txt"), "Edited by client 1\n");
+
+    // Generate another sync conflict: This time, use Local Wins, so we expect the change from the
+    // second folder to win:
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Edited again by client 1\n"));
+    QVERIFY(writeFile(tmpDir2.path() + "/top/sub/test.txt", "Edited again by client 2\n"));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir2.path(), path, dbPath2, jobFactory));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir1.path(), path, dbPath1, jobFactory));
+    QCOMPARE(readFile(tmpDir1.path() + "/top/sub/test.txt"), "Edited again by client 2\n");
+    QCOMPARE(readFile(tmpDir2.path() + "/top/sub/test.txt"), "Edited again by client 2\n");
+
+    // Test sync of deletions
+    QVERIFY(QFile::remove(tmpDir1.path() + "/top/sub/test.txt"));
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir(tmpDir2.path(), path, dbPath2, jobFactory));
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(!QFile::exists(tmpDir1.path() + "/top/sub/test.txt"));
+    QVERIFY(!QFile::exists(tmpDir2.path() + "/top/sub/test.txt"));
+}
+
+void DirectorySynchronizerTest::editVsDeleteConflictResolution()
+{
+    QFETCH(AbstractJobFactory*, jobFactory);
+
+    QTemporaryDir tmpDir1;
+    QTemporaryDir tmpDir2;
+    QTemporaryDir metaTmpDir;
+
+    auto uuid = QUuid::createUuid();
+    auto path = "DirectorySynchronizerTest-failIfNotCreatingRemoteFolders-" + uuid.toString()
+            + "/foo/bar/baz";
+    auto dbPath1 = metaTmpDir.path() + "/syncdb1.json";
+    auto dbPath2 = metaTmpDir.path() + "/syncdb2.json";
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Hello World!\n"));
+
+    // Sync from path1 -> server -> path2
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir(tmpDir2.path(), path, dbPath2, jobFactory));
+
+    // Check if file is present in second path and if the content matches:
+    QCOMPARE(readFile(tmpDir2.path() + "/top/sub/test.txt"), "Hello World!\n");
+
+    // Generate a sync conflict: Client 1 edits and syncs first, client 2 deletes. We expect the
+    // edit to propagate.
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Edited by client 1\n"));
+    QVERIFY(QFile::remove(tmpDir2.path() + "/top/sub/test.txt"));
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir(tmpDir2.path(), path, dbPath2, jobFactory));
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QCOMPARE(readFile(tmpDir1.path() + "/top/sub/test.txt"), "Edited by client 1\n");
+    QCOMPARE(readFile(tmpDir2.path() + "/top/sub/test.txt"), "Edited by client 1\n");
+
+    // Generate another conflict: Same order, but local wins. We expect the deletion to win.
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Edited again by client 1\n"));
+    QVERIFY(QFile::remove(tmpDir2.path() + "/top/sub/test.txt"));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir2.path(), path, dbPath2, jobFactory));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(!QFile::exists(tmpDir1.path() + "/top/sub/test.txt"));
+    QVERIFY(!QFile::exists(tmpDir2.path() + "/top/sub/test.txt"));
+
+    // Generate another delete/edit conflict. This time, do not delete a single file but the whole
+    // folder structure in folder 2:
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Re-created by client 1\n"));
+    QVERIFY(QDir(tmpDir2.path() + "/top").removeRecursively());
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir(tmpDir2.path(), path, dbPath2, jobFactory));
+    QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
+    QCOMPARE(readFile(tmpDir1.path() + "/top/sub/test.txt"), "Re-created by client 1\n");
+    QCOMPARE(readFile(tmpDir2.path() + "/top/sub/test.txt"), "Re-created by client 1\n");
+}
 
 void DirectorySynchronizerTest::sync()
 {
@@ -224,7 +371,9 @@ void DirectorySynchronizerTest::sync()
     }
 }
 
-void DirectorySynchronizerTest::sync_data()
+void DirectorySynchronizerTest::cleanupTestCase() {}
+
+void DirectorySynchronizerTest::prepareTestData()
 {
     QTest::addColumn<AbstractJobFactory*>("jobFactory");
 
@@ -241,8 +390,6 @@ void DirectorySynchronizerTest::sync_data()
                 << static_cast<AbstractJobFactory*>(webdavJobFactory);
     }
 }
-
-void DirectorySynchronizerTest::cleanupTestCase() {}
 
 bool DirectorySynchronizerTest::fillTestFolder(const QString& path)
 {
@@ -357,6 +504,29 @@ bool DirectorySynchronizerTest::editDirectory(const QString& path,
     return true;
 }
 
+bool DirectorySynchronizerTest::writeFile(const QString& fileName, const QByteArray& data) const
+{
+    QFileInfo fi(fileName);
+    if (fi.dir().mkpath(".")) {
+        QFile file(fileName);
+        if (file.open(QIODevice::WriteOnly)) {
+            file.write(data);
+            file.close();
+            return true;
+        }
+    }
+    return false;
+}
+
+QByteArray DirectorySynchronizerTest::readFile(const QString& fileName) const
+{
+    QFile file(fileName);
+    if (file.open(QIODevice::ReadOnly)) {
+        return file.readAll();
+    }
+    return QByteArray();
+}
+
 template<SyncConflictStrategy strategy>
 bool DirectorySynchronizerTest::syncDir(const QString& localPath, const QString& remotePath,
                                         const QString& syncDbPath,
@@ -380,6 +550,7 @@ bool DirectorySynchronizerTest::syncDir(const QString& localPath, const QString&
     SQ_COMPARE(sync.state(), SynchronizerState::Finished);
     SQ_COMPARE(sync.errorString(), QString());
     SQ_COMPARE(sync.error(), SynchronizerError::NoError);
+    QThread::sleep(3); // Give the server some time to update sync attributes on folders
     return true;
 }
 

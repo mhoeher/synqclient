@@ -339,13 +339,19 @@ void DirectorySynchronizer::start()
                     tr("Failed to open the sync state database"));
     }
 
-    // Check if this is the first time sync. If so, ensure the remote folder
-    // exists:
-    auto entry = d->syncStateDatabase->getEntry("/");
-    if (!entry.isValid()) {
-        d->createRemoteFolder();
-    } else {
+    // Check if the CreateRemoteFolderOnFirstSync flag is unset. If so, do not try to create the
+    // remote root folder but right away run the sync.
+    if (!d->flags.testFlag(SynchronizerFlag::CreateRemoteFolderOnFirstSync)) {
         d->createSyncPlan();
+    } else {
+        // Check if this is the first time sync. If so, ensure the remote folder
+        // exists:
+        auto entry = d->syncStateDatabase->getEntry("/");
+        if (!entry.isValid()) {
+            d->createRemoteFolder();
+        } else {
+            d->createSyncPlan();
+        }
     }
 }
 
