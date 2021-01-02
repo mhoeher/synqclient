@@ -748,9 +748,12 @@ void DirectorySynchronizerPrivate::runRemoteAction(
                 }
                 // Commit to DB
                 if (saveFile->commit()) {
-                    auto syncAttribute = downloadAction->syncAttribute;
+                    auto syncAttribute = job->fileInfo().syncAttribute();
                     if (syncAttribute.isNull()) {
-                        syncAttribute = job->fileInfo().syncAttribute();
+                        // Use the sync attribute from the list files job. This might
+                        // already be outdated - in this case, we will download again on
+                        // the next sync.
+                        syncAttribute = downloadAction->syncAttribute;
                     }
                     if (!syncStateDatabase->addEntry(SyncStateEntry(
                                 downloadAction->path,

@@ -376,7 +376,7 @@ bool DirectorySynchronizerTest::syncDir(const QString& localPath, const QString&
     SQ_COMPARE(sync.state(), SynchronizerState::Running);
     SQ_COMPARE(sync.error(), SynchronizerError::NoError);
     QSignalSpy spy(&sync, &DirectorySynchronizer::finished);
-    SQ_VERIFY(spy.wait(1000 * 60 * 5));
+    SQ_VERIFY(spy.wait(1000 * 60 * 10));
     SQ_COMPARE(sync.state(), SynchronizerState::Finished);
     SQ_COMPARE(sync.errorString(), QString());
     SQ_COMPARE(sync.error(), SynchronizerError::NoError);
