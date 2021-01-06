@@ -42,7 +42,7 @@ void GetFileInfoJob::setPath(const QString& path)
     d->path = path;
 }
 
-QVariantMap GetFileInfoJob::fileInfo() const
+FileInfo GetFileInfoJob::fileInfo() const
 {
     Q_D(const GetFileInfoJob);
     return d->fileInfo;

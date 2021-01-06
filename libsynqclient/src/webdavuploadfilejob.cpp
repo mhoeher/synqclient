@@ -48,6 +48,7 @@ void WebDAVUploadFileJob::start()
     auto url = d_ptr2->urlFromPath(d->remoteFilename);
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
+    d_ptr2->disableCaching(req);
     req.setUrl(url);
     if (!d->uploadDevice) {
         d->uploadDevice = getUploadDevice();

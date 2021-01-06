@@ -7,6 +7,7 @@
 
 #include "abstractjobprivate.h"
 #include "abstractwebdavjob.h"
+#include "fileinfo.h"
 
 class QDomDocument;
 class QDomElement;
@@ -24,9 +25,12 @@ public:
     static const int HTTPCreated = 201;
     static const int HTTPNoContent = 204;
     static const int HTTPForbidden = 403;
+    static const int HTTPNotAllowed = 405;
     static const int HTTPPreconditionFailed = 412;
     static const int WebDAVMultiStatus = 207;
     static const int WebDAVCreated = 201;
+
+    static const char* DefaultUserAgent;
 
     static const QByteArray PropFindRequestData;
 
@@ -48,12 +52,13 @@ public:
 
     QUrl urlFromPath(const QString& path);
     void prepareNetworkRequest(QNetworkRequest& request);
+    void disableCaching(QNetworkRequest& request);
     bool shouldFollowUnhandledRedirect();
-    QVariantList parseEntryList(const QUrl& url, const QByteArray& reply, bool& ok);
+    FileInfos parseEntryList(const QUrl& url, const QByteArray& reply, bool& ok);
 
 private:
-    QVariantList parsePropFindResponse(const QUrl& baseUrl, const QDomDocument& response, bool& ok);
-    QVariant parseResponseEntry(const QUrl& url, const QDomElement& element, const QString& baseDir,
+    FileInfos parsePropFindResponse(const QUrl& baseUrl, const QDomDocument& response, bool& ok);
+    FileInfo parseResponseEntry(const QUrl& url, const QDomElement& element, const QString& baseDir,
                                 bool& ok);
 };
 

@@ -8,7 +8,6 @@
 #include "WebDAVListFilesJob"
 #include "WebDAVUploadFileJob"
 
-using SynqClient::ItemProperty;
 using SynqClient::JobError;
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVDeleteJob;
@@ -327,6 +326,7 @@ void WebDAVDeleteJobTest::syncAttribute()
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVDeleteJobTest-syncAttribute-" + testDirUid.toString();
     auto remoteFileName = remotePath + "/hello.txt";
+    // auto remoteFolderName = remotePath + "/sub";
     QVariant originalSyncAttribute;
 
     {
@@ -352,8 +352,15 @@ void WebDAVDeleteJobTest::syncAttribute()
         QVERIFY(spy.wait());
         QCOMPARE(job.errorString(), QString());
         QCOMPARE(job.error(), JobError::NoError);
-        originalSyncAttribute = job.fileInfo()[ItemProperty::SyncAttribute];
-        QThread::sleep(5); // Wait, otherwise we don't get a new etag (?!)
+        originalSyncAttribute = job.fileInfo().syncAttribute();
+
+        // TODO: Check why this delay is required.
+        // If we do not include a minimal delay here, the following upload will include the SAME
+        // etag as the first one - even though the content of the file changed. For "real world" use
+        // cases, this probably does not matter (in particular, the sync functionality will usually
+        // only try to write each file at most once to the server per sync run). However, it still
+        // is annoying.
+        QThread::sleep(1);
     }
 
     {
@@ -382,6 +389,53 @@ void WebDAVDeleteJobTest::syncAttribute()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::SyncAttributeMismatch);
     }
+
+    // TODO: Check why conditionally deleting a folder fails.
+    // When including the previous etag in the DELETE via Match-If, a delete call will always fail.
+    // This is annoying, as it prevents us from implementing a nice and clean delete of folders: We
+    // could get a list of the folder's content including its own etag. Then, we create a delete
+    // request which only succeeds if the etag matches. However, due to this behaviour, we cannot
+    // implement deletion like this.
+    /*
+        {
+            WebDAVCreateDirectoryJob job;
+            job.setNetworkAccessManager(&nam);
+            job.setUrl(url);
+            job.setServerType(type);
+            job.setPath(remoteFolderName);
+            QSignalSpy spy(&job, &WebDAVCreateDirectoryJob::finished);
+            job.start();
+            QVERIFY(spy.wait());
+            QCOMPARE(job.error(), JobError::NoError);
+        }
+
+        {
+            WebDAVGetFileInfoJob job;
+            job.setNetworkAccessManager(&nam);
+            job.setUrl(url);
+            job.setServerType(type);
+            job.setPath(remoteFolderName);
+            QSignalSpy spy(&job, &WebDAVCreateDirectoryJob::finished);
+            job.start();
+            QVERIFY(spy.wait());
+            QCOMPARE(job.error(), JobError::NoError);
+            originalSyncAttribute = job.fileInfo().syncAttribute();
+            QThread::sleep(1);
+        }
+
+        {
+            WebDAVDeleteJob job;
+            job.setNetworkAccessManager(&nam);
+            job.setUrl(url);
+            job.setServerType(type);
+            job.setPath(remoteFolderName);
+            job.setSyncAttribute(originalSyncAttribute);
+            QSignalSpy spy(&job, &WebDAVDeleteJob::finished);
+            job.start();
+            QVERIFY(spy.wait());
+            QCOMPARE(job.error(), JobError::NoError);
+        }
+        */
 }
 
 void WebDAVDeleteJobTest::syncAttribute_data()

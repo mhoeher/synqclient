@@ -62,4 +62,4 @@ breathe_projects = {
     "libsynqclient": str(Path(__file__).parent / "doxygen" / "xml")
 }
 
-breathe_default_members = ('member', 'protected-members')
+breathe_default_members = ('members', 'protected-members')

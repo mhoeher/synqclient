@@ -61,12 +61,12 @@ void WebDAVDownloadFileJobPrivate::handleRequestFinished()
             if (code == q->d_ptr2->HTTPOkay) {
                 if (downloadDevice) {
                     downloadDevice->write(reply->readAll());
-                    downloadDevice->close();
                 }
                 auto etag = reply->header(QNetworkRequest::ETagHeader);
-                QVariantMap fileInfo;
+                FileInfo fileInfo;
+                fileInfo.setIsFile();
                 if (etag.isValid()) {
-                    fileInfo[ItemProperty::SyncAttribute] = etag;
+                    fileInfo.setSyncAttribute(etag.toString());
                 }
                 q->setFileInfo(fileInfo);
             } else {

@@ -23,34 +23,83 @@
 
 namespace SynqClient {
 
+/**
+ * @brief Constructor.
+ */
 ListFilesJob::ListFilesJob(QObject* parent) : AbstractJob(new ListFilesJobPrivate(this), parent) {}
 
+/**
+ * @brief Destructor.
+ */
 ListFilesJob::~ListFilesJob() {}
 
+/**
+ * @brief The path of the folder to list entries for.
+ */
 QString ListFilesJob::path() const
 {
     Q_D(const ListFilesJob);
     return d->path;
 }
 
+/**
+ * @brief Set the path to the folder for which to list entries.
+ */
 void ListFilesJob::setPath(const QString& path)
 {
     Q_D(ListFilesJob);
     d->path = path;
 }
 
-QVariantList ListFilesJob::entries() const
+/**
+ * @brief File information about entries inside the folder.
+ *
+ * This property holds the file information list of files and sub-folders contained in the listed
+ * folder.
+ */
+FileInfos ListFilesJob::entries() const
 {
     Q_D(const ListFilesJob);
     return d->entries;
 }
 
+/**
+ * @brief File info for the folder which has been listed.
+ *
+ * This property holds information about the folder that has been listed.
+ */
+FileInfo ListFilesJob::folder() const
+{
+    Q_D(const ListFilesJob);
+    return d->folder;
+}
+
+/**
+ * @brief Constructor.
+ */
 ListFilesJob::ListFilesJob(ListFilesJobPrivate* d, QObject* parent) : AbstractJob(d, parent) {}
 
-void ListFilesJob::setEntries(const QVariantList& entries)
+/**
+ * @brief Set the file information of entries inside the folder.
+ *
+ * Concrete sub-classes shall use this method to set the file information about individual files and
+ * sub-folders of the listed folder.
+ */
+void ListFilesJob::setEntries(const FileInfos& entries)
 {
     Q_D(ListFilesJob);
     d->entries = entries;
+}
+
+/**
+ * @brief Set folder file information.
+ *
+ * Concrete sub-classes shall use this method to set the file information of the listed folder.
+ */
+void ListFilesJob::setFolder(const FileInfo& folder)
+{
+    Q_D(ListFilesJob);
+    d->folder = folder;
 }
 
 } // namespace SynqClient

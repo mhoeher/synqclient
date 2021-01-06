@@ -33,7 +33,8 @@ public:
     Q_DECLARE_PUBLIC(ListFilesJob);
 
     QString path;
-    QVariantList entries;
+    FileInfos entries;
+    FileInfo folder;
 };
 
 } // namespace SynqClient

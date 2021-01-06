@@ -63,9 +63,8 @@ void WebDAVGetFileInfoJobPrivate::handleRequestFinished()
                                 "PROPFIND response from server is not valid");
                 } else if (entryList.length() == 1) {
                     auto entry = entryList.at(0);
-                    auto map = entry.toMap();
-                    if (map[ItemProperty::Name] == ".") {
-                        fileInfo = map;
+                    if (entry.name() == ".") {
+                        fileInfo = entry;
                     }
                 }
             } else {

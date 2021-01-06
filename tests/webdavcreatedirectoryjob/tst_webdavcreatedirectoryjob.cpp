@@ -21,6 +21,8 @@ private slots:
     void mkdir_data();
     void mkdirInvalidPath();
     void mkdirInvalidPath_data();
+    void mkdirExisting();
+    void mkdirExisting_data();
     void cleanupTestCase();
 };
 
@@ -58,7 +60,9 @@ void WebDAVCreateDirectoryJobTest::mkdir()
     QVERIFY(getFileInfoSpy.wait());
     QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::NoError);
     auto fileInfo = getFileInfoJob.fileInfo();
-    QCOMPARE(fileInfo[SynqClient::ItemProperty::Name], ".");
+    QVERIFY(fileInfo.isValid());
+    QVERIFY(fileInfo.isDirectory());
+    QCOMPARE(fileInfo.name(), ".");
 }
 
 void WebDAVCreateDirectoryJobTest::mkdir_data()
@@ -94,10 +98,65 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
     QVERIFY(getFileInfoSpy.wait());
     QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::ResourceNotFound);
     auto fileInfo = getFileInfoJob.fileInfo();
-    QVERIFY(fileInfo.isEmpty());
+    QVERIFY(!fileInfo.isValid());
 }
 
 void WebDAVCreateDirectoryJobTest::mkdirInvalidPath_data()
+{
+    SynqClient::UnitTest::setupWebDAVTestServerData();
+}
+
+void WebDAVCreateDirectoryJobTest::mkdirExisting()
+{
+    QFETCH(QUrl, url);
+    QFETCH(SynqClient::WebDAVServerType, type);
+
+    QNetworkAccessManager nam;
+    auto uuid = QUuid::createUuid();
+    auto path = "/WebDAVCreateDirectoryJobTest-mkdir-" + uuid.toString();
+
+    {
+        SynqClient::WebDAVCreateDirectoryJob mkdirJob;
+        mkdirJob.setNetworkAccessManager(&nam);
+        mkdirJob.setServerType(type);
+        mkdirJob.setUrl(url);
+        mkdirJob.setPath(path);
+        mkdirJob.start();
+        QSignalSpy mkdirSpy(&mkdirJob, &SynqClient::WebDAVCreateDirectoryJob::finished);
+        QVERIFY(mkdirSpy.wait());
+        QCOMPARE(mkdirJob.error(), SynqClient::JobError::NoError);
+    }
+
+    {
+        SynqClient::WebDAVGetFileInfoJob getFileInfoJob;
+        getFileInfoJob.setNetworkAccessManager(&nam);
+        getFileInfoJob.setServerType(type);
+        getFileInfoJob.setUrl(url);
+        getFileInfoJob.setPath(path);
+        getFileInfoJob.start();
+        QSignalSpy getFileInfoSpy(&getFileInfoJob, &SynqClient::AbstractJob::finished);
+        QVERIFY(getFileInfoSpy.wait());
+        QCOMPARE(getFileInfoJob.error(), SynqClient::JobError::NoError);
+        auto fileInfo = getFileInfoJob.fileInfo();
+        QVERIFY(fileInfo.isValid());
+        QVERIFY(fileInfo.isDirectory());
+        QCOMPARE(fileInfo.name(), ".");
+    }
+
+    {
+        SynqClient::WebDAVCreateDirectoryJob mkdirJob;
+        mkdirJob.setNetworkAccessManager(&nam);
+        mkdirJob.setServerType(type);
+        mkdirJob.setUrl(url);
+        mkdirJob.setPath(path);
+        mkdirJob.start();
+        QSignalSpy mkdirSpy(&mkdirJob, &SynqClient::WebDAVCreateDirectoryJob::finished);
+        QVERIFY(mkdirSpy.wait());
+        QCOMPARE(mkdirJob.error(), SynqClient::JobError::FolderExists);
+    }
+}
+
+void WebDAVCreateDirectoryJobTest::mkdirExisting_data()
 {
     SynqClient::UnitTest::setupWebDAVTestServerData();
 }

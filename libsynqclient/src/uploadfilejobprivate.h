@@ -46,7 +46,7 @@ public:
     QByteArray data;
     QString remoteFilename;
     UploadSource sourceType;
-    QVariantMap fileInfo;
+    FileInfo fileInfo;
     QVariant syncAttribute;
 };
 

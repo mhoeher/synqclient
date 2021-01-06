@@ -43,7 +43,7 @@ public:
     QByteArray data;
     QString remoteFilename;
     DownloadTarget targetType;
-    QVariantMap fileInfo;
+    FileInfo fileInfo;
 };
 
 } // namespace SynqClient

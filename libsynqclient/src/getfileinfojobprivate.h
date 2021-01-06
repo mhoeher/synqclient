@@ -36,7 +36,7 @@ public:
     Q_DECLARE_PUBLIC(GetFileInfoJob);
 
     QString path;
-    QVariantMap fileInfo;
+    FileInfo fileInfo;
 };
 
 } // namespace SynqClient

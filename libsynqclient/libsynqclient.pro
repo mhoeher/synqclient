@@ -1,5 +1,5 @@
 QT -= gui
-QT += network xml
+QT += network xml sql
 
 TARGET = synqclient
 TEMPLATE = lib
@@ -13,6 +13,8 @@ CONFIG += c++14 hide_symbols create_prl create_pc
 
 SOURCES += \
     src/abstractjob.cpp \
+    src/abstractjobfactory.cpp \
+    src/abstractjobfactoryprivate.cpp \
     src/abstractjobprivate.cpp \
     src/abstractwebdavjob.cpp \
     src/abstractwebdavjobprivate.cpp \
@@ -20,15 +22,27 @@ SOURCES += \
     src/createdirectoryjobprivate.cpp \
     src/deletejob.cpp \
     src/deletejobprivate.cpp \
+    src/directorysynchronizer.cpp \
+    src/directorysynchronizerprivate.cpp \
     src/downloadfilejob.cpp \
     src/downloadfilejobprivate.cpp \
+    src/fileinfo.cpp \
+    src/fileinfoprivate.cpp \
     src/getfileinfojob.cpp \
     src/getfileinfojobprivate.cpp \
+    src/jsonsyncstatedatabase.cpp \
+    src/jsonsyncstatedatabaseprivate.cpp \
     src/libsynqclient.cpp \
     src/listfilesjob.cpp \
     src/listfilesjobprivate.cpp \
     src/nextcloudloginflow.cpp \
     src/nextcloudloginflowprivate.cpp \
+    src/sqlsyncstatedatabase.cpp \
+    src/sqlsyncstatedatabaseprivate.cpp \
+    src/syncstatedatabase.cpp \
+    src/syncstatedatabaseprivate.cpp \
+    src/syncstateentry.cpp \
+    src/syncstateentryprivate.cpp \
     src/uploadfilejob.cpp \
     src/uploadfilejobprivate.cpp \
     src/webdavcreatedirectoryjob.cpp \
@@ -39,6 +53,8 @@ SOURCES += \
     src/webdavdownloadfilejobprivate.cpp \
     src/webdavgetfileinfojob.cpp \
     src/webdavgetfileinfojobprivate.cpp \
+    src/webdavjobfactory.cpp \
+    src/webdavjobfactoryprivate.cpp \
     src/webdavlistfilesjob.cpp \
     src/webdavlistfilesjobprivate.cpp \
     src/webdavuploadfilejob.cpp \
@@ -46,51 +62,77 @@ SOURCES += \
 
 HEADERS += \
     inc/AbstractJob \
+    inc/AbstractJobFactory \
     inc/AbstractWebDAVJob \
     inc/CreateDirectoryJob \
     inc/DeleteJob \
+    inc/DirectorySynchronizer \
     inc/DownloadFileJob \
+    inc/FileInfo \
     inc/GetFileInfoJob \
+    inc/JSONSyncStateDatabase \
     inc/ListFilesJob \
     inc/NextCloudLoginFlow \
+    inc/SQLSyncStateDatabase \
+    inc/SyncStateDatabase \
+    inc/SyncStateEntry \
     inc/UploadFileJob \
     inc/WebDAVCreateDirectoryJob \
     inc/WebDAVDeleteJob \
     inc/WebDAVDownloadFileJob \
     inc/WebDAVGetFileInfoJob \
+    inc/WebDAVJobFactory \
     inc/WebDAVListFilesJob \
     inc/WebDAVUploadFileJob \
     inc/abstractjob.h \
+    inc/abstractjobfactory.h \
     inc/abstractwebdavjob.h \
     inc/createdirectoryjob.h \
     inc/deletejob.h \
+    inc/directorysynchronizer.h \
     inc/downloadfilejob.h \
+    inc/fileinfo.h \
     inc/getfileinfojob.h \
+    inc/jsonsyncstatedatabase.h \
     inc/libsynqclient_global.h \
     inc/libsynqclient.h \
     inc/listfilesjob.h \
     inc/nextcloudloginflow.h \
+    inc/sqlsyncstatedatabase.h \
+    inc/syncstatedatabase.h \
+    inc/syncstateentry.h \
     inc/uploadfilejob.h \
     inc/webdavcreatedirectoryjob.h \
     inc/webdavdeletejob.h \
     inc/webdavdownloadfilejob.h \
     inc/webdavgetfileinfojob.h \
+    inc/webdavjobfactory.h \
     inc/webdavlistfilesjob.h \
     inc/webdavuploadfilejob.h \
+    src/abstractjobfactoryprivate.h \
     src/abstractjobprivate.h \
     src/abstractwebdavjobprivate.h \
     inc/SynqClient \
+    src/changetree.h \
     src/createdirectoryjobprivate.h \
     src/deletejobprivate.h \
+    src/directorysynchronizerprivate.h \
     src/downloadfilejobprivate.h \
+    src/fileinfoprivate.h \
     src/getfileinfojobprivate.h \
+    src/jsonsyncstatedatabaseprivate.h \
     src/listfilesjobprivate.h \
     src/nextcloudloginflowprivate.h \
+    src/sqlsyncstatedatabaseprivate.h \
+    src/syncactions.h \
+    src/syncstatedatabaseprivate.h \
+    src/syncstateentryprivate.h \
     src/uploadfilejobprivate.h \
     src/webdavcreatedirectoryjobprivate.h \
     src/webdavdeletejobprivate.h \
     src/webdavdownloadfilejobprivate.h \
     src/webdavgetfileinfojobprivate.h \
+    src/webdavjobfactoryprivate.h \
     src/webdavlistfilesjobprivate.h \
     src/webdavuploadfilejobprivate.h
 

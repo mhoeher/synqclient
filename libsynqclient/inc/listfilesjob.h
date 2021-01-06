@@ -27,6 +27,7 @@
 #include <QtGlobal>
 
 #include "AbstractJob"
+#include "FileInfo"
 #include "libsynqclient_global.h"
 
 namespace SynqClient {
@@ -43,14 +44,16 @@ public:
     QString path() const;
     void setPath(const QString& path);
 
-    QVariantList entries() const;
+    FileInfos entries() const;
+    FileInfo folder() const;
 
 protected:
     explicit ListFilesJob(ListFilesJobPrivate* d, QObject* parent = nullptr);
 
     Q_DECLARE_PRIVATE(ListFilesJob);
 
-    void setEntries(const QVariantList& entries);
+    void setEntries(const FileInfos& entries);
+    void setFolder(const FileInfo& folder);
 };
 
 } // namespace SynqClient

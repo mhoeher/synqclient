@@ -46,7 +46,11 @@ void WebDAVDownloadFileJob::start()
     auto url = d_ptr2->urlFromPath(d->remoteFilename);
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
+    d_ptr2->disableCaching(req);
     req.setUrl(url);
+    // Turn server side compression off. This is required because some servers tend to modify
+    // etags. In that case, we get different etags via the list method and after downloading.
+    req.setRawHeader("Accept-Encoding", "identity");
     if (d->downloadDevice) {
         if (d->downloadDevice != d->output) {
             delete d->downloadDevice;
@@ -66,7 +70,7 @@ void WebDAVDownloadFileJob::start()
     auto reply = networkAccessManager()->get(req);
     if (reply) {
         reply->setParent(this);
-        connect(reply, &QNetworkReply::readyRead, [=]() {
+        connect(reply, &QNetworkReply::readyRead, this, [=]() {
             if (downloadDevice) {
                 downloadDevice->write(reply->readAll());
             }

@@ -27,6 +27,7 @@
 #include <QtGlobal>
 
 #include "AbstractJob"
+#include "FileInfo"
 #include "libsynqclient_global.h"
 
 class QIODevice;
@@ -54,7 +55,7 @@ public:
     QString remoteFilename() const;
     void setRemoteFilename(const QString& remoteFilename);
 
-    QVariantMap fileInfo() const;
+    FileInfo fileInfo() const;
 
     QVariant syncAttribute() const;
     void setSyncAttribute(const QVariant& syncAttribute);
@@ -66,7 +67,7 @@ protected:
 
     QSharedPointer<QIODevice> getUploadDevice();
 
-    void setFileInfo(const QVariantMap& fileInfo);
+    void setFileInfo(const FileInfo& fileInfo);
 };
 
 } // namespace SynqClient
