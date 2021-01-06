@@ -95,7 +95,7 @@ void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
     sync.start();
     QSignalSpy spy(&sync, &DirectorySynchronizer::finished);
     QVERIFY(spy.wait());
-    QCOMPARE(sync.error(), SynchronizerError::FailedGettingRemoteFolder);
+    QCOMPARE(sync.error(), SynchronizerError::FailedListingRemoteFolder);
 }
 
 void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
@@ -199,6 +199,17 @@ void DirectorySynchronizerTest::editVsDeleteConflictResolution()
     QVERIFY(syncDir(tmpDir1.path(), path, dbPath1, jobFactory));
     QCOMPARE(readFile(tmpDir1.path() + "/top/sub/test.txt"), "Re-created by client 1\n");
     QCOMPARE(readFile(tmpDir2.path() + "/top/sub/test.txt"), "Re-created by client 1\n");
+
+    // Same story again, but with local-wins we expect the deletion to win:
+    QVERIFY(writeFile(tmpDir1.path() + "/top/sub/test.txt", "Re-created again by client 1\n"));
+    QVERIFY(QDir(tmpDir2.path() + "/top").removeRecursively());
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir2.path(), path, dbPath2, jobFactory));
+    QVERIFY(syncDir<SyncConflictStrategy::LocalWins>(tmpDir1.path(), path, dbPath1, jobFactory));
+    QVERIFY(!QFile::exists(tmpDir1.path() + "/top/sub/test.txt"));
+    QVERIFY(!QFile::exists(tmpDir2.path() + "/top/sub/test.txt"));
+    QVERIFY(!QDir(tmpDir1.path() + "/top").exists());
+    QVERIFY(!QDir(tmpDir2.path() + "/top").exists());
 }
 
 void DirectorySynchronizerTest::sync()
@@ -548,9 +559,15 @@ bool DirectorySynchronizerTest::syncDir(const QString& localPath, const QString&
     QSignalSpy spy(&sync, &DirectorySynchronizer::finished);
     SQ_VERIFY(spy.wait(1000 * 60 * 10));
     SQ_COMPARE(sync.state(), SynchronizerState::Finished);
+    qDebug() << sync.errorString();
     SQ_COMPARE(sync.errorString(), QString());
     SQ_COMPARE(sync.error(), SynchronizerError::NoError);
-    QThread::sleep(3); // Give the server some time to update sync attributes on folders
+    // We need to have a minimal delay between syncs. This is because otherwise sync properties
+    // might not yet be regenerated and hence we won't see the updates. In real life, this is less
+    // of a problem, because usually the user will have pauses between syncs (and even if not,
+    // changes will be catched up on the next sync run). However, for unit tests we need the delay
+    // to ensure the server is ready to go on.
+    QThread::sleep(1);
     return true;
 }
 

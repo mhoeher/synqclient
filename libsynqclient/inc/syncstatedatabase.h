@@ -20,6 +20,8 @@
 #ifndef SYNQCLIENT_SYNCSTATEDATABASE_H
 #define SYNQCLIENT_SYNCSTATEDATABASE_H
 
+#include <functional>
+
 #include <QObject>
 #include <QScopedPointer>
 #include <QVector>
@@ -48,6 +50,9 @@ public:
     virtual bool closeDatabase();
 
     bool isOpen() const;
+
+    bool iterate(std::function<void(const SyncStateEntry& entry)> callback,
+                 const QString& path = "/");
 
 protected:
     explicit SyncStateDatabase(SyncStateDatabasePrivate* d, QObject* parent = nullptr);

@@ -69,6 +69,8 @@ void WebDAVListFilesJobTest::listFiles()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(job.entries().length(), 0);
+        QVERIFY(job.folder().isValid());
+        QCOMPARE(job.folder().name(), ".");
     }
 
     {
@@ -147,6 +149,26 @@ void WebDAVListFilesJobTest::listFiles()
         }
         std::sort(gotNames.begin(), gotNames.end());
         QCOMPARE(gotNames, expectedNames);
+        QVERIFY(job.folder().isValid());
+        QCOMPARE(job.folder().name(), ".");
+        QVERIFY(job.folder().isDirectory());
+    }
+
+    {
+        WebDAVListFilesJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setPath(remotePath + "/file1.txt");
+        job.start();
+        QSignalSpy spy(&job, &WebDAVListFilesJob::finished);
+        QVERIFY(spy.wait());
+        QCOMPARE(job.error(), JobError::NoError);
+        QCOMPARE(job.entries().length(), 0);
+
+        QVERIFY(job.folder().isValid());
+        QCOMPARE(job.folder().name(), ".");
+        QVERIFY(job.folder().isFile());
     }
 }
 

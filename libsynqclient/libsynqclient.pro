@@ -113,6 +113,7 @@ HEADERS += \
     src/abstractjobprivate.h \
     src/abstractwebdavjobprivate.h \
     inc/SynqClient \
+    src/changetree.h \
     src/createdirectoryjobprivate.h \
     src/deletejobprivate.h \
     src/directorysynchronizerprivate.h \
@@ -123,6 +124,7 @@ HEADERS += \
     src/listfilesjobprivate.h \
     src/nextcloudloginflowprivate.h \
     src/sqlsyncstatedatabaseprivate.h \
+    src/syncactions.h \
     src/syncstatedatabaseprivate.h \
     src/syncstateentryprivate.h \
     src/uploadfilejobprivate.h \

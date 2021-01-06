@@ -19,6 +19,8 @@
 
 #include "../inc/syncstatedatabase.h"
 
+#include <QQueue>
+
 #include "syncstatedatabaseprivate.h"
 
 namespace SynqClient {
@@ -160,6 +162,46 @@ bool SyncStateDatabase::isOpen() const
 {
     Q_D(const SyncStateDatabase);
     return d->open;
+}
+
+/**
+ * @brief Iterate over the entries in the database.
+ *
+ * This is a utility method which calls the @p callback for all nodes found in the database starting
+ * at the given root @p path.
+ *
+ * The function returns true on success or false if - during iteration - an error occurred.
+ */
+bool SyncStateDatabase::iterate(std::function<void(const SyncStateEntry&)> callback,
+                                const QString& path)
+{
+    QQueue<QString> queue;
+    queue.enqueue(path);
+
+    {
+        auto entry = getEntry(path);
+        if (callback && entry.isValid()) {
+            callback(entry);
+        }
+    }
+
+    while (!queue.isEmpty()) {
+        bool ok;
+        auto folderPath = queue.dequeue();
+        auto entries = findEntries(folderPath, &ok);
+        if (!ok) {
+            return false;
+        }
+        for (const auto& entry : qAsConst(entries)) {
+            if (entry.isValid()) {
+                if (callback) {
+                    callback(entry);
+                }
+                queue.enqueue(entry.path());
+            }
+        }
+    }
+    return true;
 }
 
 /**

@@ -184,14 +184,17 @@ SyncStateEntry SQLSyncStateDatabase::getEntry(const QString& path)
 
     SyncStateEntry result;
     QSqlQuery query(d->db);
+
+    auto dbPath = d->splitPath(path);
+    auto parent = std::get<0>(dbPath);
+    auto name = std::get<1>(dbPath);
     if (!query.prepare("SELECT parent, entry, modificationDate, etag "
                        "FROM files WHERE parent = ? and entry = ?;")) {
         qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
         return result;
     }
-    auto dbPath = d->splitPath(path);
-    query.addBindValue(std::get<0>(dbPath));
-    query.addBindValue(std::get<1>(dbPath));
+    query.addBindValue(parent);
+    query.addBindValue(name);
     if (query.exec()) {
         while (query.next()) {
             SyncStateEntry entry;
@@ -235,7 +238,12 @@ QVector<SyncStateEntry> SQLSyncStateDatabase::findEntries(const QString& parent,
             entry.setModificationTime(record.value("modificationDate").toDateTime());
             entry.setSyncProperty(record.value("etag").toString());
             entry.setValid(true);
-            result << entry;
+
+            // Exclude the root node. Internally, it has the same "parent" in the DB as a
+            // top-level file or directory.
+            if (entry.path() != "/") {
+                result << entry;
+            }
         }
         status = true;
     } else {

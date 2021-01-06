@@ -34,6 +34,7 @@ public:
 
     QString path;
     FileInfos entries;
+    FileInfo folder;
 };
 
 } // namespace SynqClient

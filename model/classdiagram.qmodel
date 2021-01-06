@@ -3387,7 +3387,7 @@
                                     <object>{a59b0689-1a88-4f7c-8954-eb1b8b4231c4}</object>
                                     <name>ListFilesJob</name>
                                     <pos>x:195;y:550</pos>
-                                    <rect>x:-80;y:-45;w:160;h:90</rect>
+                                    <rect>x:-80;y:-50;w:160;h:100</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -4156,16 +4156,23 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{92b60590-1ed3-48e4-b875-8923066f6ec2}</uid>
+                               <uid>{eb19533d-60f2-4cca-80ef-553c17bdba15}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{130797f3-3c3a-46f9-8823-f995b8c6097d}</uid>
+                               <uid>{b61910ce-359b-4615-a20c-e8294c4bef7a}</uid>
                                <type>1</type>
                                <declaration>QVector&lt;FileInfo&gt; entries</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{2ad0fa62-4866-4f85-bf0d-79e442b570e4}</uid>
+                               <type>1</type>
+                               <declaration>FileInfo folder</declaration>
                               </MClassMember>
                              </item>
                             </qlist>

@@ -37,6 +37,8 @@ private slots:
     void removeEntries_data() { data(); }
     void removeEntry();
     void removeEntry_data() { data(); }
+    void iterate();
+    void iterate_data() { data(); }
     void cleanupTestCase();
 
 private:
@@ -140,8 +142,8 @@ void SyncStateDatabaseTest::getEntry()
         auto entry = db->getEntry("/");
         QVERIFY(entry.isValid());
         QCOMPARE(entry.path(), "/");
-        QCOMPARE(entry.modificationTime(), lastModTime);
         QCOMPARE(entry.syncProperty(), "v2");
+        QCOMPARE(entry.modificationTime(), lastModTime);
     }
     QVERIFY(db->closeDatabase());
 
@@ -225,12 +227,19 @@ void SyncStateDatabaseTest::removeEntry()
     QVERIFY(db->openDatabase());
     QDateTime modTimes[4] = { QDateTime::currentDateTime(), QDateTime::currentDateTime(),
                               QDateTime::currentDateTime(), QDateTime::currentDateTime() };
+    QVERIFY(db->addEntry(SyncStateEntry("/", modTimes[0], "v1")));
+    QVERIFY(db->addEntry(SyncStateEntry("/foo", modTimes[0], "v1")));
     QVERIFY(db->addEntry(SyncStateEntry("/foo/bar1.txt", modTimes[0], "v1")));
     QVERIFY(db->addEntry(SyncStateEntry("/foo/bar2.txt", modTimes[1], "v2")));
     QVERIFY(db->addEntry(SyncStateEntry("/foo/bar3.txt", modTimes[2], "v3")));
     QVERIFY(db->addEntry(SyncStateEntry("/foo/baz/bar1.txt", modTimes[3], "v4")));
     bool ok;
-    auto entries = db->findEntries("/foo", &ok);
+    auto entries = db->findEntries("/", &ok);
+    QVERIFY(ok);
+    QCOMPARE(entries.length(), 1);
+    QCOMPARE(entries[0].path(), "/foo");
+
+    entries = db->findEntries("/foo", &ok);
     QVERIFY(ok);
     QCOMPARE(entries.length(), 3);
     QVERIFY(db->removeEntry("/foo/bar2.txt"));
@@ -248,6 +257,48 @@ void SyncStateDatabaseTest::removeEntry()
     QCOMPARE(entries[1].syncProperty(), "v3");
     QCOMPARE(entries[1].modificationTime(), modTimes[2]);
     QVERIFY(db->closeDatabase());
+}
+
+void SyncStateDatabaseTest::iterate()
+{
+    QFETCH(SyncStateDatabase*, db);
+    QVERIFY(db->openDatabase());
+    QDateTime modTimes[4] = { QDateTime::currentDateTime(), QDateTime::currentDateTime(),
+                              QDateTime::currentDateTime(), QDateTime::currentDateTime() };
+    QVERIFY(db->addEntry(SyncStateEntry("/", modTimes[0], "v1")));
+    QVERIFY(db->addEntry(SyncStateEntry("/foo", modTimes[0], "v1")));
+    QVERIFY(db->addEntry(SyncStateEntry("/foo/bar1.txt", modTimes[0], "v1")));
+    QVERIFY(db->addEntry(SyncStateEntry("/foo/bar2.txt", modTimes[1], "v2")));
+    QVERIFY(db->addEntry(SyncStateEntry("/foo/baz", modTimes[0], "v1")));
+    QVERIFY(db->addEntry(SyncStateEntry("/foo/baz/bar1.txt", modTimes[3], "v4")));
+
+    {
+        QStringList walkedNodes;
+        QVERIFY(db->iterate([&](const SyncStateEntry& entry) { walkedNodes.append(entry.path()); },
+                            "/"));
+        std::sort(walkedNodes.begin(), walkedNodes.end());
+        QCOMPARE(walkedNodes,
+                 QStringList({ "/", "/foo", "/foo/bar1.txt", "/foo/bar2.txt", "/foo/baz",
+                               "/foo/baz/bar1.txt" }));
+    }
+
+    {
+        QStringList walkedNodes;
+        QVERIFY(db->iterate([&](const SyncStateEntry& entry) { walkedNodes.append(entry.path()); },
+                            "/foo"));
+        std::sort(walkedNodes.begin(), walkedNodes.end());
+        QCOMPARE(walkedNodes,
+                 QStringList({ "/foo", "/foo/bar1.txt", "/foo/bar2.txt", "/foo/baz",
+                               "/foo/baz/bar1.txt" }));
+    }
+
+    {
+        QStringList walkedNodes;
+        QVERIFY(db->iterate([&](const SyncStateEntry& entry) { walkedNodes.append(entry.path()); },
+                            "/foo/baz"));
+        std::sort(walkedNodes.begin(), walkedNodes.end());
+        QCOMPARE(walkedNodes, QStringList({ "/foo/baz", "/foo/baz/bar1.txt" }));
+    }
 }
 
 void SyncStateDatabaseTest::cleanupTestCase() {}

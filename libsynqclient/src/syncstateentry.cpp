@@ -185,6 +185,17 @@ QString SyncStateEntry::makePath(const QString& path)
     return QDir::cleanPath(p);
 }
 
+/**
+ * @brief Convert path to a sync entry path.
+ *
+ * This is an overloaded version of makePath. It takes a @p dir and a @p path (which is supposed to
+ * be relative to the directory) and converts it to a sync entry path.
+ */
+QString SyncStateEntry::makePath(const QDir& dir, const QString& path)
+{
+    return makePath(dir.relativeFilePath(path));
+}
+
 SyncStateEntry::SyncStateEntry(SyncStateEntryPrivate* d) : d(d) {}
 
 } // namespace SynqClient

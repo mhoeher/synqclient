@@ -76,6 +76,11 @@ void AbstractWebDAVJobPrivate::prepareNetworkRequest(QNetworkRequest& request)
     request.setRawHeader("User-Agent", userAgent.toUtf8());
 }
 
+void AbstractWebDAVJobPrivate::disableCaching(QNetworkRequest& request)
+{
+    request.setRawHeader("Cache-Control", "no-store"); // Turn of caching
+}
+
 /**
  * @brief Check if the reply contains a redirect not handled by Qt.
  *

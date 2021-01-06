@@ -255,8 +255,11 @@ void WebDAVUploadFileJobTest::uploadSyncAttribute()
         QCOMPARE(job.errorString(), QString());
         QCOMPARE(job.error(), JobError::NoError);
         originalEtag = job.fileInfo().syncAttribute();
-        QThread::sleep(
-                5); // Wait for some time, otherwise a re-upload won't generate a new etag (?!)
+
+        // TODO: Check why this delay is required.
+        // As noted already somewhere else: We need to add a small delay, otherwise, the etag we get
+        // back is not updated.
+        QThread::sleep(1);
     }
 
     {

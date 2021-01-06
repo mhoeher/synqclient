@@ -20,6 +20,7 @@
 #ifndef SYNQCLIENT_SYNCSTATEENTRY_H
 #define SYNQCLIENT_SYNCSTATEENTRY_H
 
+#include <QDir>
 #include <QObject>
 #include <QScopedPointer>
 #include <QSharedDataPointer>
@@ -54,6 +55,7 @@ public:
     void setSyncProperty(const QString& syncProperty);
 
     static QString makePath(const QString& path);
+    static QString makePath(const QDir& dir, const QString& path);
 
 protected:
     explicit SyncStateEntry(SyncStateEntryPrivate* d);

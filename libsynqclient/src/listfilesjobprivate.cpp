@@ -21,7 +21,8 @@
 
 namespace SynqClient {
 
-ListFilesJobPrivate::ListFilesJobPrivate(ListFilesJob* q) : AbstractJobPrivate(q), path(), entries()
+ListFilesJobPrivate::ListFilesJobPrivate(ListFilesJob* q)
+    : AbstractJobPrivate(q), path(), entries(), folder()
 {
 }
 

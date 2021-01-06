@@ -87,14 +87,6 @@ enum class SynchronizerError : quint32 {
     FailedCreatingLocalFolder,
 
     /**
-     * @brief Getting the remote folder failed.
-     *
-     * This error indicates that querying information about the remote folder failed. This could
-     * mean that the folder has been removed or that it currently is not present.
-     */
-    FailedGettingRemoteFolder,
-
-    /**
      * @brief Looking up entries from the sync state database failed.
      *
      * This error indicates that looking up entries from the sync state database failed.
@@ -112,14 +104,6 @@ enum class SynchronizerError : quint32 {
      * @brief Deleting entries from the sync state database failed.
      */
     SyncStateDatabaseDeleteFailed,
-
-    /**
-     * @brief Failed to get the local modification time of a file.
-     *
-     * This error indicates that reading the last date and time a file was modified failed. This
-     * property is required in order to check if a file changes locally.
-     */
-    FailedGettingLocalModificationTime,
 
     /**
      * @brief Listing a remote folder failed.

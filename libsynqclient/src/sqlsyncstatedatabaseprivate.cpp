@@ -92,13 +92,23 @@ bool SQLSyncStateDatabasePrivate::initializeDbV1()
 std::tuple<QString, QString> SQLSyncStateDatabasePrivate::splitPath(const QString& path,
                                                                     SplitPathMode mode)
 {
-    QString parent;
+    QString parent = "";
     QString name = "";
-    auto parts = SyncStateEntry::makePath(path).split("/", Qt::SkipEmptyParts);
-    if (parts.length() > 0 && mode == SplitPathMode::NameIncluded) {
-        name = parts.last();
-        parts.pop_back();
+    auto cleanPath = SyncStateEntry::makePath(path);
+
+    if (cleanPath == "/") {
+        return std::make_tuple(parent, name);
     }
+
+    auto parts = cleanPath.split("/", Qt::SkipEmptyParts);
+
+    if (mode == SplitPathMode::NameIncluded) {
+        if (parts.length() > 0) {
+            name = parts.last();
+            parts.pop_back();
+        }
+    }
+
     parent = parts.join("/");
     if (parent.isNull()) {
         parent = "";

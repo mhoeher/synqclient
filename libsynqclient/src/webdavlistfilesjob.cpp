@@ -57,6 +57,7 @@ void WebDAVListFilesJob::start()
     }
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
+    d_ptr2->disableCaching(req);
     req.setUrl(url);
     req.setRawHeader("Depth", "1");
     req.setHeader(QNetworkRequest::ContentLengthHeader,

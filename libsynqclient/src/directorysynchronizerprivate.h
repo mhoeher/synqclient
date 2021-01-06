@@ -27,11 +27,14 @@
 #include <QPointer>
 #include <QSet>
 #include <QSharedPointer>
+#include <QQueue>
 
 #include "abstractjob.h"
+#include "changetree.h"
 #include "directorysynchronizer.h"
 #include "libsynqclient.h"
 #include "syncstateentry.h"
+#include "syncactions.h"
 
 namespace SynqClient {
 
@@ -57,126 +60,44 @@ public:
     SynchronizerFlags flags;
     bool stopped;
 
+    void finishLater();
+    void setError(SynchronizerError error, const QString& errorString);
+
+    // Sync Stages:
+    void createRemoteFolder();
+    void createSyncPlan();
+    void executeSyncPlan();
+
     // General resources
     QMap<QString, QString> remoteFoldersSyncAttributes;
     int runningJobs;
     void setupDefaultJobSignals(AbstractJob* job);
     static QMap<QString, SyncStateEntry> syncStateListToMap(const QVector<SyncStateEntry>& list);
 
-    void finishLater();
-    void setError(SynchronizerError error, const QString& errorString);
-
-    void createRemoteFolder();
-    void createSyncPlan();
-    void executeSyncPlan();
-
-    // Create remote folder state
+    // Create remote folder stage
     QStringList createdRemoteFolderParts;
     QStringList remoteFolderPartsToCreate;
     void createNextRemoteFolderPart();
 
-    // Create sync plan state
-    enum RemoteEntryState { RemoteUnchanged, RemoteChanged };
+    // Create sync plan stage
+    ChangeTree buildLocalChangeTree();
+    void buildRemoteChangeTree();
+    void mergeChangeTrees();
+    void mergeChangeNodes(const QString& path, const ChangeTreeNode* localChange,
+                          const ChangeTreeNode* remoteChange);
+    void mergeChangeNodesLocalWins(const QString& path, const ChangeTreeNode& localChange,
+                                   const ChangeTreeNode& remoteChange);
+    void mergeChangeNodesRemoteWins(const QString& path, const ChangeTreeNode& localChange,
+                                    const ChangeTreeNode& remoteChange);
 
-    struct ScanRecord
-    {
-        QString path;
-        RemoteEntryState remoteState;
-    };
-
-    struct Change
-    {
-        enum Type {
-            Unchanged,
-            AddedLocally,
-            CreatedDirLocally,
-            ChangedLocally,
-            DeletedLocally,
-            AddedRemotely,
-            CreatedDirRemotely,
-            ChangedRemotely,
-            DeletedRemotely
-        };
-
-        Type type = Unchanged;
-        QDateTime lastModified = QDateTime();
-        QString syncProperty = QString();
-    };
-
-    QVector<ScanRecord> foldersToScan;
-    void scanNextFolder();
-    void scanLocalFolderOnly(const ScanRecord& folder);
-    void scanLocalAndRemoteFolder(const ScanRecord& folder);
-    QMap<QString, Change> findLocalChanges(const QMap<QString, SyncStateEntry> lastRunEntries,
-                                           const QString& path, bool& ok,
-                                           QSet<QString>& subFolders);
-    QMap<QString, Change> findRemoteChanges(const QMap<QString, SyncStateEntry> lastRunEntries,
-                                            const QVector<FileInfo>& remoteEntries,
-                                            const QString& path, bool& ok,
-                                            QMap<QString, RemoteEntryState>& subFolders);
-    void resolveChanges(const QMap<QString, Change> localChanges,
-                        const QMap<QString, Change> remoteChanges,
-                        const QSet<QString>& localSubFolders,
-                        const QMap<QString, RemoteEntryState>& remoteSubFolders);
-    void addActionsForChange(const QString& path, const Change& change);
+    ChangeTree localChangeTree;
+    ChangeTree remoteChangeTree;
+    QQueue<QString> remoteFoldersToScan;
 
     // Execute sync stage
-    enum SyncActionType { Upload, Download, DeleteLocal, DeleteRemote, MkDirLocal, MkDirRemote };
-
-    struct SyncAction
-    {
-        SyncActionType type;
-        QString path;
-
-        SyncAction(SyncActionType type, const QString& path);
-    };
-
-    struct UploadSyncAction : public SyncAction
-    {
-        SyncStateEntry previousSyncEntry;
-        QDateTime lastModified;
-
-        UploadSyncAction(const QString& path, const SyncStateEntry& entry,
-                         const QDateTime& lastModified);
-    };
-
-    struct DownloadSyncAction : public SyncAction
-    {
-        SyncStateEntry previousSyncEntry;
-        QString syncAttribute;
-
-        DownloadSyncAction(const QString& path, const SyncStateEntry& entry,
-                           const QString& syncAttribute);
-    };
-
-    struct DeleteRemoteSyncAction : public SyncAction
-    {
-        SyncStateEntry previousSyncEntry;
-
-        DeleteRemoteSyncAction(const QString& path, const SyncStateEntry& entry);
-    };
-
-    struct DeleteLocalSyncAction : public SyncAction
-    {
-        SyncStateEntry previousSyncEntry;
-
-        DeleteLocalSyncAction(const QString& path, const SyncStateEntry& entry);
-    };
-
-    struct MkDirLocalSyncAction : SyncAction
-    {
-        QString syncAttribute;
-
-        explicit MkDirLocalSyncAction(const QString& path, const QString& syncAttribute);
-    };
-
-    struct MkDirRemoteSyncAction : SyncAction
-    {
-        explicit MkDirRemoteSyncAction(const QString& path);
-    };
-
     QVector<QSharedPointer<SyncAction>> syncActionsToRun;
     QStringList remoteFoldersToCreate;
+    QStringList remoteResourcesToDelete;
 
     void addSyncAction(SyncAction* action);
     void runLocalActions();

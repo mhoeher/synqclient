@@ -45,6 +45,7 @@ public:
     void setPath(const QString& path);
 
     FileInfos entries() const;
+    FileInfo folder() const;
 
 protected:
     explicit ListFilesJob(ListFilesJobPrivate* d, QObject* parent = nullptr);
@@ -52,6 +53,7 @@ protected:
     Q_DECLARE_PRIVATE(ListFilesJob);
 
     void setEntries(const FileInfos& entries);
+    void setFolder(const FileInfo& folder);
 };
 
 } // namespace SynqClient

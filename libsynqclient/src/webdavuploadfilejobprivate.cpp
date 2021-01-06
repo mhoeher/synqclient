@@ -72,7 +72,6 @@ void WebDAVUploadFileJobPrivate::handleRequestFinished()
             if (code == q->d_ptr2->HTTPOkay || code == q->d_ptr2->HTTPCreated
                 || code == q->d_ptr2->HTTPNoContent) {
                 // Pass!
-                // TODO: Check if we have an etag and report it somehow
             } else {
                 q->setError(JobError::InvalidResponse,
                             QString("Received invalid response from server: %1").arg(code));
