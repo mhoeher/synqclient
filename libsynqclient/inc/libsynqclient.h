@@ -1,3 +1,22 @@
+/*
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
+ *
+ * This file is part of SynqClient.
+ *
+ * SynqClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * SynqClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef LIBSYNQCLIENT_H
 #define LIBSYNQCLIENT_H
 
@@ -217,9 +236,32 @@ Q_ENUM_NS(JobType);
 
 /**
  * @enum SynqClient::JobState
- * @brief JobError
+ * @brief The states of the job life cycle.
  */
-enum class JobState : quint32 { Ready = 0, Running, Finished };
+enum class JobState : quint32 {
+    /**
+     * @brief The initial state of each job.
+     *
+     * Newly created jobs are in this state. While in this state, jobs shall be set up (e.g.
+     * by setting paths to a file to be uploaded or to a remote folder which shall be listed).
+     */
+    Ready = 0,
+
+    /**
+     * @brief The job is currently running.
+     *
+     * After a job has been configured and started, it transitions to this state.
+     */
+    Running,
+
+    /**
+     * @brief The job has finished.
+     *
+     * This is the final job state. Once a job finished processing, it transitions into this state.
+     * Once a job is in this state, it shall be deleted.
+     */
+    Finished
+};
 
 Q_ENUM_NS(JobState);
 
@@ -268,7 +310,7 @@ enum class SyncConflictStrategy : quint32 {
  * @brief The type of WebDAV server to talk to.
  *
  * It is used to finetune the behaviour depending on the concrete implementation
- * if a WebDAV server we are talking to.
+ * of a WebDAV server we are talking to.
  */
 enum class WebDAVServerType : quint32 {
     Generic = 0,
@@ -283,18 +325,24 @@ enum class WebDAVServerType : quint32 {
     /**<
      * @brief Assume we talk to a NextCloud instance.
      *
-     * Use this is the root URL used points to a NextCloud installation. In this
-     * case, the WebDAV specific enpoint part of the URL is appended automatically
-     * to the root URL.
+     * When using this server type, the following changes apply compared to a generic server:
+     *
+     * - The URL (set via AbstractWebDAVJob::url()) should point to the NextCloud root folder, e.g.
+     *   `nextcloud.example.com/`. Jobs will then automatically derive the path to the
+     *    WebDAV backend (which would in this case be
+     *    `nextcloud.example.com/remote.php/webdav/`.
      */
 
     OwnCloud = 2
     /**<
      * @brief Assume we talk to an ownCloud instance.
      *
-     * Use this is the root URL used points to an ownCloud installation. In this
-     * case, the WebDAV specific enpoint part of the URL is appended automatically
-     * to the root URL.
+     * When using this server type, the following changes apply compared to a generic server:
+     *
+     * - The URL (set via AbstractWebDAVJob::url()) should point to the ownCloud root folder, e.g.
+     *   `owncloud.example.com/`. Jobs will then automatically derive the path to the
+     *    WebDAV backend (which would in this case be
+     *    `owncloud.example.com/remote.php/webdav/`.
      */
 };
 

@@ -75,19 +75,16 @@ JobState
 .. doxygenenum:: SynqClient::JobState
 
 
-ItemProperty
-............
+FileInfo
+........
 
-.. doxygenclass:: SynqClient::ItemProperty
-    :members:
+.. doxygenclass:: SynqClient::FileInfo
 
 
-ItemType
-............
+FileInfos
+.........
 
-.. doxygenclass:: SynqClient::ItemType
-    :members:
-
+.. doxygentypedef:: SynqClient::FileInfos
 
 
 Concrete Job Classes

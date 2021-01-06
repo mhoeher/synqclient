@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -26,13 +26,27 @@
 
 namespace SynqClient {
 
+/**
+ * @class WebDAVDeleteJob
+ * @brief Implementation of the DeleteJob for WebDAV.
+ */
+
+/**
+ * @brief Constructor.
+ */
 WebDAVDeleteJob::WebDAVDeleteJob(QObject* parent)
     : DeleteJob(new WebDAVDeleteJobPrivate(this), parent), AbstractWebDAVJob()
 {
 }
 
+/**
+ * @brief Destructor.
+ */
 WebDAVDeleteJob::~WebDAVDeleteJob() {}
 
+/**
+ * @brief Implementation of AbstractJob::start().
+ */
 void WebDAVDeleteJob::start()
 {
     Q_D(WebDAVDeleteJob);
@@ -64,6 +78,9 @@ void WebDAVDeleteJob::start()
     }
 }
 
+/**
+ * @brief Implementation of AbstractJob::stop().
+ */
 void WebDAVDeleteJob::stop()
 {
     auto reply = d_ptr2->reply;
@@ -76,6 +93,9 @@ void WebDAVDeleteJob::stop()
     finishLater();
 }
 
+/**
+ * @brief Constructor.
+ */
 WebDAVDeleteJob::WebDAVDeleteJob(WebDAVDeleteJobPrivate* d, QObject* parent)
     : DeleteJob(d, parent), AbstractWebDAVJob()
 {

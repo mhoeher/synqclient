@@ -6,7 +6,7 @@
 Welcome to SynqClient's documentation!
 ======================================
 
-SynqClient is a C++ library based on Qt which implements file-based access to file sharing services. On top, it implements synchronization between a local folder structure and a remote one on a server.
+SynqClient is a C++ library based on Qt which implements job-based access to file sharing services. On top, it implements synchronization between a local folder structure and a remote one on a server.
 
 .. toctree::
    :maxdepth: 2

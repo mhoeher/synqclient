@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -1031,6 +1031,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                     case JobError::NoError:
                     case JobError::ResourceNotFound:
                         syncStateDatabase->removeEntry(action->path);
+                        syncStateDatabase->removeEntries(action->path);
                         remoteResourcesToDelete.removeAll(action->path);
                         break;
                     case JobError::SyncAttributeMismatch:

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -26,18 +26,35 @@
 
 namespace SynqClient {
 
+/**
+ * @class WebDAVGetFileInfoJob
+ * @brief Implementation of the GetFileInfoJob for WebDAV.
+ */
+
+/**
+ * @brief Constructor.
+ */
 WebDAVGetFileInfoJob::WebDAVGetFileInfoJob(QObject* parent)
     : GetFileInfoJob(new WebDAVGetFileInfoJobPrivate(this), parent), AbstractWebDAVJob()
 {
 }
 
+/**
+ * @brief Destructor..
+ */
 WebDAVGetFileInfoJob::~WebDAVGetFileInfoJob() {}
 
+/**
+ * @brief Constructor.
+ */
 WebDAVGetFileInfoJob::WebDAVGetFileInfoJob(WebDAVGetFileInfoJobPrivate* d, QObject* parent)
     : GetFileInfoJob(d, parent), AbstractWebDAVJob()
 {
 }
 
+/**
+ * @brief Implementation of AbstractJob::start().
+ */
 void WebDAVGetFileInfoJob::start()
 {
     Q_D(WebDAVGetFileInfoJob);
@@ -71,6 +88,9 @@ void WebDAVGetFileInfoJob::start()
     }
 }
 
+/**
+ * @brief Implementation of AbstractJob::stop().
+ */
 void WebDAVGetFileInfoJob::stop()
 {
     auto reply = d_ptr2->reply;

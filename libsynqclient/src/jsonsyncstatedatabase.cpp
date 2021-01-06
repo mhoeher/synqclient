@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -163,6 +163,9 @@ bool JSONSyncStateDatabase::openDatabase()
     return false;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::closeDatabase().
+ */
 bool JSONSyncStateDatabase::closeDatabase()
 {
     Q_D(JSONSyncStateDatabase);
@@ -199,6 +202,9 @@ bool JSONSyncStateDatabase::closeDatabase()
     return false;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::addEntry().
+ */
 bool JSONSyncStateDatabase::addEntry(const SyncStateEntry& entry)
 {
     Q_D(JSONSyncStateDatabase);
@@ -210,6 +216,9 @@ bool JSONSyncStateDatabase::addEntry(const SyncStateEntry& entry)
     return true;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::getEntry().
+ */
 SyncStateEntry JSONSyncStateDatabase::getEntry(const QString& path)
 {
     Q_D(JSONSyncStateDatabase);
@@ -226,6 +235,9 @@ SyncStateEntry JSONSyncStateDatabase::getEntry(const QString& path)
     return result;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::findEntries().
+ */
 QVector<SyncStateEntry> JSONSyncStateDatabase::findEntries(const QString& parent, bool* ok)
 {
     Q_D(JSONSyncStateDatabase);
@@ -252,6 +264,9 @@ QVector<SyncStateEntry> JSONSyncStateDatabase::findEntries(const QString& parent
     return result;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::removeEntries().
+ */
 bool JSONSyncStateDatabase::removeEntries(const QString& path)
 {
     Q_D(JSONSyncStateDatabase);
@@ -263,6 +278,9 @@ bool JSONSyncStateDatabase::removeEntries(const QString& path)
     return true;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::removeEntry().
+ */
 bool JSONSyncStateDatabase::removeEntry(const QString& path)
 {
     Q_D(JSONSyncStateDatabase);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -22,6 +22,20 @@
 #include "listfilesjobprivate.h"
 
 namespace SynqClient {
+
+/**
+ * @class ListFilesJob
+ * @brief List the contents of a remote folder.
+ *
+ * This is an abstract base class for jobs which are used to list the contents of a remote folder.
+ * If the job succeeds, it holds a list of entries() (consisting of files and sub-folders) of the
+ * remote folder. Additionally, information about the folder itself can be retrieved by using the
+ * folder() method.
+ *
+ * @note If the path() configured points to a remote file, the job still shall succeed. In this
+ * case, information about the file is found in the file informaiton returned by folder() and
+ * entries() shall return an empty list.
+ */
 
 /**
  * @brief Constructor.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -26,13 +26,27 @@
 
 namespace SynqClient {
 
+/**
+ * @class WebDAVUploadFileJob
+ * @brief Implementation of the UploadFileJob for WebDAV.
+ */
+
+/**
+ * @brief Constructor.
+ */
 WebDAVUploadFileJob::WebDAVUploadFileJob(QObject* parent)
     : UploadFileJob(new WebDAVUploadFileJobPrivate(this), parent), AbstractWebDAVJob()
 {
 }
 
+/**
+ * @brief Destructor.
+ */
 WebDAVUploadFileJob::~WebDAVUploadFileJob() {}
 
+/**
+ * @brief Implementation of AbstractJob::start().
+ */
 void WebDAVUploadFileJob::start()
 {
     Q_D(WebDAVUploadFileJob);
@@ -76,6 +90,9 @@ void WebDAVUploadFileJob::start()
     }
 }
 
+/**
+ * @brief Implementation of AbstractJob::stop().
+ */
 void WebDAVUploadFileJob::stop()
 {
     auto reply = d_ptr2->reply;
@@ -88,6 +105,9 @@ void WebDAVUploadFileJob::stop()
     finishLater();
 }
 
+/**
+ * @brief Constructor.
+ */
 WebDAVUploadFileJob::WebDAVUploadFileJob(WebDAVUploadFileJobPrivate* d, QObject* parent)
     : UploadFileJob(d, parent), AbstractWebDAVJob()
 {
