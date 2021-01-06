@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -152,6 +152,9 @@ bool SQLSyncStateDatabase::openDatabase()
     return true;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::addEntry().
+ */
 bool SQLSyncStateDatabase::addEntry(const SyncStateEntry& entry)
 {
     Q_D(SQLSyncStateDatabase);
@@ -178,6 +181,9 @@ bool SQLSyncStateDatabase::addEntry(const SyncStateEntry& entry)
     return true;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::getEntry().
+ */
 SyncStateEntry SQLSyncStateDatabase::getEntry(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);
@@ -212,6 +218,9 @@ SyncStateEntry SQLSyncStateDatabase::getEntry(const QString& path)
     return result;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::findEntries().
+ */
 QVector<SyncStateEntry> SQLSyncStateDatabase::findEntries(const QString& parent, bool* ok)
 {
     Q_D(SQLSyncStateDatabase);
@@ -255,6 +264,9 @@ QVector<SyncStateEntry> SQLSyncStateDatabase::findEntries(const QString& parent,
     return result;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::removeEntries().
+ */
 bool SQLSyncStateDatabase::removeEntries(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);
@@ -280,6 +292,9 @@ bool SQLSyncStateDatabase::removeEntries(const QString& path)
     return true;
 }
 
+/**
+ * @brief Implementation of SyncStateDatabase::removeEntry().
+ */
 bool SQLSyncStateDatabase::removeEntry(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);

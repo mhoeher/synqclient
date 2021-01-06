@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -34,7 +34,40 @@ namespace SynqClient {
  *
  * This class is used to keep two directories - a local one and a remote one - synchronized.
  *
+ * # Synchronizer Life Cycle
+ *
+ * The usage pattern of the synchronizer is actually quite similar to that of jobs:
+ *
+ * After creating a new instance of this class, it is in the SynchronizerState::Ready state. In this
+ * state, it must be set up, i.e. at least the following attributes must be set:
+ *
+ * - jobFactory()
+ * - syncStateDatabase()
+ * - localDirectoryPath()
+ * - remoteDirectoryPath()
+ *
+ * In addition, other properties can be changed to alter the bahviour of the synchronization.
+ *
+ * Once all inputs are provided, the start() method can be called. This will transition the
+ * synchronizer to the SynchronizerState::Running state. The method returns immediately. Eventually,
+ * the finished() signal will be emitted to indicate that the sync is done and the synchronizer
+ * transitioned to the SynchronizerState::Finished state.
+ *
+ * While the synchronizer is running, the stop() method can be used to stop the synchronization.
+ *
+ * # Error Handling
+ *
+ * This is also similar to the job interface: The synchronizer provides the error() method, which
+ * returns an error ID indicating any issues occurred during the synchronization. Note that only the
+ * first error that occurred will be reported by that. This is important to keep in mind, as the
+ * synchronizer will spawn multiple jobs in parallel to improve overall throughput and make use of
+ * pipelining when using network jobs.
+ *
+ * In addition, the errorString() method can be used to retrieve a textual representation of the
+ * error that occurred. This might also contain valuable information from underlying jobs that
+ * failed.
  */
+
 /**
  * @brief Constructor.
  */
@@ -145,7 +178,7 @@ void DirectorySynchronizer::setRemoteDirectoryPath(const QString& remoteDirector
  *
  * This returns the filter that is used during the synchronization to determine which files
  * and folders to include in the synchronization. The filter is a simple function which gets the
- * path to the file or folder and the FileInfo object and returns either true if that file/folder
+ * path to the file or folder and a FileInfo object and returns either true if that file/folder
  * shall be included in the synchronization or false otherwise. The paths passed to the filter are
  * formatted as absolute paths with forward slashes. The path is implicitly relative to the
  * configured local and remote directory.
@@ -194,7 +227,7 @@ void DirectorySynchronizer::setFilter(const DirectorySynchronizer::Filter& filte
  *
  * This is the maximal number of jobs that are created in parallel during the sync. By
  * default, this is set to 12. This is in line with the QNetworkAccessManager API: Internally, it
- * will establish at most 6 connections to to the same host/port pair in parallel. As jobs might
+ * will establish at most 6 connections to the same host/port pair in parallel. As jobs might
  * have some "dead" time during which no other network connection takes place, we use double
  * that number of jobs to ensure that we utilize parallelization and pipelining in an optimal
  * way to speed up network transfers.

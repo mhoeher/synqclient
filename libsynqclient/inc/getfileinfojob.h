@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -49,6 +49,8 @@ protected:
     explicit GetFileInfoJob(GetFileInfoJobPrivate* d, QObject* parent = nullptr);
 
     Q_DECLARE_PRIVATE(GetFileInfoJob);
+
+    void setFileInfo(const FileInfo& fileInfo);
 };
 
 } // namespace SynqClient

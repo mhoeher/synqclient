@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -24,13 +24,27 @@
 
 namespace SynqClient {
 
+/**
+ * @class WebDAVCreateDirectoryJob
+ * @brief Implementation of the CreateDirectoryJob for WebDAV.
+ */
+
+/**
+ * @brief Constructor.
+ */
 WebDAVCreateDirectoryJob::WebDAVCreateDirectoryJob(QObject* parent)
     : CreateDirectoryJob(new WebDAVCreateDirectoryJobPrivate(this), parent), AbstractWebDAVJob()
 {
 }
 
+/**
+ * @brief Destructor.
+ */
 WebDAVCreateDirectoryJob::~WebDAVCreateDirectoryJob() {}
 
+/**
+ * @brief Implementation of AbstractJob::start().
+ */
 void WebDAVCreateDirectoryJob::start()
 {
     Q_D(WebDAVCreateDirectoryJob);
@@ -69,6 +83,9 @@ void WebDAVCreateDirectoryJob::start()
     }
 }
 
+/**
+ * @brief Implementation of AbstractJob::stop().
+ */
 void WebDAVCreateDirectoryJob::stop()
 {
     auto reply = d_ptr2->reply;
@@ -81,6 +98,9 @@ void WebDAVCreateDirectoryJob::stop()
     finishLater();
 }
 
+/**
+ * @brief Constructor.
+ */
 WebDAVCreateDirectoryJob::WebDAVCreateDirectoryJob(WebDAVCreateDirectoryJobPrivate* d,
                                                    QObject* parent)
     : CreateDirectoryJob(d, parent), AbstractWebDAVJob()

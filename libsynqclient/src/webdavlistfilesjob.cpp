@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -24,13 +24,27 @@
 
 namespace SynqClient {
 
+/**
+ * @class WebDAVListFilesJob
+ * @brief Implementation of the ListFilesJob for WebDAV.
+ */
+
+/**
+ * @brief Constructor.
+ */
 WebDAVListFilesJob::WebDAVListFilesJob(QObject* parent)
     : ListFilesJob(new WebDAVListFilesJobPrivate(this), parent), AbstractWebDAVJob()
 {
 }
 
+/**
+ * @brief Destructor.
+ */
 WebDAVListFilesJob::~WebDAVListFilesJob() {}
 
+/**
+ * @brief Implementation of AbstractJob::start().
+ */
 void WebDAVListFilesJob::start()
 {
     Q_D(WebDAVListFilesJob);
@@ -75,6 +89,9 @@ void WebDAVListFilesJob::start()
     }
 }
 
+/**
+ * @brief Implementation of AbstractJob::stop().
+ */
 void WebDAVListFilesJob::stop()
 {
     auto reply = d_ptr2->reply;
@@ -87,6 +104,9 @@ void WebDAVListFilesJob::stop()
     finishLater();
 }
 
+/**
+ * @brief Constructor.
+ */
 WebDAVListFilesJob::WebDAVListFilesJob(WebDAVListFilesJobPrivate* d, QObject* parent)
     : ListFilesJob(d, parent), AbstractWebDAVJob()
 {

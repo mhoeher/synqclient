@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -27,19 +27,46 @@
 
 namespace SynqClient {
 
+/**
+ * @class DownloadFileJob
+ * @brief Download files from a remote server.
+ *
+ * This is an abstract base class for jobs downloading files from a remote server. The job is
+ * configured with a path to the remote file. Additionally, one can use either setLocalFilename() or
+ * setOutput() to configure an output file or device for saving data into. If no output is
+ * configured, the downloaded data can be accessed using the data() method.
+ *
+ * In addition to downloading the file data, meta information about the remote file can be accessed
+ * using fileInfo().
+ */
+
+/**
+ * @brief Constructor.
+ */
 DownloadFileJob::DownloadFileJob(QObject* parent)
     : AbstractJob(new DownloadFileJobPrivate(this), parent)
 {
 }
 
+/**
+ * @brief Destructor.
+ */
 DownloadFileJob::~DownloadFileJob() {}
 
+/**
+ * @brief The path to the local file to store downloaded data in.
+ */
 QString DownloadFileJob::localFilename() const
 {
     Q_D(const DownloadFileJob);
     return d->localFilename;
 }
 
+/**
+ * @brief Set the path to the local file to store downloaded data in.
+ *
+ * @note If you previously used setOutput(), the configured device will be discarded.
+ */
 void DownloadFileJob::setLocalFilename(const QString& localFilename)
 {
     Q_D(DownloadFileJob);
@@ -47,6 +74,9 @@ void DownloadFileJob::setLocalFilename(const QString& localFilename)
     d->localFilename = localFilename;
 }
 
+/**
+ * @brief The output device to write data to.
+ */
 QIODevice* DownloadFileJob::output() const
 {
     Q_D(const DownloadFileJob);
@@ -59,6 +89,9 @@ QIODevice* DownloadFileJob::output() const
  * This sets the output device into which data is written. Note that this class does not take
  * ownershop of the device - it is up to the caller to delete it later (or parent it to the job
  * so it is deleted together with it).
+ *
+ * If output is a nullptr, the downloaded data will be buffered and can be accessed using data()
+ * after the job succeeded.
  */
 void DownloadFileJob::setOutput(QIODevice* output)
 {
@@ -71,30 +104,50 @@ void DownloadFileJob::setOutput(QIODevice* output)
     }
 }
 
+/**
+ * @brief Get the data of the file which has been downloaded.
+ *
+ * This returns the raw data of the downloaded file.
+ */
 QByteArray DownloadFileJob::data() const
 {
     Q_D(const DownloadFileJob);
     return d->data;
 }
 
+/**
+ * @brief The path to the remote file to be downloaded.
+ */
 QString DownloadFileJob::remoteFilename() const
 {
     Q_D(const DownloadFileJob);
     return d->remoteFilename;
 }
 
+/**
+ * @brief Set the path to the remote file to be downloaded.
+ */
 void DownloadFileJob::setRemoteFilename(const QString& remoteFilename)
 {
     Q_D(DownloadFileJob);
     d->remoteFilename = remoteFilename;
 }
 
+/**
+ * @brief Meta information about the downloaded file.
+ *
+ * After a successful download, this provides meta information about the downloaded file. In
+ * particular, this provides the remote sync attribute of the file.
+ */
 FileInfo DownloadFileJob::fileInfo() const
 {
     Q_D(const DownloadFileJob);
     return d->fileInfo;
 }
 
+/**
+ * @brief Constructor.
+ */
 DownloadFileJob::DownloadFileJob(DownloadFileJobPrivate* d, QObject* parent)
     : AbstractJob(d, parent)
 {
@@ -139,8 +192,7 @@ QIODevice* DownloadFileJob::getDownloadDevice()
         if (!file->open(QIODevice::WriteOnly)) {
             setError(JobError::InvalidParameter,
                      QString("Failed to open %1 for writing: %2")
-                             .arg(d->localFilename)
-                             .arg(file->errorString()));
+                             .arg(d->localFilename, file->errorString()));
             delete file;
             file = nullptr;
         }
@@ -152,6 +204,12 @@ QIODevice* DownloadFileJob::getDownloadDevice()
     return nullptr;
 }
 
+/**
+ * @brief Set meta information about the remote file.
+ *
+ * Concrete sub-classes shall use this method to set file meta information for the remote file after
+ * a successful download.
+ */
 void DownloadFileJob::setFileInfo(const FileInfo& fileInfo)
 {
     Q_D(DownloadFileJob);

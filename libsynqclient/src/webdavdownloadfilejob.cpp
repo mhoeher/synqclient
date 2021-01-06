@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -24,13 +24,27 @@
 
 namespace SynqClient {
 
+/**
+ * @class WebDAVDownloadFileJob
+ * @brief Implementation of the DownloadFileJob for WebDAV.
+ */
+
+/**
+ * @brief Constructor.
+ */
 WebDAVDownloadFileJob::WebDAVDownloadFileJob(QObject* parent)
     : DownloadFileJob(new WebDAVDownloadFileJobPrivate(this), parent)
 {
 }
 
+/**
+ * @brief Destructor.
+ */
 WebDAVDownloadFileJob::~WebDAVDownloadFileJob() {}
 
+/**
+ * @brief Implementation of AbstractJob::start().
+ */
 void WebDAVDownloadFileJob::start()
 {
     Q_D(WebDAVDownloadFileJob);
@@ -83,6 +97,9 @@ void WebDAVDownloadFileJob::start()
     }
 }
 
+/**
+ * @brief Implementation of AbstractJob::stop().
+ */
 void WebDAVDownloadFileJob::stop()
 {
     auto reply = d_ptr2->reply;
@@ -95,6 +112,9 @@ void WebDAVDownloadFileJob::stop()
     finishLater();
 }
 
+/**
+ * @brief Constructor.
+ */
 WebDAVDownloadFileJob::WebDAVDownloadFileJob(WebDAVDownloadFileJobPrivate* d, QObject* parent)
     : DownloadFileJob(d, parent)
 {

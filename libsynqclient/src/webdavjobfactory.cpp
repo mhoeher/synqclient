@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -134,11 +134,7 @@ WebDAVJobFactory::WebDAVJobFactory(WebDAVJobFactoryPrivate* d, QObject* parent)
 }
 
 /**
- * @brief Create a WebDAV job.
- *
- * This function implements the appropriate API from the AbstractJobFactory
- * class. Depending on the requested @p type, it returns the appropriate
- * concrete WebDAV jobs.
+ * @brief Implementation of AbstractJobFactory::createJob().
  */
 AbstractJob* WebDAVJobFactory::createJob(JobType type, QObject* parent)
 {
