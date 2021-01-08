@@ -27,6 +27,12 @@ fedora-static:
     variables:
         RUNNER: ./ci/build-and-test-static.sh
 
+pri-build:
+    image: fedora
+    extends: .build-and-test
+    variables:
+        RUNNER: ./ci/build-using-pri.sh
+
 pages:
     stage: build
     image: fedora
