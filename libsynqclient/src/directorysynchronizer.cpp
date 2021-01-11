@@ -74,6 +74,11 @@ namespace SynqClient {
 DirectorySynchronizer::DirectorySynchronizer(QObject* parent)
     : QObject(parent), d_ptr(new DirectorySynchronizerPrivate(this))
 {
+    qRegisterMetaType<SynchronizerLogEntryType>();
+    connect(this, &DirectorySynchronizer::finished, this, [=]() {
+        emit logMessageAvailable(SynchronizerLogEntryType::Information,
+                                 tr("Finished synchronization"));
+    });
 }
 
 /**
@@ -347,6 +352,8 @@ void DirectorySynchronizer::start()
         return;
     }
 
+    emit logMessageAvailable(SynchronizerLogEntryType::Information, tr("Starting synchronization"));
+
     d->state = SynchronizerState::Running;
 
     if (!d->jobFactory || !d->syncStateDatabase || !d->filter || d->localDirectoryPath.isEmpty()
@@ -421,6 +428,19 @@ DirectorySynchronizer::DirectorySynchronizer(DirectorySynchronizerPrivate* d, QO
  * This signal is emitted to indicate that the sync has finished - independent on whether it was
  * successful or not. Check the value returned by the error() function to learn if the sync finished
  * with a problem or not.
+ */
+
+/**
+ * @fn DirectorySynchronizer::logMessageAvailable()
+ * @brief Used to report messages during the sync.
+ *
+ * This signal is emitted when the synchronizer runs a particular action or encounters an issue.
+ * The @p type indicates the type of message, e.g. if it is an informational message, a file is
+ * being downloaded or a remote folder being created.
+ *
+ * Depending on the concrete type, @p message is either an arbitrary string (containing more details
+ * about the issue) or the path (relative to the local and remote root folder) which is being
+ * affected.
  */
 
 /**

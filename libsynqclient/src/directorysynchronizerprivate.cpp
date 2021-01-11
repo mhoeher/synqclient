@@ -369,6 +369,8 @@ void DirectorySynchronizerPrivate::mergeChangeNodesLocalWins(const QString& path
                                                              const ChangeTreeNode& localChange,
                                                              const ChangeTreeNode& remoteChange)
 {
+    Q_Q(DirectorySynchronizer);
+
     switch (localChange.change) {
     case ChangeTree::Unknown:
         switch (remoteChange.change) {
@@ -434,11 +436,17 @@ void DirectorySynchronizerPrivate::mergeChangeNodesLocalWins(const QString& path
             break;
         case ChangeTree::Changed:
             // Note: Actually, we shouldn't land here.
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local created, remote changed").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local created, remote changed";
             break;
         case ChangeTree::Deleted:
             // Note: Actually, we shouldn't land here.
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local created, remote deleted").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local created, remote deleted";
             break;
@@ -453,6 +461,9 @@ void DirectorySynchronizerPrivate::mergeChangeNodesLocalWins(const QString& path
             }
             break;
         case ChangeTree::Created:
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local changed, remote created").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local changed, remote created";
             break;
@@ -469,6 +480,10 @@ void DirectorySynchronizerPrivate::mergeChangeNodesLocalWins(const QString& path
                 addSyncAction(new UploadSyncAction(path, syncStateDatabase->getEntry(path),
                                                    localChange.lastModified));
             } else {
+                emit q->logMessageAvailable(
+                        SynchronizerLogEntryType::Warning,
+                        tr("Impossible sync conflict on %1: Local folder changed, remote deleted")
+                                .arg(path));
                 qCWarning(log) << "Impossible sync conflict on path" << path
                                << " - local folder changed, remote deleted";
             }
@@ -489,6 +504,9 @@ void DirectorySynchronizerPrivate::mergeChangeNodesLocalWins(const QString& path
             addSyncAction(new DeleteRemoteSyncAction(path, syncStateDatabase->getEntry(path)));
             break;
         case ChangeTree::Created:
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local deleted, remote created").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local deleted, remote created";
             break;
@@ -515,6 +533,7 @@ void DirectorySynchronizerPrivate::mergeChangeNodesRemoteWins(const QString& pat
                                                               const ChangeTreeNode& localChange,
                                                               const ChangeTreeNode& remoteChange)
 {
+    Q_Q(DirectorySynchronizer);
     switch (localChange.change) {
     case ChangeTree::Unknown:
         switch (remoteChange.change) {
@@ -580,11 +599,17 @@ void DirectorySynchronizerPrivate::mergeChangeNodesRemoteWins(const QString& pat
             break;
         case ChangeTree::Changed:
             // Note: Actually, we shouldn't land here.
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local created, remote changed").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local created, remote changed";
             break;
         case ChangeTree::Deleted:
             // Note: Actually, we shouldn't land here.
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local created, remote deleted").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local created, remote deleted";
             break;
@@ -599,6 +624,9 @@ void DirectorySynchronizerPrivate::mergeChangeNodesRemoteWins(const QString& pat
             }
             break;
         case ChangeTree::Created:
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local changed, remote created").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local changed, remote created";
             break;
@@ -635,6 +663,9 @@ void DirectorySynchronizerPrivate::mergeChangeNodesRemoteWins(const QString& pat
             addSyncAction(new DeleteRemoteSyncAction(path, syncStateDatabase->getEntry(path)));
             break;
         case ChangeTree::Created:
+            emit q->logMessageAvailable(
+                    SynchronizerLogEntryType::Warning,
+                    tr("Impossible sync conflict on %1: Local deleted, remote created").arg(path));
             qCWarning(log) << "Impossible sync conflict on path" << path
                            << " - local deleted, remote created";
             break;
@@ -665,11 +696,13 @@ void DirectorySynchronizerPrivate::addSyncAction(SyncAction* action)
  */
 void DirectorySynchronizerPrivate::runLocalActions()
 {
+    Q_Q(DirectorySynchronizer);
     decltype(syncActionsToRun) remainingSyncActions;
     for (const auto& action : qAsConst(syncActionsToRun)) {
         switch (action->type) {
         case MkDirLocal: {
             qCDebug(log) << "Creating local folder" << action->path;
+            emit q->logMessageAvailable(SynchronizerLogEntryType::LocalMkDir, action->path);
             QDir dir(localDirectoryPath + "/" + action->path);
             if (!dir.mkpath(".")) {
                 setError(SynchronizerError::FailedCreatingLocalFolder,
@@ -681,8 +714,8 @@ void DirectorySynchronizerPrivate::runLocalActions()
             break;
         }
         case DeleteLocal:
-
             qCDebug(log) << "Deleting local resource" << action->path;
+            emit q->logMessageAvailable(SynchronizerLogEntryType::LocalDelete, action->path);
 
             if (!deleteLocally(action->path)) {
                 return;
@@ -879,15 +912,19 @@ bool DirectorySynchronizerPrivate::canRunAction(const QSharedPointer<SyncAction>
 
 void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncAction>& action)
 {
+    Q_Q(DirectorySynchronizer);
     switch (action->type) {
     case MkDirLocal:
     case DeleteLocal:
         // There shouldn't be any such actions left
         qCWarning(log) << "We should not have any MkDirLocal and DeleteLocal actions in"
                        << __func__;
+        emit q->logMessageAvailable(SynchronizerLogEntryType::Warning,
+                                    tr("Found local action in remote action execution phase"));
         break;
     case Upload: {
         qCDebug(log) << "Uploading" << action->path;
+        emit q->logMessageAvailable(SynchronizerLogEntryType::Upload, action->path);
         ++runningJobs;
         auto job = jobFactory->uploadFile(this);
         job->setLocalFilename(localDirectoryPath + "/" + action->path);
@@ -927,6 +964,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
 
     case Download: {
         qCDebug(log) << "Downloading" << action->path;
+        emit q->logMessageAvailable(SynchronizerLogEntryType::Download, action->path);
         ++runningJobs;
         auto job = jobFactory->downloadFile(this);
         job->setRemoteFilename(remoteDirectoryPath + "/" + action->path);
@@ -993,6 +1031,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
 
     case DeleteRemote: {
         qCDebug(log) << "Deleting remote" << action->path;
+        emit q->logMessageAvailable(SynchronizerLogEntryType::RemoteDelete, action->path);
         // Deletions are tricky. The problem: We don't want to unconditionally remove any remote
         // resource. In case of folders, other clients might update in between. However, for files,
         // we want to avoid accidentally deleting them. So what we do: The sync algorithm will
@@ -1081,6 +1120,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
 
     case MkDirRemote: {
         qCDebug(log) << "Creating remote folder" << action->path;
+        emit q->logMessageAvailable(SynchronizerLogEntryType::RemoteMkDir, action->path);
         ++runningJobs;
         auto job = jobFactory->createDirectory(this);
         job->setPath(remoteDirectoryPath + "/" + action->path);
@@ -1127,6 +1167,8 @@ void DirectorySynchronizerPrivate::finishLater()
 
 void DirectorySynchronizerPrivate::setError(SynchronizerError error, const QString& errorString)
 {
+    Q_Q(DirectorySynchronizer);
+    emit q->logMessageAvailable(SynchronizerLogEntryType::Error, errorString);
     if (this->error == SynchronizerError::NoError) {
         this->error = error;
         this->errorString = errorString;
@@ -1136,7 +1178,10 @@ void DirectorySynchronizerPrivate::setError(SynchronizerError error, const QStri
 
 void DirectorySynchronizerPrivate::createRemoteFolder()
 {
+    Q_Q(DirectorySynchronizer);
     qCDebug(log) << "Creating remote folder";
+    emit q->logMessageAvailable(SynchronizerLogEntryType::Information,
+                                tr("Creating remote root folder"));
     remoteFolderPartsToCreate = remoteDirectoryPath.split("/", Qt::SkipEmptyParts);
     createdRemoteFolderParts.clear();
     createNextRemoteFolderPart();
@@ -1144,8 +1189,10 @@ void DirectorySynchronizerPrivate::createRemoteFolder()
 
 void DirectorySynchronizerPrivate::createSyncPlan()
 {
+    Q_Q(DirectorySynchronizer);
     qCDebug(log) << "Creating sync plan";
     qCDebug(log) << "Building local change tree";
+    emit q->logMessageAvailable(SynchronizerLogEntryType::Information, tr("Creating sync plan"));
     localChangeTree = buildLocalChangeTree();
     if (error == SynchronizerError::NoError) {
         qCDebug(log) << "Building remote change tree";
@@ -1156,7 +1203,9 @@ void DirectorySynchronizerPrivate::createSyncPlan()
 
 void DirectorySynchronizerPrivate::executeSyncPlan()
 {
+    Q_Q(DirectorySynchronizer);
     qCDebug(log) << "Executing sync plan";
+    emit q->logMessageAvailable(SynchronizerLogEntryType::Information, tr("Executing sync plan"));
     if (error != SynchronizerError::NoError) {
         finishLater();
         return;
