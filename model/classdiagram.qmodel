@@ -1434,7 +1434,7 @@
                                     <object>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</object>
                                     <name>DirectorySynchronizer</name>
                                     <pos>x:75;y:180</pos>
-                                    <rect>x:-210;y:-120;w:420;h:240</rect>
+                                    <rect>x:-250;y:-125;w:500;h:250</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -1454,7 +1454,7 @@
                                     </base-DElement>
                                     <object>{4b68c8b1-ba25-4725-889d-39845252d4d8}</object>
                                     <name>AbstractJobFactory</name>
-                                    <pos>x:575;y:190</pos>
+                                    <pos>x:600;y:185</pos>
                                     <rect>x:-225;y:-75;w:450;h:150</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
@@ -1780,7 +1780,7 @@
                                      </qlist>
                                     </stereotypes>
                                     <name>SynchronizerError</name>
-                                    <pos>x:105;y:-80</pos>
+                                    <pos>x:155;y:-85</pos>
                                     <rect>x:-60;y:-60;w:120;h:120</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
@@ -1868,7 +1868,7 @@
                                     </base-DElement>
                                     <object>{884d306e-552f-4a2d-a29c-f2f6d098d74f}</object>
                                     <name>SyncConflictStrategy</name>
-                                    <pos>x:-40;y:-195</pos>
+                                    <pos>x:80;y:-215</pos>
                                     <rect>x:-70;y:-45;w:140;h:90</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
@@ -1992,9 +1992,58 @@
                                  </DAssociation>
                                 </instance>
                                </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{dd2a9a7f-ee63-4d3f-b039-d8fa4e4fe4ce}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{e7bd1ff5-f89b-475b-a94b-250eaa26238b}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
+                                    <name>SynchronizerLogEntryType</name>
+                                    <pos>x:-110;y:-140</pos>
+                                    <rect>x:-85;y:-95;w:170;h:190</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{fede1d4e-db9b-4e09-bc1b-9782a08dbb2c}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{4c470f15-51a5-4369-bcfa-3bd7436958d1}</object>
+                                    <a>{02a43034-f807-43c5-a8e6-e5d0e775aa89}</a>
+                                    <b>{dd2a9a7f-ee63-4d3f-b039-d8fa4e4fe4ce}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <navigable>true</navigable>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
                               </qlist>
                              </elements>
-                             <last-modified>1608747045736</last-modified>
+                             <last-modified>1610401956800</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -2297,6 +2346,33 @@
                                    </target>
                                   </handle>
                                  </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{4c470f15-51a5-4369-bcfa-3bd7436958d1}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{4c470f15-51a5-4369-bcfa-3bd7436958d1}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{e66d822d-afc4-46d6-bd7d-3daf3a73bca6}</a>
+                                        <b>{e7bd1ff5-f89b-475b-a94b-250eaa26238b}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
                                 </qlist>
                                </handles>
                               </handles>
@@ -2307,7 +2383,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{a2e0d87d-f3fd-4404-89ae-86577d81b7d9}</uid>
+                               <uid>{51c037eb-df26-46d3-be3b-5c6c92d08022}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>AbstractJobFactory* jobFactory</declaration>
@@ -2315,7 +2391,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{1b6fc80c-0ba0-427f-99b0-51a45b0c3ac8}</uid>
+                               <uid>{70382306-791a-4439-b520-28501403b365}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>SyncStateDatabase* syncStateDatabase</declaration>
@@ -2323,7 +2399,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{834df1e0-d196-44ef-bbe4-95d3e928a75d}</uid>
+                               <uid>{fbcbde83-bafb-43b4-9df5-bc24ecdfbb1e}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>QString localDirectoryPath</declaration>
@@ -2331,7 +2407,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{9c0f49b1-8678-4fc1-9261-f2584421cc17}</uid>
+                               <uid>{560b0c47-eafd-42de-a200-3126cffe49ed}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>QString remoteDirectoryPath</declaration>
@@ -2339,7 +2415,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{4a4c4a56-3a41-47e4-8a54-b6315c29f022}</uid>
+                               <uid>{61192252-5afe-49fd-9354-6876adbb4fca}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>std::function&lt;bool(const QString&amp; path, const FileInfo &amp;fileInfo)&gt; filter</declaration>
@@ -2347,7 +2423,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{0bab612a-f5d3-45f4-8373-42fc344af70a}</uid>
+                               <uid>{a4f0da79-b12b-41cb-954c-dd3aabe18865}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>void start()</declaration>
@@ -2355,7 +2431,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{f40d9b7b-1fd8-45a6-ba82-3cde5d6a0c38}</uid>
+                               <uid>{d0748101-25a5-4d94-9965-358b0356c377}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>void stop()</declaration>
@@ -2363,7 +2439,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{6be90866-8ae5-4de9-9775-e8f0ee2d9631}</uid>
+                               <uid>{9c9cb583-ea06-4bbd-9ecb-4b81c2ea20ba}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>int maxJobs</declaration>
@@ -2371,7 +2447,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{40b3aabc-da61-4f16-b722-0c1752006778}</uid>
+                               <uid>{7cb37a2b-5b29-4bf0-b93d-0be519c27e73}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>SyncConflictStrategy syncConflictStrategy</declaration>
@@ -2379,7 +2455,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{b08f171d-c881-42d9-a4e4-7fa793366130}</uid>
+                               <uid>{9c81d8e6-aebe-4186-891f-54ac5227832a}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -2388,7 +2464,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{f16d427f-27b8-4dbc-83b3-63b8494bd5e7}</uid>
+                               <uid>{13daae50-80d7-451d-a7fb-f0ba6e40d9f2}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -2397,7 +2473,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{55a0d856-7494-4db3-a954-12a3716270c6}</uid>
+                               <uid>{e79c21a1-e4b8-4052-a704-b47e2ccccd70}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -2406,10 +2482,18 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{296cf311-5f98-48c3-952c-026027d85aa5}</uid>
+                               <uid>{bba99b10-bff1-4ed0-bd79-fa2f63117cb7}</uid>
                                <visibility>4</visibility>
                                <type>2</type>
                                <declaration>void finished()</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{f2664b8a-2971-4d95-aa13-fb3c01c2b1a3}</uid>
+                               <visibility>4</visibility>
+                               <type>2</type>
+                               <declaration>void logMessageAvailable(SynchronizerLogEntryType type, const QString&amp; message)</declaration>
                               </MClassMember>
                              </item>
                             </qlist>
@@ -2523,7 +2607,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{724784e9-6de4-491c-bf18-d7341b12bc2c}</uid>
+                               <uid>{75232a27-f75a-42dd-9766-9890034ecddd}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>CreateDirectoryJob* createDirectory(QObject* parent = nullptr)</declaration>
@@ -2531,7 +2615,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{bd0d4e7b-c860-46f2-952d-07bf1a646a6d}</uid>
+                               <uid>{b19a7920-9f97-42a7-8833-05c9b59524e0}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DeleteJob* deleteResource(QObject* parent = nullptr)</declaration>
@@ -2539,7 +2623,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{5351b73d-8a19-4b05-8d16-f4dae64da98a}</uid>
+                               <uid>{04a42ced-dc29-4d4a-b28d-56690acaaed5}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DownloadFileJob* downloadFile(QObject* parent = nullptr)</declaration>
@@ -2547,7 +2631,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{9f36e704-7d8e-4118-a8f6-5fdc25cc59c7}</uid>
+                               <uid>{f938d9d7-a2f7-4464-ab6f-11f7805aa9b0}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>UploadFileJob* uploadFile(QObject* parent = nullptr)</declaration>
@@ -2555,7 +2639,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{f3b08237-3a87-447a-be11-f1ed36286738}</uid>
+                               <uid>{776283bd-1157-4d91-bbc7-5769a2737aee}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>GetFileInfoJob* getFileInfo(QObject* parent = nullptr)</declaration>
@@ -2563,7 +2647,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{9ab6dfea-e9ce-4781-bf95-91bd4a36c1a0}</uid>
+                               <uid>{2b4467dd-eb3f-4521-beb4-5a44c4d1f21c}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>ListFilesJob* listFiles(QObject* parent = nullptr)</declaration>
@@ -2571,7 +2655,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{cc013239-61a5-446f-b333-56ddaf5723af}</uid>
+                               <uid>{67c609af-7b5b-408c-8dc1-2ffdaaad219d}</uid>
                                <visibility>2</visibility>
                                <type>2</type>
                                <properties>3</properties>
@@ -2956,28 +3040,28 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{d0c2d9db-b439-4388-9612-1b68aac06b0f}</uid>
+                               <uid>{68ef5349-4181-4b2d-965f-57431b0741e5}</uid>
                                <type>1</type>
                                <declaration>NoError</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a61cb3bb-c6de-44d4-abae-9a26ac01fe7c}</uid>
+                               <uid>{1ee14644-c2d5-45b4-bf19-d829a38fdadb}</uid>
                                <type>1</type>
                                <declaration>Stopped</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{3f9c4d63-9784-4c79-9115-eb1daeeeb358}</uid>
+                               <uid>{68a045b3-97fb-466b-ba5d-13310ba39ace}</uid>
                                <type>1</type>
                                <declaration>MissingParameter</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{b389b1e1-4fba-4322-ac3c-a190695e4a64}</uid>
+                               <uid>{d7902884-4a6b-4c47-a67d-734118f00a06}</uid>
                                <type>1</type>
                                <declaration>InvalidParameter</declaration>
                               </MClassMember>
@@ -3055,14 +3139,14 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{8eea449c-a2c1-42fa-a461-6a01e01566a5}</uid>
+                               <uid>{3987567e-c04c-4597-af9f-8e160c716f4f}</uid>
                                <type>1</type>
                                <declaration>RemoteWins</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{84083b8a-4eaa-4a75-a78a-5c2737a42db1}</uid>
+                               <uid>{e7e1370c-0b9b-4b54-9d4a-729be5e15e73}</uid>
                                <type>1</type>
                                <declaration>LocalWins</declaration>
                               </MClassMember>
@@ -3176,6 +3260,99 @@
                              </relations>
                             </MObject>
                            </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{e7bd1ff5-f89b-475b-a94b-250eaa26238b}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{e7bd1ff5-f89b-475b-a94b-250eaa26238b}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
+                              </MElement>
+                             </base-MElement>
+                             <name>SynchronizerLogEntryType</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{9de05bc5-ffe1-45ab-b8c4-71fc0e505d1c}</uid>
+                               <type>1</type>
+                               <declaration>Information</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{de3702c7-8597-482a-a652-b03b0e0f71da}</uid>
+                               <type>1</type>
+                               <declaration>Warning</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{d5535dc9-2a5a-48cc-9675-96ed8efa324e}</uid>
+                               <type>1</type>
+                               <declaration>Error</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{253b4ef0-4576-4035-af27-bb98ed5ec6a6}</uid>
+                               <type>1</type>
+                               <declaration>LocalMkDir</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{c18d4ada-27d2-4d82-9c4a-9a991d7eb5df}</uid>
+                               <type>1</type>
+                               <declaration>RemoteMkDir</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{0a0f0298-7c35-455f-b78d-3d1f92f8dd14}</uid>
+                               <type>1</type>
+                               <declaration>LocalDelete</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{dd1a459d-5089-4372-b2c6-67098c11e62b}</uid>
+                               <type>1</type>
+                               <declaration>RemoteDelete</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{10e6ba0b-2c6d-4ec6-af57-04df7157887e}</uid>
+                               <type>1</type>
+                               <declaration>Download</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{438efd5f-5ca3-4aab-9ae5-8ab7d28dc8f3}</uid>
+                               <type>1</type>
+                               <declaration>Upload</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
                           </MClass>
                          </instance>
                         </target>

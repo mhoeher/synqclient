@@ -80,6 +80,7 @@ public:
 signals:
 
     void finished();
+    void logMessageAvailable(SynchronizerLogEntryType type, const QString& message);
 
 protected:
     explicit DirectorySynchronizer(DirectorySynchronizerPrivate* d, QObject* parent = nullptr);

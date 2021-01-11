@@ -348,6 +348,83 @@ enum class WebDAVServerType : quint32 {
 
 Q_ENUM_NS(WebDAVServerType);
 
+/**
+ * @brief The type of log message made by the DirectorySynchronizer.
+ *
+ * This enum is used to classify the type of log message emitted by the DirectorySynchronizer class
+ * during a sync.
+ */
+enum class SynchronizerLogEntryType : quint32 {
+
+    /**
+     * @brief An informatinal message.
+     *
+     * These messages are used to carry arbitrary information about the sync procedure.
+     */
+    Information = 0,
+
+    /**
+     * @brief A warning.
+     *
+     * Messages of this type carry an arbitrary string used to warn about an unusual, but
+     * non-fatal issue during the sync.
+     */
+    Warning,
+
+    /**
+     * @brief An error occurred.
+     *
+     * A message of this type carries an arbitrary error string used to report a fatal error which
+     * causes the sync to stop.
+     */
+    Error,
+
+    /**
+     * @brief A local folder is being created.
+     *
+     * Messages of this type carry the path of a folder which is created locally.
+     */
+    LocalMkDir,
+
+    /**
+     * @brief A remote folder is being created.
+     *
+     * Messages of this type carry the path of a folder which is created remotely.
+     */
+    RemoteMkDir,
+
+    /**
+     * @brief A file or folder is deleted locally.
+     *
+     * Messages of this type carry the path of a file or folder which is removed locally.
+     */
+    LocalDelete,
+
+    /**
+     * @brief A file or folder is deleted remotely.
+     *
+     * Messages of this type carry the path of a file or folder which is removed remotely.
+     */
+    RemoteDelete,
+
+    /**
+     * @brief A file is being downloaded.
+     *
+     * Such a message carries the path of a file which is downloaded.
+     */
+    Download,
+
+    /**
+     * @brief A file is being uploaded.
+     *
+     * Such a message carries the path of a file which is uploaded.
+     */
+    Upload
+
+};
+
+Q_ENUM_NS(SynchronizerLogEntryType);
+
 } // namespace SynqClient
 
 #endif // LIBSYNQCLIENT_H
