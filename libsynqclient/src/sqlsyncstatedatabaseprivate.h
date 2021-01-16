@@ -40,7 +40,16 @@ public:
 
     QSqlDatabase db;
 
+    /**
+     * @brief Auto-removal of connections to SQLite DBs.
+     *
+     * This flag is used to automatically remove connections to SQLite DBs if they were added by a
+     * path to the DB file.
+     */
+    bool removeDb;
+
     bool initializeDbV1();
+    void removeOldConnection();
 
     std::tuple<QString, QString> splitPath(const QString& path,
                                            SplitPathMode mode = SplitPathMode::NameIncluded);

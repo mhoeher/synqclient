@@ -78,7 +78,11 @@ SQLSyncStateDatabase::SQLSyncStateDatabase(const QString& path, QObject* parent)
 /**
  * @brief Destructor.
  */
-SQLSyncStateDatabase::~SQLSyncStateDatabase() {}
+SQLSyncStateDatabase::~SQLSyncStateDatabase()
+{
+    Q_D(SQLSyncStateDatabase);
+    d->removeOldConnection();
+}
 
 /**
  * @brief The SQL database used to store state.
@@ -95,6 +99,7 @@ QSqlDatabase SQLSyncStateDatabase::database() const
 void SQLSyncStateDatabase::setDatabase(const QSqlDatabase& database)
 {
     Q_D(SQLSyncStateDatabase);
+    d->removeOldConnection();
     d->db = database;
 }
 
@@ -106,9 +111,12 @@ void SQLSyncStateDatabase::setDatabase(const QSqlDatabase& database)
  */
 void SQLSyncStateDatabase::setDatabase(const QString& path)
 {
+    Q_D(SQLSyncStateDatabase);
+    d->removeOldConnection();
     auto db = QSqlDatabase::addDatabase("QSQLITE", path);
     db.setDatabaseName(path);
     setDatabase(db);
+    d->removeDb = true;
 }
 
 /**
@@ -172,8 +180,16 @@ bool SQLSyncStateDatabase::addEntry(const SyncStateEntry& entry)
     }
     query.addBindValue(std::get<0>(parts));
     query.addBindValue(std::get<1>(parts));
-    query.addBindValue(entry.modificationTime());
-    query.addBindValue(entry.syncProperty());
+    if (entry.modificationTime().isNull()) {
+        query.addBindValue(QDateTime::fromMSecsSinceEpoch(0));
+    } else {
+        query.addBindValue(entry.modificationTime());
+    }
+    if (entry.syncProperty().isEmpty()) {
+        query.addBindValue("---invalid-sync-property---");
+    } else {
+        query.addBindValue(entry.syncProperty());
+    }
     if (!query.exec()) {
         qCWarning(log) << "Failed to insert SyncDB entry:" << query.lastError().text();
         return false;

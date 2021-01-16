@@ -29,7 +29,7 @@ namespace SynqClient {
 static Q_LOGGING_CATEGORY(log, "SynqClient.SQLSyncStateDatabase", QtWarningMsg);
 
 SQLSyncStateDatabasePrivate::SQLSyncStateDatabasePrivate(SQLSyncStateDatabase* q)
-    : SyncStateDatabasePrivate(q), db()
+    : SyncStateDatabasePrivate(q), db(), removeDb(false)
 {
 }
 
@@ -87,6 +87,16 @@ bool SQLSyncStateDatabasePrivate::initializeDbV1()
         }
     }
     return true;
+}
+
+void SQLSyncStateDatabasePrivate::removeOldConnection()
+{
+    if (removeDb && !db.connectionName().isEmpty()) {
+        auto connectionName = db.connectionName();
+        db = QSqlDatabase();
+        QSqlDatabase::removeDatabase(connectionName);
+    }
+    removeDb = false;
 }
 
 std::tuple<QString, QString> SQLSyncStateDatabasePrivate::splitPath(const QString& path,
