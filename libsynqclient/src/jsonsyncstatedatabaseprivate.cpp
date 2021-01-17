@@ -19,6 +19,7 @@
 
 #include "jsonsyncstatedatabaseprivate.h"
 
+#include <QDateTime>
 #include <QLoggingCategory>
 #include <QJsonArray>
 #include <QJsonObject>
