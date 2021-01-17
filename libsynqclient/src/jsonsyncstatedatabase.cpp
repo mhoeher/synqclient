@@ -19,6 +19,7 @@
 
 #include "../inc/jsonsyncstatedatabase.h"
 
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
