@@ -98,3 +98,29 @@ In addition to these abstract classes, there are concrete classes that implement
    :maxdepth: 1
 
    webdav
+
+
+Higher Level Job Utilities
+++++++++++++++++++++++++++
+
+The abstract core jobs describe low level (quasi atomic) operations against a remote service. Usually, concrete applications will built on top of them to make use of their functionality, creating higher order functions. To avoid repetitive work in applications using SynqClient, the library also provides some higher order functionality to work with jobs.
+
+
+CompositeJob
+------------
+
+The :any:`SynqClient::CompositeJob` class is a job class (i.e. it derives from the :any:`SynqClient::AbstractJob` class) and hence, implements the same job interface like any other job. The purpose of this class is to allow combining several other jobs together into one larger batch of jobs, that can be run at once.
+
+.. doxygenclass:: SynqClient::CompositeJob
+
+
+Additional Type Definitions
+---------------------------
+
+The following type definitions are used together with the higher level job interface:
+
+
+CompositeJobErrorMode
+.....................
+
+.. doxygenenum:: SynqClient::CompositeJobErrorMode

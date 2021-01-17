@@ -8,6 +8,8 @@ SOURCES *= \
     $$PWD/src/abstractjobprivate.cpp \
     $$PWD/src/abstractwebdavjob.cpp \
     $$PWD/src/abstractwebdavjobprivate.cpp \
+    $$PWD/src/compositejob.cpp \
+    $$PWD/src/compositejobprivate.cpp \
     $$PWD/src/createdirectoryjob.cpp \
     $$PWD/src/createdirectoryjobprivate.cpp \
     $$PWD/src/deletejob.cpp \
@@ -54,6 +56,7 @@ HEADERS *= \
     $$PWD/inc/AbstractJob \
     $$PWD/inc/AbstractJobFactory \
     $$PWD/inc/AbstractWebDAVJob \
+    $$PWD/inc/CompositeJob \
     $$PWD/inc/CreateDirectoryJob \
     $$PWD/inc/DeleteJob \
     $$PWD/inc/DirectorySynchronizer \
@@ -77,6 +80,7 @@ HEADERS *= \
     $$PWD/inc/abstractjob.h \
     $$PWD/inc/abstractjobfactory.h \
     $$PWD/inc/abstractwebdavjob.h \
+    $$PWD/inc/compositejob.h \
     $$PWD/inc/createdirectoryjob.h \
     $$PWD/inc/deletejob.h \
     $$PWD/inc/directorysynchronizer.h \
@@ -104,6 +108,7 @@ HEADERS *= \
     $$PWD/src/abstractwebdavjobprivate.h \
     $$PWD/inc/SynqClient \
     $$PWD/src/changetree.h \
+    $$PWD/src/compositejobprivate.h \
     $$PWD/src/createdirectoryjobprivate.h \
     $$PWD/src/deletejobprivate.h \
     $$PWD/src/directorysynchronizerprivate.h \

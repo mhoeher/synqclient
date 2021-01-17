@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     abstractjob \
+    compositejob \
     directorysynchronizer \
     syncstatedatabase \
     webdavcreatedirectoryjob \

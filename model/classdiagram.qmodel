@@ -3877,9 +3877,97 @@
                                  </DAssociation>
                                 </instance>
                                </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{0989d6e3-1808-465e-8fe2-a0ebd4749882}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{a5b43eab-0e96-4698-95a2-a5a75292b400}</object>
+                                    <name>CompositeJob</name>
+                                    <pos>x:685;y:320</pos>
+                                    <rect>x:-105;y:-55;w:210;h:110</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{04b80f1f-125d-4c9a-b43b-fced4112b899}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{83ce0c85-b924-41b8-9ef7-c42d77e85a7b}</object>
+                                    <a>{0989d6e3-1808-465e-8fe2-a0ebd4749882}</a>
+                                    <b>{7e38d4e3-7cd1-4884-ae3b-6b678ab895ca}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{b3e11eca-f98d-4c07-bec7-c189111891e7}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{17030f10-1306-4333-b915-e245c76b72cf}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
+                                    <name>CompositeJobErrorMode</name>
+                                    <pos>x:805;y:185</pos>
+                                    <rect>x:-75;y:-50;w:150;h:100</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{ce4cce48-b779-4ad9-937a-f0f40b9a4963}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{94302b78-61b6-4755-a9d4-ba429b1ed672}</object>
+                                    <a>{0989d6e3-1808-465e-8fe2-a0ebd4749882}</a>
+                                    <b>{b3e11eca-f98d-4c07-bec7-c189111891e7}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <navigable>true</navigable>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
                               </qlist>
                              </elements>
-                             <last-modified>1608745896256</last-modified>
+                             <last-modified>1610818122526</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -4946,6 +5034,180 @@
                                <type>2</type>
                                <properties>64</properties>
                                <declaration>FileInfo fromLocalFile(const QString &amp;path)</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{a5b43eab-0e96-4698-95a2-a5a75292b400}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{a5b43eab-0e96-4698-95a2-a5a75292b400}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>CompositeJob</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{83ce0c85-b924-41b8-9ef7-c42d77e85a7b}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{83ce0c85-b924-41b8-9ef7-c42d77e85a7b}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{a5b43eab-0e96-4698-95a2-a5a75292b400}</a>
+                                        <b>{12cdcd8a-33ba-4ed9-8fea-266c0b9e9789}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{708c2f7a-fae3-41db-9b2b-86436a17cc31}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{708c2f7a-fae3-41db-9b2b-86436a17cc31}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{a5b43eab-0e96-4698-95a2-a5a75292b400}</a>
+                                        <b>{12cdcd8a-33ba-4ed9-8fea-266c0b9e9789}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{94302b78-61b6-4755-a9d4-ba429b1ed672}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{94302b78-61b6-4755-a9d4-ba429b1ed672}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{a5b43eab-0e96-4698-95a2-a5a75292b400}</a>
+                                        <b>{17030f10-1306-4333-b915-e245c76b72cf}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{856a7168-604d-4dfb-94ea-6aabb5c6e81f}</uid>
+                               <type>2</type>
+                               <declaration>void addJob(AbstractJob* job)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{18a5db67-fcc4-459f-987b-53d18ffaf367}</uid>
+                               <type>1</type>
+                               <declaration>int maxJobs</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{b26d3ed1-29bf-4596-9059-ff7e9ba8663f}</uid>
+                               <type>1</type>
+                               <declaration>CompositeJobErrorMode errorMode</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{17030f10-1306-4333-b915-e245c76b72cf}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{17030f10-1306-4333-b915-e245c76b72cf}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
+                              </MElement>
+                             </base-MElement>
+                             <name>CompositeJobErrorMode</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{45c04bcd-646b-48b8-b385-2cedd4040e5a}</uid>
+                               <type>1</type>
+                               <declaration>StopOnFirstError</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{df73b2c5-87bc-4a40-9b30-2a3f65b96441}</uid>
+                               <type>1</type>
+                               <declaration>RunAllJobs</declaration>
                               </MClassMember>
                              </item>
                             </qlist>

@@ -425,6 +425,33 @@ enum class SynchronizerLogEntryType : quint32 {
 
 Q_ENUM_NS(SynchronizerLogEntryType);
 
+/**
+ * @brief Determines error handling of composite jobs.
+ *
+ * This enumeration is used to configure the error handling of composite jobs (i.e. jobs that
+ * consist of multiple other jobs).
+ */
+enum class CompositeJobErrorMode : quint32 {
+    /**
+     * @brief Stop as soon as the first child job encounters an error.
+     *
+     * This option will cause the composite job to run as soon as the first child job encounters an
+     * error.
+     */
+    StopOnFirstError = 0,
+
+    /**
+     * @brief Continue processing all child jobs, no matter if an error occurred.
+     *
+     * This option will cause the composite job to finish running all child jobs even if some of
+     * them already finished with an error. The composite will report the error of the first failing
+     * child as its own error.
+     */
+    RunAllJobs,
+};
+
+Q_ENUM_NS(CompositeJobErrorMode);
+
 } // namespace SynqClient
 
 #endif // LIBSYNQCLIENT_H
