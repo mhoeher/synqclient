@@ -21,7 +21,11 @@ isEmpty(INSTALL_PREFIX) {
 INSTALLS += target
 
 headers.files = $$files(inc/*)
-headers.path = $$[QT_INSTALL_HEADERS]/SynqClient
+isEmpty(INSTALL_PREFIX) {
+    headers.path = $$[QT_INSTALL_HEADERS]/include/SynqClient
+} else {
+    headers.path = $$INSTALL_PREFIX/include/SynqClient
+}
 INSTALLS += headers
 
 # You can make your code fail to compile if it uses deprecated APIs.

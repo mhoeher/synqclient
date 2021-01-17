@@ -1,10 +1,11 @@
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    libsynqclient \
-    tests
+SUBDIRS += libsynqclient
 
-tests.depends += libsynqclient
+!synqclient_with_no_tests {
+    SUBDIRS += tests
+    tests.depends += libsynqclient
+}
 
 OTHER_FILES += \
     $$files(model/*) \
