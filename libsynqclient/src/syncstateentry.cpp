@@ -182,7 +182,11 @@ QString SyncStateEntry::makePath(const QString& path)
     while (p.length() > 1 && p.endsWith("/")) {
         p.chop(1);
     }
-    return QDir::cleanPath(p);
+    p = QDir::cleanPath(p);
+    // WA for https://gitlab.com/rpdev/opentodolist/-/issues/404.
+    // For some reasons, we sometimes get paths starting with a double-dash. So we replace them.
+    p = p.replace("//", "/");
+    return p;
 }
 
 /**
