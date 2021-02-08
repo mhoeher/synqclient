@@ -72,7 +72,7 @@ void WebDAVCreateDirectoryJob::start()
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
     req.setUrl(url);
-    auto reply = networkAccessManager()->sendCustomRequest(req, d_ptr2->MKCOL, QByteArray());
+    auto reply = networkAccessManager()->sendCustomRequest(req, d_ptr2->MKCOL);
     if (reply) {
         reply->setParent(this);
         connect(reply, &QNetworkReply::finished, [=]() { d->handleRequestFinished(); });

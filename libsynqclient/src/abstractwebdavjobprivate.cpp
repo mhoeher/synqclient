@@ -27,10 +27,10 @@ AbstractWebDAVJobPrivate::AbstractWebDAVJobPrivate(AbstractWebDAVJob* q)
     : q_ptr(q),
       userAgent(DefaultUserAgent),
       networkAccessManager(nullptr),
-      url(),
+      url(QUrl()),
       serverType(WebDAVServerType::Generic),
       numManualRedirects(0),
-      nextUrl(),
+      nextUrl(QUrl()),
       reply(nullptr)
 {
 }
@@ -66,8 +66,7 @@ QUrl AbstractWebDAVJobPrivate::urlFromPath(const QString& path)
         break;
     }
     basePath += "/" + path;
-    QDir dir(basePath);
-    result.setPath(dir.absolutePath());
+    result.setPath(QDir::cleanPath(basePath));
     return result;
 }
 

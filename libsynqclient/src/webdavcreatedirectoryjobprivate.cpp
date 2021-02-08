@@ -56,7 +56,12 @@ void WebDAVCreateDirectoryJobPrivate::handleRequestFinished()
                 q->setError(JobError::FolderExists, tr("The remote folder already exists"));
                 break;
             default:
-                q->setError(q->fromNetworkError(*reply), reply->errorString());
+                q->setError(q->fromNetworkError(*reply),
+                            tr("Creating remote folder failed. The server replied: %1 (Error %2, "
+                               "code %3)")
+                                    .arg(reply->errorString())
+                                    .arg(reply->error())
+                                    .arg(code));
                 break;
             }
             q->finishLater();
