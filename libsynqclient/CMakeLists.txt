@@ -139,7 +139,7 @@ target_sources(
 )
 target_link_libraries(
     synqclient 
-    PRIVATE 
+    PUBLIC 
         Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::Network
         Qt${QT_VERSION_MAJOR}::Xml
@@ -148,7 +148,8 @@ target_link_libraries(
 target_include_directories(
     synqclient
     PUBLIC
-        inc/
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc/>
+        $<INSTALL_INTERFACE:include>
 )
 set_target_properties(
     synqclient
@@ -160,12 +161,25 @@ target_compile_definitions(
     PRIVATE
         LIBSYNQCLIENT_LIBRARY
 )
+target_compile_features(
+    synqclient
+    PUBLIC
+        cxx_std_14
+)
 
 install(
     TARGETS
         synqclient
-    DESTINATION
+    EXPORT
+        SynqClientTargets
+    LIBRARY DESTINATION
         ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION
+        ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION
+        ${CMAKE_INSTALL_INCLUDEDIR}
 )
 install(
     DIRECTORY

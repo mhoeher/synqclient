@@ -15,5 +15,15 @@ cd build/fedora-static-cmake
 cmake -DBUILD_SHARED_LIBS=OFF -GNinja ../../
 cmake --build .
 cmake --build . --target test
+DESTDIR=$PWD/_ cmake --build . --target install
 
 ls libsynqclient | grep libsynqclient.a
+
+cd _
+mkdir -p build
+cd build
+cmake \
+    -DCMAKE_INSTALL_PREFIX=$PWD/../usr/local \
+    -GNinja \
+    ../../../../tests/cmake-install-test
+cmake --build .
