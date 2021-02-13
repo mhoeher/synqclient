@@ -7,7 +7,7 @@ cd "$SCRIPT_DIR"
 cd ..
 
 if [ -n "$CI" ]; then
-    dnf install -y gcc gcc-c++ cmake ninja qt5-qtbase-devel
+    dnf install -y gcc gcc-c++ cmake ninja-build qt5-qtbase-devel
 fi
 
 mkdir -p build/fedora-cmake
