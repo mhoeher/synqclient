@@ -34,6 +34,10 @@ void WebDAVGetFileInfoJobTest::cleanupTestCase() {}
 
 void WebDAVGetFileInfoJobTest::getRootItemFileInfo()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -57,6 +61,10 @@ void WebDAVGetFileInfoJobTest::getRootItemFileInfo_data()
 
 void WebDAVGetFileInfoJobTest::getFileInfoForNonExistingFile()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 

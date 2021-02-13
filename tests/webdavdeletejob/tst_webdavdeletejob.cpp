@@ -44,6 +44,10 @@ void WebDAVDeleteJobTest::initTestCase() {}
 
 void WebDAVDeleteJobTest::deleteSingleFile()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -122,6 +126,10 @@ void WebDAVDeleteJobTest::deleteSingleFile_data()
 
 void WebDAVDeleteJobTest::deleteEmptyFolder()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -197,6 +205,10 @@ void WebDAVDeleteJobTest::deleteEmptyFolder_data()
 
 void WebDAVDeleteJobTest::deleteFolderRecursively()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -318,6 +330,10 @@ void WebDAVDeleteJobTest::deleteFolderRecursively_data()
 
 void WebDAVDeleteJobTest::syncAttribute()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 

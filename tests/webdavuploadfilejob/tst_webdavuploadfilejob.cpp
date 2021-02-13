@@ -45,6 +45,10 @@ void WebDAVUploadFileJobTest::initTestCase() {}
 
 void WebDAVUploadFileJobTest::uploadLocalFile()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -108,6 +112,10 @@ void WebDAVUploadFileJobTest::uploadLocalFile_data()
 
 void WebDAVUploadFileJobTest::uploadDevice()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -166,6 +174,10 @@ void WebDAVUploadFileJobTest::uploadDevice_data()
 
 void WebDAVUploadFileJobTest::uploadData()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -220,6 +232,10 @@ void WebDAVUploadFileJobTest::uploadData_data()
 
 void WebDAVUploadFileJobTest::uploadSyncAttribute()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 

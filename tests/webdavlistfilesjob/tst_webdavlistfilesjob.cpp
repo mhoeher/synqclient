@@ -38,6 +38,10 @@ void WebDAVListFilesJobTest::initTestCase() {}
 
 void WebDAVListFilesJobTest::listFiles()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 

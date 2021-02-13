@@ -40,7 +40,7 @@
 namespace SynqClient {
 namespace UnitTest {
 
-QList<QUrl> getWebDAVServersFromEnv()
+inline QList<QUrl> getWebDAVServersFromEnv()
 {
     QByteArray env = qgetenv("SYNQCLIENT_UT_WEBDAV_SERVERS");
     QList<QUrl> result;
@@ -56,7 +56,12 @@ QList<QUrl> getWebDAVServersFromEnv()
     return result;
 }
 
-QVector<std::tuple<QUrl, SynqClient::WebDAVServerType>> enumerateWebDAVTestServers()
+inline bool hasWebDAVServersFromEnv()
+{
+    return !getWebDAVServersFromEnv().isEmpty();
+}
+
+inline QVector<std::tuple<QUrl, SynqClient::WebDAVServerType>> enumerateWebDAVTestServers()
 {
     auto urls = getWebDAVServersFromEnv();
     decltype(enumerateWebDAVTestServers()) result;
@@ -82,7 +87,7 @@ QVector<std::tuple<QUrl, SynqClient::WebDAVServerType>> enumerateWebDAVTestServe
     return result;
 }
 
-void setupWebDAVTestServerData()
+inline void setupWebDAVTestServerData()
 {
     QTest::addColumn<QUrl>("url");
     QTest::addColumn<SynqClient::WebDAVServerType>("type");

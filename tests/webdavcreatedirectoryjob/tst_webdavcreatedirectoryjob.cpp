@@ -34,6 +34,10 @@ void WebDAVCreateDirectoryJobTest::initTestCase() {}
 
 void WebDAVCreateDirectoryJobTest::mkdir()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -72,6 +76,10 @@ void WebDAVCreateDirectoryJobTest::mkdir_data()
 
 void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 
@@ -108,6 +116,10 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath_data()
 
 void WebDAVCreateDirectoryJobTest::mkdirExisting()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
 

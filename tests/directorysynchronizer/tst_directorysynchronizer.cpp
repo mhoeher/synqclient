@@ -73,6 +73,10 @@ void DirectorySynchronizerTest::initTestCase() {}
 
 void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(AbstractJobFactory*, jobFactory);
 
     QTemporaryDir tmpDir;
@@ -100,6 +104,10 @@ void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
 
 void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(AbstractJobFactory*, jobFactory);
 
     QTemporaryDir tmpDir1;
@@ -151,6 +159,10 @@ void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
 
 void DirectorySynchronizerTest::editVsDeleteConflictResolution()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(AbstractJobFactory*, jobFactory);
 
     QTemporaryDir tmpDir1;
@@ -214,6 +226,10 @@ void DirectorySynchronizerTest::editVsDeleteConflictResolution()
 
 void DirectorySynchronizerTest::sync()
 {
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
+        QSKIP("No WebDAV servers configured - skipping test");
+    }
+
     QFETCH(AbstractJobFactory*, jobFactory);
 
     QTemporaryDir tmpDir1;
