@@ -22,7 +22,7 @@ INSTALLS += target
 
 headers.files = $$files(inc/*)
 isEmpty(INSTALL_PREFIX) {
-    headers.path = $$[QT_INSTALL_HEADERS]/include/SynqClient
+    headers.path = $$[QT_INSTALL_HEADERS]/SynqClient
 } else {
     headers.path = $$INSTALL_PREFIX/include/SynqClient
 }

@@ -27,6 +27,18 @@ fedora-static:
     variables:
         RUNNER: ./ci/build-and-test-static.sh
 
+fedora-cmake:
+    image: fedora
+    extends: .build-and-test
+    variables:
+        RUNNER: ./ci/build-and-test-cmake.sh
+
+fedora-static-cmake:
+    image: fedora
+    extends: .build-and-test
+    variables:
+        RUNNER: ./ci/build-and-test-static-cmake.sh
+
 pri-build:
     image: fedora
     extends: .build-and-test

@@ -1,0 +1,1 @@
+synqclient_add_test(webdavlistfilesjob)
