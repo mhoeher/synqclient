@@ -160,6 +160,10 @@ target_compile_definitions(
     synqclient
     PRIVATE
         LIBSYNQCLIENT_LIBRARY
+
+    PUBLIC
+        # Request export of symbols only if we don't build a static library
+        $<IF:$<STREQUAL:$<TARGET_PROPERTY:synqclient,TYPE>,STATIC_LIBRARY>,LIBSYNQCLIENT_LIBRARY_STATIC,LIBSYNQCLIENT_LIBRARY_SHARED>
 )
 target_compile_features(
     synqclient
