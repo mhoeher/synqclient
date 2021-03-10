@@ -155,6 +155,7 @@ set_target_properties(
     synqclient
     PROPERTIES
         CXX_VISIBILITY_PRESET hidden
+        SOVERSION ${SYNQCLIENT_VERSION}
 )
 target_compile_definitions(
     synqclient

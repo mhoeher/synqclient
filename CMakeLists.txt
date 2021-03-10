@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-set(SYNQCLIENT_VERSION 0.0.0)
+file(READ version.txt SYNQCLIENT_VERSION)
 project(SynqClient VERSION ${SYNQCLIENT_VERSION})
 
 
