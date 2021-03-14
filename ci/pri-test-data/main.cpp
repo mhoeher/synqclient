@@ -1,4 +1,4 @@
-#include <DirectorySynchronizer>
+#include <SynqClient/DirectorySynchronizer>
 
 int main(int, char**) {
     auto ds = new SynqClient::DirectorySynchronizer();
