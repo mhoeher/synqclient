@@ -8,7 +8,7 @@
 #include <QUrl>
 #include <QtGlobal>
 
-#include "AbstractWebDAVJob"
+#include "SynqClient/AbstractWebDAVJob"
 
 /**
  * @brief Utility macro to verify statements.

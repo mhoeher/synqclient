@@ -22,7 +22,7 @@
 
 #include <QPointer>
 
-#include "nextcloudloginflow.h"
+#include "SynqClient/nextcloudloginflow.h"
 
 class QJsonDocument;
 class QNetworkAccessManager;

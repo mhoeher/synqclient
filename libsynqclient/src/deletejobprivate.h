@@ -24,7 +24,7 @@
 #include <QVariant>
 
 #include "abstractjobprivate.h"
-#include "deletejob.h"
+#include "SynqClient/deletejob.h"
 
 namespace SynqClient {
 

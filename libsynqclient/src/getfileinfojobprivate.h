@@ -23,7 +23,7 @@
 #include <QString>
 #include <QVariantMap>
 
-#include "getfileinfojob.h"
+#include "SynqClient/getfileinfojob.h"
 #include "abstractjobprivate.h"
 
 namespace SynqClient {

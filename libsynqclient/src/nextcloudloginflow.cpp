@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/nextcloudloginflow.h"
+#include "SynqClient/nextcloudloginflow.h"
 
 #include <QDir>
 #include <QLoggingCategory>

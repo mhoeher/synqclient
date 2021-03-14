@@ -3,8 +3,8 @@
 #include <QtTest>
 
 // add necessary includes here
-#include "WebDAVCreateDirectoryJob"
-#include "WebDAVGetFileInfoJob"
+#include "SynqClient/WebDAVCreateDirectoryJob"
+#include "SynqClient/WebDAVGetFileInfoJob"
 #include "../shared/utils.h"
 
 class WebDAVCreateDirectoryJobTest : public QObject

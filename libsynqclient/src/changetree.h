@@ -8,7 +8,7 @@
 #include <QSet>
 #include <QString>
 
-#include "SyncStateEntry"
+#include "SynqClient/SyncStateEntry"
 
 // Uncomment to enable debug output of the change trees to stderr. Useful during writing code/unit
 // tests.

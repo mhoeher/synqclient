@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/webdavdeletejob.h"
+#include "SynqClient/webdavdeletejob.h"
 
 #include <QNetworkRequest>
 

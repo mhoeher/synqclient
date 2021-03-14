@@ -21,7 +21,7 @@
 #define SYNQCLIENT_WEBDAVDOWNLOADFILEJOBPRIVATE_H
 
 #include "downloadfilejobprivate.h"
-#include "webdavdownloadfilejob.h"
+#include "SynqClient/webdavdownloadfilejob.h"
 
 namespace SynqClient {
 

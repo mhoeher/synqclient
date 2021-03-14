@@ -21,7 +21,7 @@
 #define SYNQCLIENT_WEBDAVJOBFACTORYPRIVATE_H
 
 #include "abstractjobfactoryprivate.h"
-#include "webdavjobfactory.h"
+#include "SynqClient/webdavjobfactory.h"
 
 #include <QNetworkAccessManager>
 #include <QPointer>

@@ -30,14 +30,14 @@
 #include <QThread>
 #include <QTimer>
 
-#include "abstractjobfactory.h"
-#include "createdirectoryjob.h"
-#include "deletejob.h"
-#include "downloadfilejob.h"
-#include "getfileinfojob.h"
-#include "listfilesjob.h"
-#include "syncstatedatabase.h"
-#include "uploadfilejob.h"
+#include "SynqClient/abstractjobfactory.h"
+#include "SynqClient/createdirectoryjob.h"
+#include "SynqClient/deletejob.h"
+#include "SynqClient/downloadfilejob.h"
+#include "SynqClient/getfileinfojob.h"
+#include "SynqClient/listfilesjob.h"
+#include "SynqClient/syncstatedatabase.h"
+#include "SynqClient/uploadfilejob.h"
 
 namespace SynqClient {
 

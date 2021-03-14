@@ -4,7 +4,7 @@
 #include <QString>
 #include <QtGlobal>
 
-#include "abstractjob.h"
+#include "SynqClient/abstractjob.h"
 
 namespace SynqClient {
 

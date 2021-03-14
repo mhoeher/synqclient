@@ -17,16 +17,16 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/webdavjobfactory.h"
+#include "SynqClient/webdavjobfactory.h"
 
 #include "webdavjobfactoryprivate.h"
 
-#include "webdavcreatedirectoryjob.h"
-#include "webdavdeletejob.h"
-#include "webdavdownloadfilejob.h"
-#include "webdavuploadfilejob.h"
-#include "webdavgetfileinfojob.h"
-#include "webdavlistfilesjob.h"
+#include "SynqClient/webdavcreatedirectoryjob.h"
+#include "SynqClient/webdavdeletejob.h"
+#include "SynqClient/webdavdownloadfilejob.h"
+#include "SynqClient/webdavuploadfilejob.h"
+#include "SynqClient/webdavgetfileinfojob.h"
+#include "SynqClient/webdavlistfilesjob.h"
 
 namespace SynqClient {
 

@@ -22,7 +22,7 @@
 
 #include <QCoreApplication>
 
-#include "webdavcreatedirectoryjob.h"
+#include "SynqClient/webdavcreatedirectoryjob.h"
 #include "createdirectoryjobprivate.h"
 
 namespace SynqClient {

@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/webdavdownloadfilejob.h"
+#include "SynqClient/webdavdownloadfilejob.h"
 
 #include "abstractwebdavjobprivate.h"
 #include "webdavdownloadfilejobprivate.h"

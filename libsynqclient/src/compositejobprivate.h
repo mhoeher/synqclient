@@ -24,7 +24,7 @@
 #include <QPointer>
 
 #include "abstractjobprivate.h"
-#include "compositejob.h"
+#include "SynqClient/compositejob.h"
 
 namespace SynqClient {
 

@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/getfileinfojob.h"
+#include "SynqClient/getfileinfojob.h"
 
 #include "getfileinfojobprivate.h"
 

@@ -17,12 +17,12 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/directorysynchronizer.h"
+#include "SynqClient/directorysynchronizer.h"
 
 #include <QFileInfo>
 
-#include "abstractjobfactory.h"
-#include "syncstatedatabase.h"
+#include "SynqClient/abstractjobfactory.h"
+#include "SynqClient/syncstatedatabase.h"
 
 #include "directorysynchronizerprivate.h"
 

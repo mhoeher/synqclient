@@ -21,7 +21,7 @@
 
 #include <QDateTime>
 
-#include "syncstateentry.h"
+#include "SynqClient/syncstateentry.h"
 
 namespace SynqClient {
 

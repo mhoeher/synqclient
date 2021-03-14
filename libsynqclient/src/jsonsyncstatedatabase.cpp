@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/jsonsyncstatedatabase.h"
+#include "SynqClient/jsonsyncstatedatabase.h"
 
 #include <QDateTime>
 #include <QDir>

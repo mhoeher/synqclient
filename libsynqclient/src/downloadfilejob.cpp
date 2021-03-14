@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/downloadfilejob.h"
+#include "SynqClient/downloadfilejob.h"
 
 #include <QBuffer>
 #include <QFile>

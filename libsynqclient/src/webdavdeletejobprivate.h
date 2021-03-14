@@ -21,7 +21,7 @@
 #define SYNQCLIENT_WEBDAVDELETEJOBPRIVATE_H
 
 #include "deletejobprivate.h"
-#include "webdavdeletejob.h"
+#include "SynqClient/webdavdeletejob.h"
 
 namespace SynqClient {
 

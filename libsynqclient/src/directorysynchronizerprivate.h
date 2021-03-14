@@ -29,11 +29,11 @@
 #include <QSharedPointer>
 #include <QQueue>
 
-#include "abstractjob.h"
+#include "SynqClient/abstractjob.h"
 #include "changetree.h"
-#include "directorysynchronizer.h"
-#include "libsynqclient.h"
-#include "syncstateentry.h"
+#include "SynqClient/directorysynchronizer.h"
+#include "SynqClient/libsynqclient.h"
+#include "SynqClient/syncstateentry.h"
 #include "syncactions.h"
 
 namespace SynqClient {

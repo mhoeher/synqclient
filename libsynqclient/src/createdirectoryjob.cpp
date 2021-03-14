@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/createdirectoryjob.h"
+#include "SynqClient/createdirectoryjob.h"
 
 #include "createdirectoryjobprivate.h"
 

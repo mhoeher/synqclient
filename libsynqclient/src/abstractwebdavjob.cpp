@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/abstractwebdavjob.h"
+#include "SynqClient/abstractwebdavjob.h"
 
 #include "abstractwebdavjobprivate.h"
 

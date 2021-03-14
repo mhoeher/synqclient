@@ -21,7 +21,7 @@
 #define SYNQCLIENT_WEBDAVUPLOADFILEJOBPRIVATE_H
 
 #include "uploadfilejobprivate.h"
-#include "webdavuploadfilejob.h"
+#include "SynqClient/webdavuploadfilejob.h"
 
 namespace SynqClient {
 

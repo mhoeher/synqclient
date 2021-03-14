@@ -21,7 +21,7 @@
 #define SYNQCLIENT_LISTFILESJOBPRIVATE_H
 
 #include "abstractjobprivate.h"
-#include "listfilesjob.h"
+#include "SynqClient/listfilesjob.h"
 
 namespace SynqClient {
 

@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/sqlsyncstatedatabase.h"
+#include "SynqClient/sqlsyncstatedatabase.h"
 
 #include <QDateTime>
 #include <QLoggingCategory>

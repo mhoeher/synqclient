@@ -25,7 +25,7 @@
 #include <QSqlDatabase>
 
 #include "syncstatedatabaseprivate.h"
-#include "sqlsyncstatedatabase.h"
+#include "SynqClient/sqlsyncstatedatabase.h"
 
 namespace SynqClient {
 

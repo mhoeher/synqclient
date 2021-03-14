@@ -24,7 +24,7 @@
 #include <QVariantMap>
 
 #include "abstractjobprivate.h"
-#include "downloadfilejob.h"
+#include "SynqClient/downloadfilejob.h"
 
 namespace SynqClient {
 

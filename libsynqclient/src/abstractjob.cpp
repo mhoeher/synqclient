@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/abstractjob.h"
+#include "SynqClient/abstractjob.h"
 
 #include <QTimer>
 #include <QNetworkReply>
