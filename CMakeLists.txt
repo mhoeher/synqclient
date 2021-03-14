@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 file(READ version.txt SYNQCLIENT_VERSION)
+string(STRIP "${SYNQCLIENT_VERSION}" SYNQCLIENT_VERSION)
 project(SynqClient VERSION ${SYNQCLIENT_VERSION})
 
 include(GNUInstallDirs)
