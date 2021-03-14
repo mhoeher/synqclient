@@ -192,3 +192,8 @@ install(
     DESTINATION
         ${CMAKE_INSTALL_INCLUDEDIR}/SynqClient-qt${QT_VERSION_MAJOR}/SynqClient
 )
+
+# Add an alias target, so that including the project in source form in another
+# project, is possible as well without writing additional code in the host
+# project:
+add_library(SynqClient::synqclient-qt${QT_VERSION_MAJOR} ALIAS synqclient-qt${QT_VERSION_MAJOR})
