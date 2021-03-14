@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.17)
 file(READ version.txt SYNQCLIENT_VERSION)
 project(SynqClient VERSION ${SYNQCLIENT_VERSION})
 
-
-# TODO: Version from git
-
 include(GNUInstallDirs)
 
 enable_testing()
@@ -25,7 +22,13 @@ set(
     SYNQCLIENT_REQUIRED_QT_DEPENDENCIES
     Core Network Xml Sql
 )
-find_package(QT NAMES Qt6 Qt5 COMPONENTS ${SYNQCLIENT_REQUIRED_QT_DEPENDENCIES} Test REQUIRED)
+
+if(NOT QLMDB_QT_VERSIONS)
+    # If QLMDB_QT_VERSIONS is not set by user, first, look for Qt6, followed by Qt5:
+    set(QLMDB_QT_VERSIONS Qt6 Qt5)
+endif()
+
+find_package(QT NAMES ${QLMDB_QT_VERSIONS} COMPONENTS ${SYNQCLIENT_REQUIRED_QT_DEPENDENCIES} Test REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${SYNQCLIENT_REQUIRED_QT_DEPENDENCIES} Test REQUIRED)
 
 
@@ -43,13 +46,13 @@ install(
     NAMESPACE
         SynqClient::
     DESTINATION
-        ${CMAKE_INSTALL_LIBDIR}/cmake/SynqClient
+        ${CMAKE_INSTALL_LIBDIR}/cmake/SynqClient-qt${QT_VERSION_MAJOR}
 )
 
 # Export library interface:
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    SynqClientConfigVersion.cmake
+    SynqClient-qt${QT_VERSION_MAJOR}ConfigVersion.cmake
     VERSION
         ${SYNQCLIENT_VERSION}
     COMPATIBILITY
@@ -57,14 +60,14 @@ write_basic_package_version_file(
 )
 install(
     FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/SynqClientConfig.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/SynqClientConfigVersion.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/SynqClient-qt${QT_VERSION_MAJOR}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/SynqClient-qt${QT_VERSION_MAJOR}ConfigVersion.cmake
     DESTINATION
-        ${CMAKE_INSTALL_LIBDIR}/cmake/SynqClient
+        ${CMAKE_INSTALL_LIBDIR}/cmake/SynqClient-qt${QT_VERSION_MAJOR}
 )
 configure_package_config_file(
-    cmake/SynqClientConfig.cmake SynqClientConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SynqClient
+    cmake/SynqClientConfig.cmake SynqClient-qt${QT_VERSION_MAJOR}Config.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SynqClient-qt${QT_VERSION_MAJOR}
 )
 
 
@@ -87,9 +90,9 @@ if(ECM_FOUND)
     
     ecm_generate_pri_file(
         BASE_NAME
-            SynqClient
+            SynqClient-qt${QT_VERSION_MAJOR}
         LIB_NAME
-            synqclient
+            synqclient-qt${QT_VERSION_MAJOR}
         DEPS
             "${PRI_DEPS}"
         FILENAME_VAR

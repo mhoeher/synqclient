@@ -130,15 +130,15 @@ set(SYNQCLIENT_HEADERS
     src/webdavuploadfilejobprivate.h
 )
 
-add_library(synqclient)
+add_library(synqclient-qt${QT_VERSION_MAJOR})
 target_sources(
-    synqclient 
+    synqclient-qt${QT_VERSION_MAJOR} 
     PRIVATE 
         ${SYNQCLIENT_SOURCES}
         ${SYNQCLIENT_HEADERS}
 )
 target_link_libraries(
-    synqclient 
+    synqclient-qt${QT_VERSION_MAJOR} 
     PUBLIC 
         Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::Network
@@ -146,35 +146,35 @@ target_link_libraries(
         Qt${QT_VERSION_MAJOR}::Sql
 )
 target_include_directories(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc/>
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:include/SynqClient-qt${QT_VERSION_MAJOR}>
 )
 set_target_properties(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PROPERTIES
         CXX_VISIBILITY_PRESET hidden
         SOVERSION ${SYNQCLIENT_VERSION}
 )
 target_compile_definitions(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PRIVATE
         LIBSYNQCLIENT_LIBRARY
 
     PUBLIC
         # Request export of symbols only if we don't build a static library
-        $<IF:$<STREQUAL:$<TARGET_PROPERTY:synqclient,TYPE>,STATIC_LIBRARY>,LIBSYNQCLIENT_LIBRARY_STATIC,LIBSYNQCLIENT_LIBRARY_SHARED>
+        $<IF:$<STREQUAL:$<TARGET_PROPERTY:synqclient-qt${QT_VERSION_MAJOR},TYPE>,STATIC_LIBRARY>,LIBSYNQCLIENT_LIBRARY_STATIC,LIBSYNQCLIENT_LIBRARY_SHARED>
 )
 target_compile_features(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PUBLIC
         cxx_std_14
 )
 
 install(
     TARGETS
-        synqclient
+        synqclient-qt${QT_VERSION_MAJOR}
     EXPORT
         SynqClientTargets
     LIBRARY DESTINATION
@@ -190,5 +190,5 @@ install(
     DIRECTORY
         inc/
     DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}/SynqClient
+        ${CMAKE_INSTALL_INCLUDEDIR}/SynqClient-qt${QT_VERSION_MAJOR}/SynqClient
 )

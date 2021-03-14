@@ -14,7 +14,7 @@ macro(synqclient_add_test TEST_NAME)
             Qt${QT_VERSION_MAJOR}::Core
             Qt${QT_VERSION_MAJOR}::Network
             Qt${QT_VERSION_MAJOR}::Test
-            synqclient
+            synqclient-qt${QT_VERSION_MAJOR}
     )
     add_test(
         NAME
