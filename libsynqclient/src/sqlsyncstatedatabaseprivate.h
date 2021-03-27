@@ -38,7 +38,8 @@ public:
 
     Q_DECLARE_PUBLIC(SQLSyncStateDatabase);
 
-    QSqlDatabase db;
+    QString dbConnName;
+    QString defaultDbConnName;
 
     /**
      * @brief Auto-removal of connections to SQLite DBs.
@@ -50,6 +51,7 @@ public:
 
     bool initializeDbV1();
     void removeOldConnection();
+    QSqlDatabase getDb() const;
 
     std::tuple<QString, QString> splitPath(const QString& path,
                                            SplitPathMode mode = SplitPathMode::NameIncluded);
