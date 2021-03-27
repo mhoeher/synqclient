@@ -59,6 +59,8 @@ public:
     SyncConflictStrategy syncConflictStrategy;
     SynchronizerFlags flags;
     bool stopped;
+    int progress;
+    int numTotalSyncActionsToRun;
 
     void finishLater();
     void setError(SynchronizerError error, const QString& errorString);
@@ -105,6 +107,8 @@ public:
     bool deleteLocally(const QString& path);
     bool canRunAction(const QSharedPointer<SyncAction>& action);
     void runRemoteAction(const QSharedPointer<SyncAction>& action);
+
+    void updateProgress();
 
 signals:
 
