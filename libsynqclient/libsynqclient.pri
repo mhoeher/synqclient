@@ -2,6 +2,8 @@ QT *= network xml sql
 CONFIG *= c++14
 
 SOURCES *= \
+    $$PWD/src/abstractdropboxjob.cpp \
+    $$PWD/src/abstractdropboxjobprivate.cpp \
     $$PWD/src/abstractjob.cpp \
     $$PWD/src/abstractjobfactory.cpp \
     $$PWD/src/abstractjobfactoryprivate.cpp \
@@ -18,6 +20,20 @@ SOURCES *= \
     $$PWD/src/directorysynchronizerprivate.cpp \
     $$PWD/src/downloadfilejob.cpp \
     $$PWD/src/downloadfilejobprivate.cpp \
+    $$PWD/src/dropboxcreatedirectoryjob.cpp \
+    $$PWD/src/dropboxcreatedirectoryjobprivate.cpp \
+    $$PWD/src/dropboxdeletejob.cpp \
+    $$PWD/src/dropboxdeletejobprivate.cpp \
+    $$PWD/src/dropboxdownloadfilejob.cpp \
+    $$PWD/src/dropboxdownloadfilejobprivate.cpp \
+    $$PWD/src/dropboxgetfileinfojob.cpp \
+    $$PWD/src/dropboxgetfileinfojobprivate.cpp \
+    $$PWD/src/dropboxjobfactory.cpp \
+    $$PWD/src/dropboxjobfactoryprivate.cpp \
+    $$PWD/src/dropboxlistfilesjob.cpp \
+    $$PWD/src/dropboxlistfilesjobprivate.cpp \
+    $$PWD/src/dropboxuploadfilejob.cpp \
+    $$PWD/src/dropboxuploadfilejobprivate.cpp \
     $$PWD/src/fileinfo.cpp \
     $$PWD/src/fileinfoprivate.cpp \
     $$PWD/src/getfileinfojob.cpp \
@@ -53,6 +69,7 @@ SOURCES *= \
     $$PWD/src/webdavuploadfilejobprivate.cpp
 
 HEADERS *= \
+    $$PWD/inc/SynqClient/AbstractDropboxJob \
     $$PWD/inc/SynqClient/AbstractJob \
     $$PWD/inc/SynqClient/AbstractJobFactory \
     $$PWD/inc/SynqClient/AbstractWebDAVJob \
@@ -61,6 +78,13 @@ HEADERS *= \
     $$PWD/inc/SynqClient/DeleteJob \
     $$PWD/inc/SynqClient/DirectorySynchronizer \
     $$PWD/inc/SynqClient/DownloadFileJob \
+    $$PWD/inc/SynqClient/DropboxCreateDirectoryJob \
+    $$PWD/inc/SynqClient/DropboxDeleteJob \
+    $$PWD/inc/SynqClient/DropboxDownloadFileJob \
+    $$PWD/inc/SynqClient/DropboxGetFileInfoJob \
+    $$PWD/inc/SynqClient/DropboxJobFactory \
+    $$PWD/inc/SynqClient/DropboxListFilesJob \
+    $$PWD/inc/SynqClient/DropboxUploadFileJob \
     $$PWD/inc/SynqClient/FileInfo \
     $$PWD/inc/SynqClient/GetFileInfoJob \
     $$PWD/inc/SynqClient/JSONSyncStateDatabase \
@@ -77,6 +101,7 @@ HEADERS *= \
     $$PWD/inc/SynqClient/WebDAVJobFactory \
     $$PWD/inc/SynqClient/WebDAVListFilesJob \
     $$PWD/inc/SynqClient/WebDAVUploadFileJob \
+    $$PWD/inc/SynqClient/abstractdropboxjob.h \
     $$PWD/inc/SynqClient/abstractjob.h \
     $$PWD/inc/SynqClient/abstractjobfactory.h \
     $$PWD/inc/SynqClient/abstractwebdavjob.h \
@@ -85,6 +110,13 @@ HEADERS *= \
     $$PWD/inc/SynqClient/deletejob.h \
     $$PWD/inc/SynqClient/directorysynchronizer.h \
     $$PWD/inc/SynqClient/downloadfilejob.h \
+    $$PWD/inc/SynqClient/dropboxcreatedirectoryjob.h \
+    $$PWD/inc/SynqClient/dropboxdeletejob.h \
+    $$PWD/inc/SynqClient/dropboxdownloadfilejob.h \
+    $$PWD/inc/SynqClient/dropboxgetfileinfojob.h \
+    $$PWD/inc/SynqClient/dropboxjobfactory.h \
+    $$PWD/inc/SynqClient/dropboxlistfilesjob.h \
+    $$PWD/inc/SynqClient/dropboxuploadfilejob.h \
     $$PWD/inc/SynqClient/fileinfo.h \
     $$PWD/inc/SynqClient/getfileinfojob.h \
     $$PWD/inc/SynqClient/jsonsyncstatedatabase.h \
@@ -103,6 +135,7 @@ HEADERS *= \
     $$PWD/inc/SynqClient/webdavjobfactory.h \
     $$PWD/inc/SynqClient/webdavlistfilesjob.h \
     $$PWD/inc/SynqClient/webdavuploadfilejob.h \
+    $$PWD/src/abstractdropboxjobprivate.h \
     $$PWD/src/abstractjobfactoryprivate.h \
     $$PWD/src/abstractjobprivate.h \
     $$PWD/src/abstractwebdavjobprivate.h \
@@ -113,6 +146,13 @@ HEADERS *= \
     $$PWD/src/deletejobprivate.h \
     $$PWD/src/directorysynchronizerprivate.h \
     $$PWD/src/downloadfilejobprivate.h \
+    $$PWD/src/dropboxcreatedirectoryjobprivate.h \
+    $$PWD/src/dropboxdeletejobprivate.h \
+    $$PWD/src/dropboxdownloadfilejobprivate.h \
+    $$PWD/src/dropboxgetfileinfojobprivate.h \
+    $$PWD/src/dropboxjobfactoryprivate.h \
+    $$PWD/src/dropboxlistfilesjobprivate.h \
+    $$PWD/src/dropboxuploadfilejobprivate.h \
     $$PWD/src/fileinfoprivate.h \
     $$PWD/src/getfileinfojobprivate.h \
     $$PWD/src/jsonsyncstatedatabaseprivate.h \

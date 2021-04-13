@@ -1,4 +1,6 @@
 set(SYNQCLIENT_SOURCES
+    src/abstractdropboxjob.cpp
+    src/abstractdropboxjobprivate.cpp
     src/abstractjob.cpp
     src/abstractjobfactory.cpp
     src/abstractjobfactoryprivate.cpp
@@ -15,6 +17,20 @@ set(SYNQCLIENT_SOURCES
     src/directorysynchronizerprivate.cpp
     src/downloadfilejob.cpp
     src/downloadfilejobprivate.cpp
+    src/dropboxcreatedirectoryjob.cpp
+    src/dropboxcreatedirectoryjobprivate.cpp
+    src/dropboxdeletejob.cpp
+    src/dropboxdeletejobprivate.cpp
+    src/dropboxdownloadfilejob.cpp
+    src/dropboxdownloadfilejobprivate.cpp
+    src/dropboxgetfileinfojob.cpp
+    src/dropboxgetfileinfojobprivate.cpp
+    src/dropboxjobfactory.cpp
+    src/dropboxjobfactoryprivate.cpp
+    src/dropboxlistfilesjob.cpp
+    src/dropboxlistfilesjobprivate.cpp
+    src/dropboxuploadfilejob.cpp
+    src/dropboxuploadfilejobprivate.cpp
     src/fileinfo.cpp
     src/fileinfoprivate.cpp
     src/getfileinfojob.cpp
@@ -51,6 +67,8 @@ set(SYNQCLIENT_SOURCES
 )
 
 set(SYNQCLIENT_HEADERS
+    inc/SynqClient/AbstractDropboxJob
+    inc/SynqClient/abstractdropboxjob.h
     inc/SynqClient/AbstractJob
     inc/SynqClient/abstractjob.h
     inc/SynqClient/AbstractJobFactory
@@ -67,6 +85,20 @@ set(SYNQCLIENT_HEADERS
     inc/SynqClient/directorysynchronizer.h
     inc/SynqClient/DownloadFileJob
     inc/SynqClient/downloadfilejob.h
+    inc/SynqClient/DropboxCreateDirectoryJob
+    inc/SynqClient/dropboxcreatedirectoryjob.h
+    inc/SynqClient/DropboxDeleteJob
+    inc/SynqClient/dropboxdeletejob.h
+    inc/SynqClient/DropboxDownloadFileJob
+    inc/SynqClient/dropboxdownloadfilejob.h
+    inc/SynqClient/DropboxGetFileInfoJob
+    inc/SynqClient/dropboxgetfileinfojob.h
+    inc/SynqClient/DropboxJobFactory
+    inc/SynqClient/dropboxjobfactory.h
+    inc/SynqClient/DropboxListFilesJob
+    inc/SynqClient/dropboxlistfilesjob.h
+    inc/SynqClient/DropboxUploadFileJob
+    inc/SynqClient/dropboxuploadfilejob.h
     inc/SynqClient/FileInfo
     inc/SynqClient/fileinfo.h
     inc/SynqClient/GetFileInfoJob
@@ -102,6 +134,7 @@ set(SYNQCLIENT_HEADERS
     inc/SynqClient/webdavlistfilesjob.h
     inc/SynqClient/WebDAVUploadFileJob
     inc/SynqClient/webdavuploadfilejob.h
+    src/abstractdropboxjobprivate.h
     src/abstractjobfactoryprivate.h
     src/abstractjobprivate.h
     src/abstractwebdavjobprivate.h
@@ -111,6 +144,13 @@ set(SYNQCLIENT_HEADERS
     src/deletejobprivate.h
     src/directorysynchronizerprivate.h
     src/downloadfilejobprivate.h
+    src/dropboxcreatedirectoryjobprivate.h
+    src/dropboxdeletejobprivate.h
+    src/dropboxdownloadfilejobprivate.h
+    src/dropboxgetfileinfojobprivate.h
+    src/dropboxjobfactoryprivate.h
+    src/dropboxlistfilesjobprivate.h
+    src/dropboxuploadfilejobprivate.h
     src/fileinfoprivate.h
     src/getfileinfojobprivate.h
     src/jsonsyncstatedatabaseprivate.h

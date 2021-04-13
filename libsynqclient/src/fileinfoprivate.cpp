@@ -22,7 +22,7 @@
 namespace SynqClient {
 
 FileInfoPrivate::FileInfoPrivate()
-    : type(Invalid), name(), syncAttribute(), url(), customProperties()
+    : type(Invalid), name(), path(), syncAttribute(), url(), isDeleted(false), customProperties()
 {
 }
 
@@ -30,8 +30,10 @@ FileInfoPrivate::FileInfoPrivate(const FileInfoPrivate& other)
     : QSharedData(other),
       type(other.type),
       name(other.name),
+      path(other.path),
       syncAttribute(other.syncAttribute),
       url(other.url),
+      isDeleted(other.isDeleted),
       customProperties(other.customProperties)
 {
 }

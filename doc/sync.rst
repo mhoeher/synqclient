@@ -56,7 +56,8 @@ The following concrete factory classes are provided by SynqClient in order to al
 .. doxygenclass:: SynqClient::WebDAVJobFactory
     :members:
 
-
+.. doxygenclass:: SynqClient::DropboxJobFactory
+    :members:
 
 Synchronization State Database
 ++++++++++++++++++++++++++++++

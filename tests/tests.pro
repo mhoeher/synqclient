@@ -4,6 +4,13 @@ SUBDIRS += \
     abstractjob \
     compositejob \
     directorysynchronizer \
+    dropboxcreatedirectoryjob \
+    dropboxdeletejob \
+    dropboxdownloadfilejob \
+    dropboxgetfileinfojob \
+    dropboxjobfactory \
+    dropboxlistfilesjob \
+    dropboxuploadfilejob \
     syncstatedatabase \
     webdavcreatedirectoryjob \
     webdavdeletejob \
@@ -11,4 +18,4 @@ SUBDIRS += \
     webdavgetfileinfojob \
     webdavjobfactory \
     webdavlistfilesjob \
-    webdavuploadfilejob
+    webdavuploadfilejob \

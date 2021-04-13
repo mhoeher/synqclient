@@ -61,6 +61,16 @@ inline bool hasWebDAVServersFromEnv()
     return !getWebDAVServersFromEnv().isEmpty();
 }
 
+inline QByteArray getDropboxTokenFromEnv()
+{
+    return qgetenv("SYNQCLIENT_UT_DROPBOX_TOKEN");
+}
+
+inline bool hasDropboxTokenFromEnv()
+{
+    return !getDropboxTokenFromEnv().isEmpty();
+}
+
 inline QVector<std::tuple<QUrl, SynqClient::WebDAVServerType>> enumerateWebDAVTestServers()
 {
     auto urls = getWebDAVServersFromEnv();

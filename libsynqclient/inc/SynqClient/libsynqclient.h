@@ -57,6 +57,14 @@ enum class JobError : quint32 {
      * already exists.
      */
     FolderExists,
+
+    /**
+     * @brief The remove file or folder has been deleted.
+     *
+     * This error is used to indicate that the remote resource which the job worked on has been
+     * deleted.
+     */
+    ResourceDeleted,
 };
 
 Q_ENUM_NS(JobError);

@@ -44,12 +44,17 @@ if __name__ == "__main__":
             include(../test.pri)
             """
         ))
+    with open(path / "CMakeLists.txt", "w") as file:
+        file.write(dedent(f"""\
+            synqclient_add_test({classname})
+            """
+        ))
     with open(path / ("tst_" + classname + ".cpp"), "w") as file:
         file.write(dedent(f"""\
             #include <QtTest>
 
             // add necessary includes here
-            #include "{ClassName}"
+            #include "SynqClient/{ClassName}"
 
             class {ClassName}Test : public QObject
             {{

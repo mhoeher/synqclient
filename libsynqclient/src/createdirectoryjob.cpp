@@ -30,8 +30,11 @@ namespace SynqClient {
  * This is an abstract base class for jobs which are used to create remote folders. The path to the
  * folder to be created is specified by calling setPath().
  *
- * Note that the parent folder of the configured path must exist, i.e. jobs of this type do not
- * create remote folders *recursively*.
+ * Jobs of this type are only supposed to create one folder hierarchy level at a time. A concrete
+ * implementation may terminate with an error when you try to create a folder structure
+ * recursively. Concrete implementations might implement recursive creation of folders (e.g. if
+ * this is inherent to the used backing service). However, when writing generic code, always
+ * assume you have to create folders one by one.
  *
  * # Error Handling
  *

@@ -40,8 +40,10 @@ public:
 
     Type type;
     QString name;
+    QString path;
     QString syncAttribute;
     QUrl url;
+    bool isDeleted;
     QVariantMap customProperties;
 };
 
