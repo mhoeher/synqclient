@@ -57,6 +57,8 @@ public:
     std::tuple<JobError, QString> checkDefaultParameters();
 
     static FileInfo fileInfoFromJson(const QJsonObject& obj, const QString& basePath = QString());
+
+    QNetworkReply* post(const QString& endpoint, const QVariant& data);
 };
 
 } // namespace SynqClient

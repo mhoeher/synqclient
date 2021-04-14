@@ -20,6 +20,7 @@
 #include "abstractdropboxjobprivate.h"
 
 #include <QDir>
+#include <QJsonDocument>
 #include <QJsonObject>
 
 #include "abstractwebdavjobprivate.h"
@@ -93,6 +94,18 @@ FileInfo AbstractDropboxJobPrivate::fileInfoFromJson(const QJsonObject& obj,
         result.setCustomProperty(AbstractDropboxJob::DropboxFileInfoKey, obj.toVariantMap());
     }
     return result;
+}
+
+QNetworkReply* AbstractDropboxJobPrivate::post(const QString& endpoint, const QVariant& data)
+{
+    QNetworkRequest req;
+    req.setUrl(AbstractDropboxJobPrivate::APIv2 + endpoint);
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    req.setRawHeader("Authorization", "Bearer " + token.toUtf8());
+
+    auto reply = networkAccessManager->post(req, QJsonDocument::fromVariant(data).toJson());
+
+    return reply;
 }
 
 } // namespace SynqClient

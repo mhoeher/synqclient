@@ -71,12 +71,7 @@ void DropboxGetFileInfoJob::start()
 
     QVariantMap data { { "path", d->path } };
 
-    QNetworkRequest req;
-    req.setUrl(AbstractDropboxJobPrivate::APIv2 + "/files/get_metadata");
-    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    req.setRawHeader("Authorization", "Bearer " + token().toUtf8());
-
-    auto reply = networkAccessManager()->post(req, QJsonDocument::fromVariant(data).toJson());
+    auto reply = d_ptr2->post("/files/get_metadata", data);
 
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {
@@ -95,7 +90,28 @@ void DropboxGetFileInfoJob::start()
                              tr("Failed to parse JSON response: %s").arg(error.errorString()));
                 }
             } else {
-                setError(JobError::NetworkRequestFailed, reply->errorString());
+                // Check if this is a "known" error
+                QJsonParseError error;
+                auto doc = QJsonDocument::fromJson(reply->readAll(), &error);
+                if (error.error == QJsonParseError::NoError) {
+                    // {"error_summary": "path/not_found/.", "error": {".tag": "path", "path":
+                    // {".tag": "not_found"}}}
+                    if (doc.object()
+                                .value("error")
+                                .toObject()
+                                .value("path")
+                                .toObject()
+                                .value(".tag")
+                                .toString()
+                        == "not_found") {
+                        setError(JobError::ResourceNotFound,
+                                 tr("The remove path %1 does not exist").arg(d->path));
+                    }
+                }
+                if (this->error() == JobError::NoError) {
+                    // Unrecognized error - "fail generically"
+                    setError(JobError::NetworkRequestFailed, reply->errorString());
+                }
             }
             finishLater();
         });

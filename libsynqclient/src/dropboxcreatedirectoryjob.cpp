@@ -76,12 +76,7 @@ void DropboxCreateDirectoryJob::start()
 
     QVariantMap data { { "path", d->path }, { "autorename", false } };
 
-    QNetworkRequest req;
-    req.setUrl(AbstractDropboxJobPrivate::APIv2 + "/files/create_folder_v2");
-    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    req.setRawHeader("Authorization", "Bearer " + token().toUtf8());
-
-    auto reply = networkAccessManager()->post(req, QJsonDocument::fromVariant(data).toJson());
+    auto reply = d_ptr2->post("/files/create_folder_v2", data);
 
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {
