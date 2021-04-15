@@ -20,6 +20,7 @@
 #ifndef SYNQCLIENT_ABSTRACTDROPBOXJOBPRIVATE_H
 #define SYNQCLIENT_ABSTRACTDROPBOXJOBPRIVATE_H
 
+#include <functional>
 #include <tuple>
 
 #include <QCoreApplication>
@@ -41,6 +42,9 @@ class AbstractDropboxJobPrivate
 
 public:
     static const QString APIv2;
+    static const QString ContentAPIv2;
+
+    typedef std::function<void(const QJsonDocument&)> KnownErrorHandlerFunction;
 
     explicit AbstractDropboxJobPrivate(AbstractDropboxJob* q);
     virtual ~AbstractDropboxJobPrivate();
@@ -56,9 +60,15 @@ public:
 
     std::tuple<JobError, QString> checkDefaultParameters();
 
-    static FileInfo fileInfoFromJson(const QJsonObject& obj, const QString& basePath = QString());
+    static FileInfo fileInfoFromJson(const QJsonObject& obj, const QString& basePath = QString(),
+                                     const QString& forceTag = QString());
 
     QNetworkReply* post(const QString& endpoint, const QVariant& data);
+    QNetworkReply* postData(const QString& endpoint, const QVariant& data, QIODevice* content);
+
+    void
+    tryHandleKnownError(const QByteArray& body,
+                        QMap<QPair<QStringList, QVariant>, KnownErrorHandlerFunction> handlers);
 };
 
 } // namespace SynqClient

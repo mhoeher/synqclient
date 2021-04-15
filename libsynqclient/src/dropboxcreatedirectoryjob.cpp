@@ -85,25 +85,15 @@ void DropboxCreateDirectoryJob::start()
                 // Everything fine!
             } else {
                 // Try to check if the server replied with an known error description:
-                QJsonParseError error;
-                auto doc = QJsonDocument::fromJson(reply->readAll(), &error);
-                if (error.error == QJsonParseError::NoError) {
-                    // {"error_summary": "path/conflict/folder/...", "error": {".tag": "path",
-                    // "path": {".tag": "conflict", "conflict": {".tag": "folder"}}}}
-                    if (doc.object()
-                                .value("error")
-                                .toObject()
-                                .value("path")
-                                .toObject()
-                                .value("conflict")
-                                .toObject()
-                                .value(".tag")
-                                .toString()
-                        == "folder") {
-                        setError(JobError::FolderExists,
-                                 tr("The remove folder %1 already exists").arg(d->path));
-                    }
-                }
+                d_ptr2->tryHandleKnownError(
+                        reply->readAll(),
+                        { { { { "error", "path", "conflict", ".tag" }, "folder" },
+                            [=](const QJsonDocument&) {
+                                setError(JobError::FolderExists,
+                                         tr("The remove folder %1 already "
+                                            "exists")
+                                                 .arg(d->path));
+                            } } });
                 if (this->error() == JobError::NoError) {
                     // Unrecognized error - "fail generically"
                     setError(JobError::NetworkRequestFailed, reply->errorString());

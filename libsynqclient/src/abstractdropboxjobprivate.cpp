@@ -28,6 +28,7 @@
 namespace SynqClient {
 
 const QString AbstractDropboxJobPrivate::APIv2 = "https://api.dropboxapi.com/2";
+const QString AbstractDropboxJobPrivate::ContentAPIv2 = "https://content.dropboxapi.com/2";
 
 AbstractDropboxJobPrivate::AbstractDropboxJobPrivate(AbstractDropboxJob* q)
     : q_ptr(q),
@@ -71,11 +72,18 @@ std::tuple<JobError, QString> AbstractDropboxJobPrivate::checkDefaultParameters(
  *
  * If @p basePath is set to a non-null string, the FileInfo::path() will be set to the
  * path of the object, relative to the base path. Otherwise, the path will not be set at all.
+ *
+ * If @p forceTag is set to a non-null string, assume that the metadata refers to an object of the
+ * givenm type (e.g. file or folder). Otherwise, the type is read from the JSON document.
  */
 FileInfo AbstractDropboxJobPrivate::fileInfoFromJson(const QJsonObject& obj,
-                                                     const QString& basePath)
+                                                     const QString& basePath,
+                                                     const QString& forceTag)
 {
-    auto tag = obj.value(".tag").toString();
+    auto tag = forceTag;
+    if (tag.isNull()) {
+        tag = obj.value(".tag").toString();
+    }
     FileInfo result;
     if (tag == "file") {
         result.setIsFile();
@@ -103,9 +111,69 @@ QNetworkReply* AbstractDropboxJobPrivate::post(const QString& endpoint, const QV
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     req.setRawHeader("Authorization", "Bearer " + token.toUtf8());
 
-    auto reply = networkAccessManager->post(req, QJsonDocument::fromVariant(data).toJson());
+    auto reply = networkAccessManager->post(
+            req, QJsonDocument::fromVariant(data).toJson(QJsonDocument::Compact));
 
     return reply;
+}
+
+QNetworkReply* AbstractDropboxJobPrivate::postData(const QString& endpoint, const QVariant& data,
+                                                   QIODevice* content)
+{
+    QNetworkRequest req;
+    req.setUrl(AbstractDropboxJobPrivate::ContentAPIv2 + endpoint);
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+    req.setRawHeader("Authorization", "Bearer " + token.toUtf8());
+    req.setRawHeader("Dropbox-API-Arg",
+                     QJsonDocument::fromVariant(data).toJson(QJsonDocument::Compact));
+
+    auto reply = networkAccessManager->post(req, content);
+
+    return reply;
+}
+
+/**
+ * @brief Helper function to handle Dropbox error results.
+ *
+ * When a Dropbox API request fails, the network reply finishes with an error. We can try to
+ * examine the response body. If it is a "known" Dropbox issue, a JSON object will be returned.
+ *
+ * This function can be used to unify handling of such errors. It takes the response body as
+ * well as a map of key value pairs, where:
+ *
+ * - Keys are pairs of a list of members (in hierarchical order) forming a path in the JSON
+ *   document and the value being the string value to compare against.
+ * - The value of the map is used, which is a callable taking the QJsonDocument as argument. The
+ *   callable can run any code required (e.g. set proper error codes). Afterwards, the error
+ * handing stops.
+ */
+void AbstractDropboxJobPrivate::tryHandleKnownError(
+        const QByteArray& body,
+        QMap<QPair<QStringList, QVariant>, KnownErrorHandlerFunction> handlers)
+{
+    QJsonParseError error;
+    auto doc = QJsonDocument::fromJson(body, &error);
+    if (error.error == QJsonParseError::NoError) {
+        for (auto it = handlers.constBegin(); it != handlers.constEnd(); ++it) {
+            auto parts = it.key().first;
+            QJsonValue val = doc.object();
+            for (const auto& part : qAsConst(parts)) {
+                val = val.toObject().value(part);
+                if (val.isUndefined()) {
+                    break;
+                }
+            }
+            if (val.isString()) {
+                if (val.toVariant() == it.key().second) {
+                    auto handler = it.value();
+                    if (handler) {
+                        handler(doc);
+                    }
+                    return;
+                }
+            }
+        }
+    }
 }
 
 } // namespace SynqClient

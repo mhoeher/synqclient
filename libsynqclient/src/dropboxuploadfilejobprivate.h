@@ -31,6 +31,8 @@ public:
     explicit DropboxUploadFileJobPrivate(DropboxUploadFileJob* q);
 
     Q_DECLARE_PUBLIC(DropboxUploadFileJob);
+
+    QSharedPointer<QIODevice> uploadDevice;
 };
 
 } // namespace SynqClient

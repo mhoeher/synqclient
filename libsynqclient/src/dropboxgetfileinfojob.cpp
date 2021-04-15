@@ -91,23 +91,14 @@ void DropboxGetFileInfoJob::start()
                 }
             } else {
                 // Check if this is a "known" error
-                QJsonParseError error;
-                auto doc = QJsonDocument::fromJson(reply->readAll(), &error);
-                if (error.error == QJsonParseError::NoError) {
-                    // {"error_summary": "path/not_found/.", "error": {".tag": "path", "path":
-                    // {".tag": "not_found"}}}
-                    if (doc.object()
-                                .value("error")
-                                .toObject()
-                                .value("path")
-                                .toObject()
-                                .value(".tag")
-                                .toString()
-                        == "not_found") {
-                        setError(JobError::ResourceNotFound,
-                                 tr("The remove path %1 does not exist").arg(d->path));
-                    }
-                }
+                d_ptr2->tryHandleKnownError(
+                        reply->readAll(),
+                        { { { { "error", "path", ".tag" }, "not_found" },
+                            [=](const QJsonDocument&) {
+                                setError(JobError::ResourceNotFound,
+                                         tr("The remove path %1 does not exist").arg(d->path));
+                            } } });
+
                 if (this->error() == JobError::NoError) {
                     // Unrecognized error - "fail generically"
                     setError(JobError::NetworkRequestFailed, reply->errorString());
