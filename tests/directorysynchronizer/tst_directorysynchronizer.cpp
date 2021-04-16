@@ -109,6 +109,11 @@ void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
+    QFETCH(int, flags);
+
+    if (flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoIfMatch)) {
+        QSKIP("WebDAV server does not support If-Match properly - skipping test");
+    }
 
     QTemporaryDir tmpDir1;
     QTemporaryDir tmpDir2;
@@ -164,6 +169,11 @@ void DirectorySynchronizerTest::editVsDeleteConflictResolution()
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
+    QFETCH(int, flags);
+
+    if (flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoIfMatch)) {
+        QSKIP("WebDAV server does not support If-Match properly - skipping test");
+    }
 
     QTemporaryDir tmpDir1;
     QTemporaryDir tmpDir2;
@@ -231,6 +241,11 @@ void DirectorySynchronizerTest::sync()
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
+    QFETCH(int, flags);
+
+    if (flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoIfMatch)) {
+        QSKIP("WebDAV server does not support If-Match properly - skipping test");
+    }
 
     QTemporaryDir tmpDir1;
     QTemporaryDir tmpDir2;
@@ -403,18 +418,21 @@ void DirectorySynchronizerTest::cleanupTestCase() {}
 void DirectorySynchronizerTest::prepareTestData()
 {
     QTest::addColumn<AbstractJobFactory*>("jobFactory");
+    QTest::addColumn<int>("flags");
 
     auto nam = new QNetworkAccessManager(this);
+    nam->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     for (const auto& tuple : SynqClient::UnitTest::enumerateWebDAVTestServers()) {
         auto url = std::get<0>(tuple);
         auto type = std::get<1>(tuple);
+        auto flags = std::get<2>(tuple);
         auto webdavJobFactory = new WebDAVJobFactory(this);
         webdavJobFactory->setUrl(url);
         webdavJobFactory->setServerType(type);
         webdavJobFactory->setNetworkAccessManager(nam);
         QTest::newRow(url.toString().toUtf8())
-                << static_cast<AbstractJobFactory*>(webdavJobFactory);
+                << static_cast<AbstractJobFactory*>(webdavJobFactory) << flags;
     }
 }
 

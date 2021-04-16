@@ -49,6 +49,7 @@ void WebDAVDownloadFileJobTest::downloadLocalFile()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     QTemporaryDir tmpDir;
     QDir dir(tmpDir.path());
@@ -124,6 +125,7 @@ void WebDAVDownloadFileJobTest::downloadDevice()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     QByteArray data = "Hello World!\n";
     auto buffer = new QBuffer(&data);
@@ -192,6 +194,7 @@ void WebDAVDownloadFileJobTest::downloadData()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVDownloadFileJobTest-downloadData-" + testDirUid.toString();

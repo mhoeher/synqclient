@@ -43,6 +43,7 @@ void WebDAVJobFactoryTest::createJobs()
 {
     WebDAVJobFactory factory;
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
     factory.setNetworkAccessManager(&nam);
     factory.setServerType(WebDAVServerType::NextCloud);
     factory.setUrl(QUrl("https://example.com"));

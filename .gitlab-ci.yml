@@ -12,8 +12,10 @@ variables:
           alias: nextcloud
         - name: owncloud
           alias: owncloud
+        - name: registry.gitlab.com/rpdev/docker/apache_webdav
+          alias: apache_webdav
     variables:
-        SYNQCLIENT_UT_WEBDAV_SERVERS: nextcloud://admin:admin@nextcloud/;owncloud://admin:admin@owncloud/;generic://admin:admin@nextcloud/remote.php/dav/files/admin/;generic://admin:admin@owncloud/remote.php/dav/files/admin/
+        SYNQCLIENT_UT_WEBDAV_SERVERS: nextcloud://admin:admin@nextcloud/;owncloud://admin:admin@owncloud/;generic://admin:admin@nextcloud/remote.php/dav/files/admin/;generic://admin:admin@owncloud/remote.php/dav/files/admin/;generic://admin:admin@apache_webdav/webdav|NoIfMatch
 
 fedora:
     image: fedora

@@ -63,9 +63,12 @@ void WebDAVDeleteJob::start()
     QNetworkRequest req;
     d_ptr2->prepareNetworkRequest(req);
     req.setUrl(url);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
+                     QNetworkRequest::ManualRedirectPolicy); // WA for QTBUG-92909, handle redirects
+                                                             // manually in client code
     auto etag = syncAttribute();
-    if (etag.isValid()) {
-        req.setHeader(QNetworkRequest::IfMatchHeader, etag);
+    if (etag.isValid() && etag.type() == QVariant::String) {
+        req.setHeader(QNetworkRequest::IfMatchHeader, etag.toString());
     }
     auto reply = networkAccessManager()->deleteResource(req);
     if (reply) {

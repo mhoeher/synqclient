@@ -46,6 +46,7 @@ void WebDAVListFilesJobTest::listFiles()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVListFilesJobTest-listFiles-" + testDirUid.toString();
