@@ -6,6 +6,10 @@ variables:
     GIT_SUBMODULE_STRATEGY: recursive
     FEDORA_IMAGE: registry.gitlab.com/rpdev/synqclient:fedora
 
+include:
+  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
+
+
 docker::fedora:
     stage: prepare
     image: docker:git
@@ -13,6 +17,7 @@ docker::fedora:
         - docker:dind
     script:
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+        - cd docker/fedora
         - docker build --pull -t $FEDORA_IMAGE .
         - docker push $FEDORA_IMAGE
     rules:
