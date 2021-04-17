@@ -21,8 +21,6 @@
 
 #include "abstractwebdavjobprivate.h"
 
-#include <iostream>
-
 namespace SynqClient {
 
 WebDAVGetFileInfoJobPrivate::WebDAVGetFileInfoJobPrivate(WebDAVGetFileInfoJob* q)
@@ -44,32 +42,20 @@ void WebDAVGetFileInfoJobPrivate::checkParameters()
 void WebDAVGetFileInfoJobPrivate::handleRequestFinished()
 {
     Q_Q(WebDAVGetFileInfoJob);
-    std::cerr << "=============================" << std::endl;
-    std::cerr << "WebDAVGetFileInfoJob finished" << std::endl;
-    std::cerr << "=============================" << std::endl;
     auto reply = q->d_ptr2->reply;
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
-        for (const auto& headerPair : reply->rawHeaderPairs()) {
-            std::cerr << qUtf8Printable(headerPair.first) << ": "
-                      << qUtf8Printable(headerPair.second) << std::endl;
-        }
         if (reply->error() != QNetworkReply::NoError) {
-            std::cerr << "Reply finished with an error " << reply->error() << " "
-                      << qUtf8Printable(reply->errorString()) << std::endl;
             q->setError(q->fromNetworkError(*reply), reply->errorString());
             q->finishLater();
         } else if (q->d_ptr2->shouldFollowUnhandledRedirect(reply)) {
             // Encountered redirect not handled by Qt, follow:
-            std::cerr << "Following redirect" << std::endl;
             q->start();
             return;
         } else {
             auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-            std::cerr << "Finished with code " << code.toInt() << std::endl;
             auto data = reply->readAll();
-            std::cerr << qUtf8Printable(data) << std::endl;
             if (code.toInt() == q->d_ptr2->WebDAVMultiStatus) {
                 bool ok;
 
