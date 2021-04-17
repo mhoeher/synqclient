@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/sqlsyncstatedatabase.h"
+#include "SynqClient/sqlsyncstatedatabase.h"
 
 #include <QDateTime>
 #include <QLoggingCategory>
@@ -90,17 +90,22 @@ SQLSyncStateDatabase::~SQLSyncStateDatabase()
 QSqlDatabase SQLSyncStateDatabase::database() const
 {
     Q_D(const SQLSyncStateDatabase);
-    return d->db;
+    return d->getDb();
 }
 
 /**
  * @brief Set the SQL database used to store state.
+ *
+ * This sets the database to be used to write persistent sync information into. Please note,
+ * that only the connection name will be stored internally.
  */
 void SQLSyncStateDatabase::setDatabase(const QSqlDatabase& database)
 {
     Q_D(SQLSyncStateDatabase);
     d->removeOldConnection();
-    d->db = database;
+    if (database.isValid()) {
+        d->dbConnName = database.connectionName();
+    }
 }
 
 /**
@@ -113,7 +118,7 @@ void SQLSyncStateDatabase::setDatabase(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);
     d->removeOldConnection();
-    auto db = QSqlDatabase::addDatabase("QSQLITE", path);
+    auto db = QSqlDatabase::addDatabase("QSQLITE", d->defaultDbConnName);
     db.setDatabaseName(path);
     setDatabase(db);
     d->removeDb = true;
@@ -138,18 +143,19 @@ SQLSyncStateDatabase::SQLSyncStateDatabase(SQLSyncStateDatabasePrivate* d, QObje
 bool SQLSyncStateDatabase::openDatabase()
 {
     Q_D(SQLSyncStateDatabase);
+    auto db = d->getDb();
     if (isOpen()) {
         qCWarning(log) << "Database is already open";
         return false;
     }
-    if (!d->db.isValid()) {
+    if (!db.isValid()) {
         qCWarning(log) << "No valid database connection is set";
         return false;
     }
-    if (!d->db.isOpen()) {
+    if (!db.isOpen()) {
         qCDebug(log) << "Database connection not yet open - going to open it";
-        if (!d->db.open()) {
-            qCWarning(log) << "Failed to open database:" << d->db.lastError().text();
+        if (!db.open()) {
+            qCWarning(log) << "Failed to open database:" << db.lastError().text();
             return false;
         }
     }
@@ -171,7 +177,8 @@ bool SQLSyncStateDatabase::addEntry(const SyncStateEntry& entry)
     }
     auto parts = d->splitPath(entry.path());
 
-    QSqlQuery query(d->db);
+    auto db = d->getDb();
+    QSqlQuery query(db);
     if (!query.prepare("INSERT OR REPLACE INTO files "
                        "(parent, entry, modificationDate, etag) "
                        "VALUES (?, ?, ?, ?);")) {
@@ -205,7 +212,8 @@ SyncStateEntry SQLSyncStateDatabase::getEntry(const QString& path)
     Q_D(SQLSyncStateDatabase);
 
     SyncStateEntry result;
-    QSqlQuery query(d->db);
+    auto db = d->getDb();
+    QSqlQuery query(db);
 
     auto dbPath = d->splitPath(path);
     auto parent = std::get<0>(dbPath);
@@ -243,7 +251,8 @@ QVector<SyncStateEntry> SQLSyncStateDatabase::findEntries(const QString& parent,
     bool status = false;
 
     QVector<SyncStateEntry> result;
-    QSqlQuery query(d->db);
+    auto db = d->getDb();
+    QSqlQuery query(db);
     if (!query.prepare("SELECT parent, entry, modificationDate, etag "
                        "FROM files WHERE parent = ?;")) {
         qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
@@ -286,7 +295,8 @@ QVector<SyncStateEntry> SQLSyncStateDatabase::findEntries(const QString& parent,
 bool SQLSyncStateDatabase::removeEntries(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);
-    QSqlQuery query(d->db);
+    auto db = d->getDb();
+    QSqlQuery query(db);
     if (!query.prepare("DELETE FROM files "
                        "WHERE parent LIKE ? || '%' OR (parent = ? AND entry = ?);")) {
         qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
@@ -314,7 +324,8 @@ bool SQLSyncStateDatabase::removeEntries(const QString& path)
 bool SQLSyncStateDatabase::removeEntry(const QString& path)
 {
     Q_D(SQLSyncStateDatabase);
-    QSqlQuery query(d->db);
+    auto db = d->getDb();
+    QSqlQuery query(db);
     if (!query.prepare("DELETE FROM files "
                        "WHERE parent = ? AND entry = ?;")) {
         qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
@@ -349,8 +360,9 @@ bool SQLSyncStateDatabase::closeDatabase()
         qCWarning(log) << "Database is not open";
         return false;
     }
-    if (d->db.isOpen()) {
-        d->db.close();
+    auto db = d->getDb();
+    if (db.isOpen()) {
+        db.close();
     }
     setOpen(false);
     return true;

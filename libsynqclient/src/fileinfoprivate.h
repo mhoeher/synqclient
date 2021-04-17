@@ -25,7 +25,7 @@
 #include <QUrl>
 #include <QVariantMap>
 
-#include "fileinfo.h"
+#include "SynqClient/fileinfo.h"
 
 namespace SynqClient {
 

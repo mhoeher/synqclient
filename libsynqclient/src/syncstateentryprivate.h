@@ -20,7 +20,7 @@
 #ifndef SYNQCLIENT_SYNCSTATEENTRYPRIVATE_H
 #define SYNQCLIENT_SYNCSTATEENTRYPRIVATE_H
 
-#include "syncstateentry.h"
+#include "SynqClient/syncstateentry.h"
 
 #include <QDateTime>
 #include <QSharedData>

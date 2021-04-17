@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/compositejob.h"
+#include "SynqClient/compositejob.h"
 
 #include <QTimer>
 

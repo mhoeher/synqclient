@@ -23,7 +23,7 @@
 #include <QVariantMap>
 
 #include "syncstatedatabaseprivate.h"
-#include "jsonsyncstatedatabase.h"
+#include "SynqClient/jsonsyncstatedatabase.h"
 
 class QJsonObject;
 

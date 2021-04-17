@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/webdavcreatedirectoryjob.h"
+#include "SynqClient/webdavcreatedirectoryjob.h"
 
 #include "webdavcreatedirectoryjobprivate.h"
 #include "abstractwebdavjobprivate.h"

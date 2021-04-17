@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/deletejob.h"
+#include "SynqClient/deletejob.h"
 
 #include "deletejobprivate.h"
 

@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/webdavgetfileinfojob.h"
+#include "SynqClient/webdavgetfileinfojob.h"
 
 #include <QNetworkRequest>
 

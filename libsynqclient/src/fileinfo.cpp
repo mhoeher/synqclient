@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/fileinfo.h"
+#include "SynqClient/fileinfo.h"
 
 #include "fileinfoprivate.h"
 

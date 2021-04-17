@@ -13,7 +13,7 @@ cmake --build .
 cmake --build . --target test
 DESTDIR=$PWD/_ cmake --install .
 
-ls libsynqclient | grep libsynqclient.so
+ls libsynqclient | grep libsynqclient-qt5.so
 
 cd _
 mkdir -p build

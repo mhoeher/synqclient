@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/libsynqclient.h"
+#include "SynqClient/libsynqclient.h"
 
 namespace SynqClient {
 

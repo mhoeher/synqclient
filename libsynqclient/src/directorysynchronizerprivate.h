@@ -29,11 +29,11 @@
 #include <QSharedPointer>
 #include <QQueue>
 
-#include "abstractjob.h"
+#include "SynqClient/abstractjob.h"
 #include "changetree.h"
-#include "directorysynchronizer.h"
-#include "libsynqclient.h"
-#include "syncstateentry.h"
+#include "SynqClient/directorysynchronizer.h"
+#include "SynqClient/libsynqclient.h"
+#include "SynqClient/syncstateentry.h"
 #include "syncactions.h"
 
 namespace SynqClient {
@@ -59,6 +59,8 @@ public:
     SyncConflictStrategy syncConflictStrategy;
     SynchronizerFlags flags;
     bool stopped;
+    int progress;
+    int numTotalSyncActionsToRun;
 
     void finishLater();
     void setError(SynchronizerError error, const QString& errorString);
@@ -105,6 +107,8 @@ public:
     bool deleteLocally(const QString& path);
     bool canRunAction(const QSharedPointer<SyncAction>& action);
     void runRemoteAction(const QSharedPointer<SyncAction>& action);
+
+    void updateProgress();
 
 signals:
 

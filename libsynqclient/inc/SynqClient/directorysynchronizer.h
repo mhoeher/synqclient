@@ -81,6 +81,7 @@ signals:
 
     void finished();
     void logMessageAvailable(SynchronizerLogEntryType type, const QString& message);
+    void progress(int value);
 
 protected:
     explicit DirectorySynchronizer(DirectorySynchronizerPrivate* d, QObject* parent = nullptr);

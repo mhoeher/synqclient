@@ -6,8 +6,8 @@
 #include <QVariantList>
 
 #include "abstractjobprivate.h"
-#include "abstractwebdavjob.h"
-#include "fileinfo.h"
+#include "SynqClient/abstractwebdavjob.h"
+#include "SynqClient/fileinfo.h"
 
 class QDomDocument;
 class QDomElement;

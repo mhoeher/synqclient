@@ -3,10 +3,10 @@
 
 // add necessary includes here
 #include "../shared/utils.h"
-#include "CompositeJob"
-#include "WebDAVCreateDirectoryJob"
-#include "WebDAVGetFileInfoJob"
-#include "WebDAVUploadFileJob"
+#include "SynqClient/CompositeJob"
+#include "SynqClient/WebDAVCreateDirectoryJob"
+#include "SynqClient/WebDAVGetFileInfoJob"
+#include "SynqClient/WebDAVUploadFileJob"
 
 using SynqClient::AbstractJob;
 using SynqClient::CompositeJob;

@@ -21,7 +21,7 @@
 #define SYNQCLIENT_CREATEDIRECTORYJOBPRIVATE_H
 
 #include "abstractjobprivate.h"
-#include "createdirectoryjob.h"
+#include "SynqClient/createdirectoryjob.h"
 
 namespace SynqClient {
 

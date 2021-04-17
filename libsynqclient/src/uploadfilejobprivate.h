@@ -25,7 +25,7 @@
 #include <QVariantMap>
 
 #include "abstractjobprivate.h"
-#include "uploadfilejob.h"
+#include "SynqClient/uploadfilejob.h"
 
 class QIODevice;
 

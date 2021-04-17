@@ -3,7 +3,7 @@
 #include <QtTest>
 
 // add necessary includes here
-#include "AbstractJob"
+#include "SynqClient/AbstractJob"
 
 class AbstractJobTest : public QObject
 {

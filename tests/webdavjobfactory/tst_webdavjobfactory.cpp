@@ -2,13 +2,13 @@
 #include <QNetworkAccessManager>
 
 // add necessary includes here
-#include "WebDAVCreateDirectoryJob"
-#include "WebDAVDeleteJob"
-#include "WebDAVDownloadFileJob"
-#include "WebDAVGetFileInfoJob"
-#include "WebDAVJobFactory"
-#include "WebDAVListFilesJob"
-#include "WebDAVUploadFileJob"
+#include "SynqClient/WebDAVCreateDirectoryJob"
+#include "SynqClient/WebDAVDeleteJob"
+#include "SynqClient/WebDAVDownloadFileJob"
+#include "SynqClient/WebDAVGetFileInfoJob"
+#include "SynqClient/WebDAVJobFactory"
+#include "SynqClient/WebDAVListFilesJob"
+#include "SynqClient/WebDAVUploadFileJob"
 
 using SynqClient::WebDAVCreateDirectoryJob;
 using SynqClient::WebDAVDeleteJob;

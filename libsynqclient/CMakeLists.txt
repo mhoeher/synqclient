@@ -51,60 +51,60 @@ set(SYNQCLIENT_SOURCES
 )
 
 set(SYNQCLIENT_HEADERS
-    inc/AbstractJob
-    inc/AbstractJobFactory
-    inc/AbstractWebDAVJob
-    inc/CompositeJob
-    inc/CreateDirectoryJob
-    inc/DeleteJob
-    inc/DirectorySynchronizer
-    inc/DownloadFileJob
-    inc/FileInfo
-    inc/GetFileInfoJob
-    inc/JSONSyncStateDatabase
-    inc/ListFilesJob
-    inc/NextCloudLoginFlow
-    inc/SQLSyncStateDatabase
-    inc/SyncStateDatabase
-    inc/SyncStateEntry
-    inc/UploadFileJob
-    inc/WebDAVCreateDirectoryJob
-    inc/WebDAVDeleteJob
-    inc/WebDAVDownloadFileJob
-    inc/WebDAVGetFileInfoJob
-    inc/WebDAVJobFactory
-    inc/WebDAVListFilesJob
-    inc/WebDAVUploadFileJob
-    inc/abstractjob.h
-    inc/abstractjobfactory.h
-    inc/abstractwebdavjob.h
-    inc/compositejob.h
-    inc/createdirectoryjob.h
-    inc/deletejob.h
-    inc/directorysynchronizer.h
-    inc/downloadfilejob.h
-    inc/fileinfo.h
-    inc/getfileinfojob.h
-    inc/jsonsyncstatedatabase.h
-    inc/libsynqclient_global.h
-    inc/libsynqclient.h
-    inc/listfilesjob.h
-    inc/nextcloudloginflow.h
-    inc/sqlsyncstatedatabase.h
-    inc/syncstatedatabase.h
-    inc/syncstateentry.h
-    inc/uploadfilejob.h
-    inc/webdavcreatedirectoryjob.h
-    inc/webdavdeletejob.h
-    inc/webdavdownloadfilejob.h
-    inc/webdavgetfileinfojob.h
-    inc/webdavjobfactory.h
-    inc/webdavlistfilesjob.h
-    inc/webdavuploadfilejob.h
+    inc/SynqClient/AbstractJob
+    inc/SynqClient/abstractjob.h
+    inc/SynqClient/AbstractJobFactory
+    inc/SynqClient/abstractjobfactory.h
+    inc/SynqClient/AbstractWebDAVJob
+    inc/SynqClient/abstractwebdavjob.h
+    inc/SynqClient/CompositeJob
+    inc/SynqClient/compositejob.h
+    inc/SynqClient/CreateDirectoryJob
+    inc/SynqClient/createdirectoryjob.h
+    inc/SynqClient/DeleteJob
+    inc/SynqClient/deletejob.h
+    inc/SynqClient/DirectorySynchronizer
+    inc/SynqClient/directorysynchronizer.h
+    inc/SynqClient/DownloadFileJob
+    inc/SynqClient/downloadfilejob.h
+    inc/SynqClient/FileInfo
+    inc/SynqClient/fileinfo.h
+    inc/SynqClient/GetFileInfoJob
+    inc/SynqClient/getfileinfojob.h
+    inc/SynqClient/JSONSyncStateDatabase
+    inc/SynqClient/jsonsyncstatedatabase.h
+    inc/SynqClient/libsynqclient_global.h
+    inc/SynqClient/libsynqclient.h
+    inc/SynqClient/ListFilesJob
+    inc/SynqClient/listfilesjob.h
+    inc/SynqClient/NextCloudLoginFlow
+    inc/SynqClient/nextcloudloginflow.h
+    inc/SynqClient/SQLSyncStateDatabase
+    inc/SynqClient/sqlsyncstatedatabase.h
+    inc/SynqClient/SyncStateDatabase
+    inc/SynqClient/syncstatedatabase.h
+    inc/SynqClient/SyncStateEntry
+    inc/SynqClient/syncstateentry.h
+    inc/SynqClient/SynqClient
+    inc/SynqClient/UploadFileJob
+    inc/SynqClient/uploadfilejob.h
+    inc/SynqClient/WebDAVCreateDirectoryJob
+    inc/SynqClient/webdavcreatedirectoryjob.h
+    inc/SynqClient/WebDAVDeleteJob
+    inc/SynqClient/webdavdeletejob.h
+    inc/SynqClient/WebDAVDownloadFileJob
+    inc/SynqClient/webdavdownloadfilejob.h
+    inc/SynqClient/WebDAVGetFileInfoJob
+    inc/SynqClient/webdavgetfileinfojob.h
+    inc/SynqClient/WebDAVJobFactory
+    inc/SynqClient/webdavjobfactory.h
+    inc/SynqClient/WebDAVListFilesJob
+    inc/SynqClient/webdavlistfilesjob.h
+    inc/SynqClient/WebDAVUploadFileJob
+    inc/SynqClient/webdavuploadfilejob.h
     src/abstractjobfactoryprivate.h
     src/abstractjobprivate.h
     src/abstractwebdavjobprivate.h
-    inc/SynqClient
     src/changetree.h
     src/compositejobprivate.h
     src/createdirectoryjobprivate.h
@@ -130,15 +130,15 @@ set(SYNQCLIENT_HEADERS
     src/webdavuploadfilejobprivate.h
 )
 
-add_library(synqclient)
+add_library(synqclient-qt${QT_VERSION_MAJOR})
 target_sources(
-    synqclient 
+    synqclient-qt${QT_VERSION_MAJOR} 
     PRIVATE 
         ${SYNQCLIENT_SOURCES}
         ${SYNQCLIENT_HEADERS}
 )
 target_link_libraries(
-    synqclient 
+    synqclient-qt${QT_VERSION_MAJOR} 
     PUBLIC 
         Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::Network
@@ -146,35 +146,35 @@ target_link_libraries(
         Qt${QT_VERSION_MAJOR}::Sql
 )
 target_include_directories(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc/>
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:include/SynqClient-qt${QT_VERSION_MAJOR}>
 )
 set_target_properties(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PROPERTIES
         CXX_VISIBILITY_PRESET hidden
         SOVERSION ${SYNQCLIENT_VERSION}
 )
 target_compile_definitions(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PRIVATE
         LIBSYNQCLIENT_LIBRARY
 
     PUBLIC
         # Request export of symbols only if we don't build a static library
-        $<IF:$<STREQUAL:$<TARGET_PROPERTY:synqclient,TYPE>,STATIC_LIBRARY>,LIBSYNQCLIENT_LIBRARY_STATIC,LIBSYNQCLIENT_LIBRARY_SHARED>
+        $<IF:$<STREQUAL:$<TARGET_PROPERTY:synqclient-qt${QT_VERSION_MAJOR},TYPE>,STATIC_LIBRARY>,LIBSYNQCLIENT_LIBRARY_STATIC,LIBSYNQCLIENT_LIBRARY_SHARED>
 )
 target_compile_features(
-    synqclient
+    synqclient-qt${QT_VERSION_MAJOR}
     PUBLIC
         cxx_std_14
 )
 
 install(
     TARGETS
-        synqclient
+        synqclient-qt${QT_VERSION_MAJOR}
     EXPORT
         SynqClientTargets
     LIBRARY DESTINATION
@@ -188,7 +188,12 @@ install(
 )
 install(
     DIRECTORY
-        inc/
+        inc/SynqClient/
     DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}/SynqClient
+        ${CMAKE_INSTALL_INCLUDEDIR}/SynqClient-qt${QT_VERSION_MAJOR}/SynqClient
 )
+
+# Add an alias target, so that including the project in source form in another
+# project, is possible as well without writing additional code in the host
+# project:
+add_library(SynqClient::synqclient-qt${QT_VERSION_MAJOR} ALIAS synqclient-qt${QT_VERSION_MAJOR})

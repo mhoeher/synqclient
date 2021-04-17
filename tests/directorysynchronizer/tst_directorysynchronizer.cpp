@@ -9,11 +9,11 @@
 
 // add necessary includes here
 #include "../shared/utils.h"
-#include "AbstractJobFactory"
-#include "DirectorySynchronizer"
-#include "FileInfo"
-#include "JSONSyncStateDatabase"
-#include "WebDAVJobFactory"
+#include "SynqClient/AbstractJobFactory"
+#include "SynqClient/DirectorySynchronizer"
+#include "SynqClient/FileInfo"
+#include "SynqClient/JSONSyncStateDatabase"
+#include "SynqClient/WebDAVJobFactory"
 
 using SynqClient::AbstractJobFactory;
 using SynqClient::DirectorySynchronizer;

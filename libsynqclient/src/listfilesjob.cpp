@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/listfilesjob.h"
+#include "SynqClient/listfilesjob.h"
 
 #include "listfilesjobprivate.h"
 

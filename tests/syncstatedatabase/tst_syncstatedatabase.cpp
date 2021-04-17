@@ -5,10 +5,10 @@
 #include <QtTest>
 
 // add necessary includes here
-#include "JSONSyncStateDatabase"
-#include "SQLSyncStateDatabase"
-#include "SyncStateDatabase"
-#include "SyncStateEntry"
+#include "SynqClient/JSONSyncStateDatabase"
+#include "SynqClient/SQLSyncStateDatabase"
+#include "SynqClient/SyncStateDatabase"
+#include "SynqClient/SyncStateEntry"
 
 using SynqClient::JSONSyncStateDatabase;
 using SynqClient::SQLSyncStateDatabase;

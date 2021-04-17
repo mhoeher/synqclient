@@ -20,7 +20,7 @@
 #ifndef SYNQCLIENT_SYNCSTATEDATABASEPRIVATE_H
 #define SYNQCLIENT_SYNCSTATEDATABASEPRIVATE_H
 
-#include "syncstatedatabase.h"
+#include "SynqClient/syncstatedatabase.h"
 
 namespace SynqClient {
 

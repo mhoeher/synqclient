@@ -23,19 +23,23 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QUuid>
 
 namespace SynqClient {
 
 static Q_LOGGING_CATEGORY(log, "SynqClient.SQLSyncStateDatabase", QtWarningMsg);
 
 SQLSyncStateDatabasePrivate::SQLSyncStateDatabasePrivate(SQLSyncStateDatabase* q)
-    : SyncStateDatabasePrivate(q), db(), removeDb(false)
+    : SyncStateDatabasePrivate(q),
+      dbConnName(),
+      defaultDbConnName(QUuid::createUuid().toString()),
+      removeDb(false)
 {
 }
 
 bool SQLSyncStateDatabasePrivate::initializeDbV1()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(getDb());
     if (!query.prepare("CREATE TABLE IF NOT EXISTS "
                        "version (key string PRIMARY KEY, value);")) {
         qCWarning(log) << "Failed to prepare query:" << query.lastError().text();
@@ -91,12 +95,20 @@ bool SQLSyncStateDatabasePrivate::initializeDbV1()
 
 void SQLSyncStateDatabasePrivate::removeOldConnection()
 {
-    if (removeDb && !db.connectionName().isEmpty()) {
-        auto connectionName = db.connectionName();
-        db = QSqlDatabase();
-        QSqlDatabase::removeDatabase(connectionName);
+    if (removeDb) {
+        QSqlDatabase::removeDatabase(dbConnName);
     }
     removeDb = false;
+    dbConnName = QString();
+}
+
+QSqlDatabase SQLSyncStateDatabasePrivate::getDb() const
+{
+    QSqlDatabase db;
+    if (!dbConnName.isNull()) {
+        db = QSqlDatabase::database(dbConnName);
+    }
+    return db;
 }
 
 std::tuple<QString, QString> SQLSyncStateDatabasePrivate::splitPath(const QString& path,

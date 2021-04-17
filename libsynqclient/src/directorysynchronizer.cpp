@@ -17,12 +17,13 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/directorysynchronizer.h"
+#include "SynqClient/directorysynchronizer.h"
 
 #include <QFileInfo>
+#include <QTimer>
 
-#include "abstractjobfactory.h"
-#include "syncstatedatabase.h"
+#include "SynqClient/abstractjobfactory.h"
+#include "SynqClient/syncstatedatabase.h"
 
 #include "directorysynchronizerprivate.h"
 
@@ -352,6 +353,12 @@ void DirectorySynchronizer::start()
         return;
     }
 
+    auto progressTimer = new QTimer(this);
+    progressTimer->setInterval(100);
+    progressTimer->setSingleShot(false);
+    connect(progressTimer, &QTimer::timeout, this, [=]() { emit progress(d->progress); });
+    progressTimer->start();
+
     emit logMessageAvailable(SynchronizerLogEntryType::Information, tr("Starting synchronization"));
 
     d->state = SynchronizerState::Running;
@@ -441,6 +448,17 @@ DirectorySynchronizer::DirectorySynchronizer(DirectorySynchronizerPrivate* d, QO
  * Depending on the concrete type, @p message is either an arbitrary string (containing more details
  * about the issue) or the path (relative to the local and remote root folder) which is being
  * affected.
+ */
+
+/**
+ * @fn DirectorySynchronizer::progress(int value)
+ * @brief Indicate progress of the sync operation.
+ *
+ * This signal is emitted from time to time to inform about the overall progress of
+ * the sync operation. A negative value indicates unknown progress (this might be
+ * reported in the initial phase when the sync plan is being created). As soon as
+ * the known steps are gathered, this signal is emitted with values between
+ * 0 and 100, indicating the overall progress of the operation.
  */
 
 /**

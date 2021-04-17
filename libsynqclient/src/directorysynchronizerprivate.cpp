@@ -30,14 +30,14 @@
 #include <QThread>
 #include <QTimer>
 
-#include "abstractjobfactory.h"
-#include "createdirectoryjob.h"
-#include "deletejob.h"
-#include "downloadfilejob.h"
-#include "getfileinfojob.h"
-#include "listfilesjob.h"
-#include "syncstatedatabase.h"
-#include "uploadfilejob.h"
+#include "SynqClient/abstractjobfactory.h"
+#include "SynqClient/createdirectoryjob.h"
+#include "SynqClient/deletejob.h"
+#include "SynqClient/downloadfilejob.h"
+#include "SynqClient/getfileinfojob.h"
+#include "SynqClient/listfilesjob.h"
+#include "SynqClient/syncstatedatabase.h"
+#include "SynqClient/uploadfilejob.h"
 
 namespace SynqClient {
 
@@ -58,6 +58,8 @@ DirectorySynchronizerPrivate::DirectorySynchronizerPrivate(DirectorySynchronizer
       syncConflictStrategy(SyncConflictStrategy::RemoteWins),
       flags(SynchronizerFlag::DefaultFlags),
       stopped(false),
+      progress(-1),
+      numTotalSyncActionsToRun(0),
       remoteFoldersSyncAttributes(),
       runningJobs(0),
       createdRemoteFolderParts(),
@@ -336,6 +338,9 @@ void DirectorySynchronizerPrivate::mergeChangeTrees()
             paths.enqueue(childPath);
         }
     }
+
+    numTotalSyncActionsToRun = syncActionsToRun.length();
+    updateProgress();
 
     if (error == SynchronizerError::NoError) {
         executeSyncPlan();
@@ -748,6 +753,8 @@ void DirectorySynchronizerPrivate::runRemoteActions()
         return;
     }
 
+    updateProgress();
+
     if (runningJobs >= maxJobs) {
         return;
     }
@@ -1147,6 +1154,16 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
     }
 }
 
+void DirectorySynchronizerPrivate::updateProgress()
+{
+    Q_Q(DirectorySynchronizer);
+    if (numTotalSyncActionsToRun > 0) {
+        auto numRemaining = syncActionsToRun.length();
+        progress = (numTotalSyncActionsToRun - numRemaining) * 100 / numTotalSyncActionsToRun;
+    }
+    emit q->progress(progress);
+}
+
 void DirectorySynchronizerPrivate::finishLater()
 {
     Q_Q(DirectorySynchronizer);
@@ -1228,6 +1245,8 @@ void DirectorySynchronizerPrivate::executeSyncPlan()
             break;
         }
     }
+
+    updateProgress();
 
     if (error == SynchronizerError::NoError) {
         qCDebug(log) << "Running remote sync actions";

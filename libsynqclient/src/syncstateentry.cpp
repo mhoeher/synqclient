@@ -17,7 +17,7 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/syncstateentry.h"
+#include "SynqClient/syncstateentry.h"
 
 #include <QDir>
 

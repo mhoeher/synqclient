@@ -4,7 +4,7 @@
 #include <QtTest>
 
 // add necessary includes here
-#include "WebDAVGetFileInfoJob"
+#include "SynqClient/WebDAVGetFileInfoJob"
 #include "../shared/utils.h"
 
 class WebDAVGetFileInfoJobTest : public QObject

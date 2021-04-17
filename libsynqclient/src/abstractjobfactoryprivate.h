@@ -20,7 +20,7 @@
 #ifndef SYNQCLIENT_ABSTRACTJOBFACTORYPRIVATE_H
 #define SYNQCLIENT_ABSTRACTJOBFACTORYPRIVATE_H
 
-#include "abstractjobfactory.h"
+#include "SynqClient/abstractjobfactory.h"
 
 namespace SynqClient {
 

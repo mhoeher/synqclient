@@ -17,16 +17,16 @@
  * along with SynqClient.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../inc/abstractjobfactory.h"
+#include "SynqClient/abstractjobfactory.h"
 
 #include "abstractjobfactoryprivate.h"
-#include "abstractjob.h"
-#include "createdirectoryjob.h"
-#include "deletejob.h"
-#include "downloadfilejob.h"
-#include "uploadfilejob.h"
-#include "getfileinfojob.h"
-#include "listfilesjob.h"
+#include "SynqClient/abstractjob.h"
+#include "SynqClient/createdirectoryjob.h"
+#include "SynqClient/deletejob.h"
+#include "SynqClient/downloadfilejob.h"
+#include "SynqClient/uploadfilejob.h"
+#include "SynqClient/getfileinfojob.h"
+#include "SynqClient/listfilesjob.h"
 
 namespace SynqClient {
 

@@ -22,7 +22,7 @@
 
 #include <QString>
 
-#include "webdavgetfileinfojob.h"
+#include "SynqClient/webdavgetfileinfojob.h"
 #include "getfileinfojobprivate.h"
 
 namespace SynqClient {

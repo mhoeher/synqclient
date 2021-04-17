@@ -21,7 +21,7 @@
 #define SYNQCLIENT_WEBDAVLISTFILESJOBPRIVATE_H
 
 #include "listfilesjobprivate.h"
-#include "webdavlistfilesjob.h"
+#include "SynqClient/webdavlistfilesjob.h"
 
 namespace SynqClient {
 
