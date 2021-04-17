@@ -25,7 +25,8 @@
 
 namespace SynqClient {
 
-WebDAVListFilesJobPrivate::WebDAVListFilesJobPrivate(WebDAVListFilesJob* q) : ListFilesJobPrivate(q)
+WebDAVListFilesJobPrivate::WebDAVListFilesJobPrivate(WebDAVListFilesJob* q)
+    : ListFilesJobPrivate(q), retryWithoutTrailingSlash(false)
 {
 }
 
@@ -49,8 +50,22 @@ void WebDAVListFilesJobPrivate::handleRequestFinished()
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
             q->setError(q->fromNetworkError(*reply), reply->errorString());
+            if (!retryWithoutTrailingSlash && !q->url().path().endsWith("/")) {
+                // Check if this is a potential error which is due to we append a trailing
+                // slash. If so, retry without appending:
+                switch (q->error()) {
+                case JobError::NetworkRequestFailed:
+                    retryWithoutTrailingSlash = true;
+                    q->d_ptr2->nextUrl.clear();
+                    q->setError(JobError::NoError, QString());
+                    q->start();
+                    return;
+                default:
+                    break;
+                }
+            }
             q->finishLater();
-        } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
+        } else if (q->d_ptr2->shouldFollowUnhandledRedirect(reply)) {
             // Encountered redirect not handled by Qt, follow:
             q->start();
             return;

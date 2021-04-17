@@ -42,6 +42,7 @@ void WebDAVCreateDirectoryJobTest::mkdir()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
     auto uuid = QUuid::createUuid();
     auto path = "/WebDAVCreateDirectoryJobTest-mkdir-" + uuid.toString();
     SynqClient::WebDAVCreateDirectoryJob mkdirJob;
@@ -84,6 +85,7 @@ void WebDAVCreateDirectoryJobTest::mkdirInvalidPath()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
     auto uuid = QUuid::createUuid();
     auto path = "/WebDAVCreateDirectoryJobTest-mkdirInvalidPath-" + uuid.toString();
     SynqClient::WebDAVCreateDirectoryJob mkdirJob;
@@ -124,6 +126,7 @@ void WebDAVCreateDirectoryJobTest::mkdirExisting()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
     auto uuid = QUuid::createUuid();
     auto path = "/WebDAVCreateDirectoryJobTest-mkdir-" + uuid.toString();
 

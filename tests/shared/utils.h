@@ -40,16 +40,29 @@
 namespace SynqClient {
 namespace UnitTest {
 
-inline QList<QUrl> getWebDAVServersFromEnv()
+enum class WebDAVServerFlag { Empty = 0, NoIfMatch = 1 << 0 };
+
+static const QMap<QByteArray, WebDAVServerFlag> WebDavServerFlagsMap = {
+    { "NoIfMatch", WebDAVServerFlag::NoIfMatch }
+};
+
+inline QList<QPair<QUrl, int>> getWebDAVServersFromEnv()
 {
     QByteArray env = qgetenv("SYNQCLIENT_UT_WEBDAV_SERVERS");
-    QList<QUrl> result;
+    decltype(getWebDAVServersFromEnv()) result;
     if (!env.isEmpty()) {
         auto list = env.split(';');
         for (const auto& entry : list) {
-            QUrl url(entry);
+            auto parts = entry.split('|');
+            QUrl url(parts[0]);
             if (url.isValid()) {
-                result << url;
+                int flags = static_cast<int>(WebDAVServerFlag::Empty);
+                for (int i = 1; i < parts.length(); ++i) {
+                    auto flagName = parts[i];
+                    flags |= static_cast<int>(
+                            WebDavServerFlagsMap.value(flagName, WebDAVServerFlag::NoIfMatch));
+                }
+                result.append({ url, flags });
             }
         }
     }
@@ -61,27 +74,29 @@ inline bool hasWebDAVServersFromEnv()
     return !getWebDAVServersFromEnv().isEmpty();
 }
 
-inline QVector<std::tuple<QUrl, SynqClient::WebDAVServerType>> enumerateWebDAVTestServers()
+inline QVector<std::tuple<QUrl, SynqClient::WebDAVServerType, int>> enumerateWebDAVTestServers()
 {
     auto urls = getWebDAVServersFromEnv();
     decltype(enumerateWebDAVTestServers()) result;
 
-    for (const auto& url : urls) {
+    for (const auto& entry : urls) {
+        auto url = entry.first;
+        auto flags = entry.second;
         auto proto = url.scheme();
         if (proto == "nextcloud") {
             auto fixedUrl = url;
             fixedUrl.setScheme("http");
-            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::NextCloud);
+            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::NextCloud, flags);
         } else if (proto == "owncloud") {
             auto fixedUrl = url;
             fixedUrl.setScheme("http");
-            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::OwnCloud);
+            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::OwnCloud, flags);
         } else if (proto == "generic") {
             auto fixedUrl = url;
             fixedUrl.setScheme("http");
-            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::Generic);
+            result << std::make_tuple(fixedUrl, SynqClient::WebDAVServerType::Generic, flags);
         } else {
-            result << std::make_tuple(url, SynqClient::WebDAVServerType::Generic);
+            result << std::make_tuple(url, SynqClient::WebDAVServerType::Generic, flags);
         }
     }
     return result;
@@ -91,11 +106,13 @@ inline void setupWebDAVTestServerData()
 {
     QTest::addColumn<QUrl>("url");
     QTest::addColumn<SynqClient::WebDAVServerType>("type");
+    QTest::addColumn<int>("flags");
 
     for (const auto& tuple : enumerateWebDAVTestServers()) {
         auto url = std::get<0>(tuple);
         auto type = std::get<1>(tuple);
-        QTest::newRow(url.toString().toUtf8()) << url << type;
+        auto flags = std::get<2>(tuple);
+        QTest::newRow(url.toString().toUtf8()) << url << type << flags;
     }
 }
 
