@@ -34,6 +34,8 @@ public:
 
     void checkParameters();
     void handleRequestFinished();
+
+    bool retryWithoutTrailingSlash;
 };
 
 } // namespace SynqClient

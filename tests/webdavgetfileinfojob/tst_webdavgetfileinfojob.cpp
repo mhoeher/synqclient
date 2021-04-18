@@ -42,6 +42,7 @@ void WebDAVGetFileInfoJobTest::getRootItemFileInfo()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
     SynqClient::WebDAVGetFileInfoJob job;
     job.setNetworkAccessManager(&nam);
     job.setServerType(type);
@@ -71,6 +72,7 @@ void WebDAVGetFileInfoJobTest::getFileInfoForNonExistingFile()
     auto uid = QUuid::createUuid();
     auto path = "/WebDAVGetFileInfoJobTest-should-definitely-not-exist-" + uid.toString();
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
     SynqClient::WebDAVGetFileInfoJob job;
     job.setNetworkAccessManager(&nam);
     job.setServerType(type);

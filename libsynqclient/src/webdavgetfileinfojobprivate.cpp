@@ -49,15 +49,17 @@ void WebDAVGetFileInfoJobPrivate::handleRequestFinished()
         if (reply->error() != QNetworkReply::NoError) {
             q->setError(q->fromNetworkError(*reply), reply->errorString());
             q->finishLater();
-        } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
+        } else if (q->d_ptr2->shouldFollowUnhandledRedirect(reply)) {
             // Encountered redirect not handled by Qt, follow:
             q->start();
             return;
         } else {
             auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            auto data = reply->readAll();
             if (code.toInt() == q->d_ptr2->WebDAVMultiStatus) {
                 bool ok;
-                auto entryList = q->d_ptr2->parseEntryList(reply->url(), reply->readAll(), ok);
+
+                auto entryList = q->d_ptr2->parseEntryList(reply->url(), data, ok);
                 if (!ok) {
                     q->setError(JobError::InvalidResponse,
                                 "PROPFIND response from server is not valid");

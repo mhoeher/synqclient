@@ -52,6 +52,7 @@ void WebDAVDeleteJobTest::deleteSingleFile()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVDeleteJobTest-deleteSingleFile-" + testDirUid.toString();
@@ -134,6 +135,7 @@ void WebDAVDeleteJobTest::deleteEmptyFolder()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVDeleteJobTest-deleteEmptyFolder-" + testDirUid.toString();
@@ -213,6 +215,7 @@ void WebDAVDeleteJobTest::deleteFolderRecursively()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVDeleteJobTest-deleteFolderRecursively-" + testDirUid.toString();
@@ -336,8 +339,14 @@ void WebDAVDeleteJobTest::syncAttribute()
 
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
+    QFETCH(int, flags);
+
+    if (flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoIfMatch)) {
+        QSKIP("WebDAV server does not support If-Match properly - skipping test");
+    }
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVDeleteJobTest-syncAttribute-" + testDirUid.toString();

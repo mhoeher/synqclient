@@ -1,8 +1,35 @@
+stages:
+    - prepare
+    - build
+
 variables:
     GIT_SUBMODULE_STRATEGY: recursive
+    FEDORA_IMAGE: registry.gitlab.com/rpdev/synqclient:fedora
+
+include:
+  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
+
+
+docker::fedora:
+    stage: prepare
+    image: docker:git
+    services:
+        - docker:dind
+    script:
+        - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+        - cd docker/fedora
+        - docker build --pull -t $FEDORA_IMAGE .
+        - docker push $FEDORA_IMAGE
+    rules:
+        - if: $CI_COMMIT_MESSAGE =~ /\[docker-image-build\]/
+          when: always
+        - if: $DOCKER_IMAGE_BUILD
+          when: always
+        - when: never
 
 .build-and-test:
     stage: build
+    image: $FEDORA_IMAGE
     script:
         - curl -d install="true" -d adminlogin=admin -d adminpass=admin http://nextcloud/index.php
         - curl -d install="true" -d adminlogin=admin -d adminpass=admin http://owncloud/index.php
@@ -12,42 +39,39 @@ variables:
           alias: nextcloud
         - name: owncloud
           alias: owncloud
+        - name: registry.gitlab.com/rpdev/docker/apache_webdav
+          alias: apache_webdav
     variables:
         SYNQCLIENT_UT_WEBDAV_SERVERS: nextcloud://admin:admin@nextcloud/;owncloud://admin:admin@owncloud/;generic://admin:admin@nextcloud/remote.php/dav/files/admin/;generic://admin:admin@owncloud/remote.php/dav/files/admin/
 
 fedora:
-    image: fedora
     extends: .build-and-test
     variables:
         RUNNER: ./ci/build-and-test.sh
 
 fedora-static:
-    image: fedora
     extends: .build-and-test
     variables:
         RUNNER: ./ci/build-and-test-static.sh
 
 fedora-cmake:
-    image: fedora
     extends: .build-and-test
     variables:
         RUNNER: ./ci/build-and-test-cmake.sh
 
 fedora-static-cmake:
-    image: fedora
     extends: .build-and-test
     variables:
         RUNNER: ./ci/build-and-test-static-cmake.sh
 
 pri-build:
-    image: fedora
     extends: .build-and-test
     variables:
         RUNNER: ./ci/build-using-pri.sh
 
 pages:
     stage: build
-    image: fedora
+    image: $FEDORA_IMAGE
     script:
         - ./ci/doxygen.sh
     artifacts:
@@ -58,7 +82,7 @@ pages:
 
 doxygen:
     stage: build
-    image: fedora
+    image: $FEDORA_IMAGE
     script:
         - ./ci/doxygen.sh
     except:
@@ -66,6 +90,6 @@ doxygen:
 
 cppcheck:
     stage: build
-    image: fedora
+    image: $FEDORA_IMAGE
     script:
         - ./ci/cppcheck.sh

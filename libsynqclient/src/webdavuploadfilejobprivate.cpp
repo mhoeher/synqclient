@@ -57,7 +57,7 @@ void WebDAVUploadFileJobPrivate::handleRequestFinished()
                 q->setError(q->fromNetworkError(*reply), reply->errorString());
             }
             q->finishLater();
-        } else if (q->d_ptr2->shouldFollowUnhandledRedirect()) {
+        } else if (q->d_ptr2->shouldFollowUnhandledRedirect(reply)) {
             // Encountered redirect not handled by Qt, follow:
             q->start();
             return;
@@ -66,6 +66,11 @@ void WebDAVUploadFileJobPrivate::handleRequestFinished()
             fileInfo.setIsFile();
             QVariant etag = reply->header(QNetworkRequest::ETagHeader);
             if (etag.isValid()) {
+                // TODO: Some servers (e.g. Apache's mod_dav) don't include an etag on
+                // upload. On the other side, we cannot just do another PROPFIND to get
+                // the "current" etag, as another client might meanwhile also have written and then
+                // we would take over another file version's etag. The best we can is probably just
+                // keep the etag empty and live with it...
                 fileInfo.setSyncAttribute(etag.toString());
             }
             q->setFileInfo(fileInfo);

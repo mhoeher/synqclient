@@ -53,7 +53,7 @@ public:
     QUrl urlFromPath(const QString& path);
     void prepareNetworkRequest(QNetworkRequest& request);
     void disableCaching(QNetworkRequest& request);
-    bool shouldFollowUnhandledRedirect();
+    bool shouldFollowUnhandledRedirect(QNetworkReply* reply);
     FileInfos parseEntryList(const QUrl& url, const QByteArray& reply, bool& ok);
 
 private:

@@ -73,6 +73,9 @@ void WebDAVGetFileInfoJob::start()
     d_ptr2->disableCaching(req);
     req.setUrl(url);
     req.setRawHeader("Depth", "0");
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
+                     QNetworkRequest::ManualRedirectPolicy); // WA for QTBUG-92909, handle redirects
+                                                             // manually in client code
     req.setHeader(QNetworkRequest::ContentLengthHeader,
                   AbstractWebDAVJobPrivate::PropFindRequestData.size());
     req.setHeader(QNetworkRequest::ContentTypeHeader, d_ptr2->DefaultEncoding);

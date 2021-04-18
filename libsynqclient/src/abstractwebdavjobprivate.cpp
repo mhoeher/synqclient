@@ -93,7 +93,7 @@ void AbstractWebDAVJobPrivate::disableCaching(QNetworkRequest& request)
  *
  * Returns true if we need to follow the redirect, false otherwise.
  */
-bool AbstractWebDAVJobPrivate::shouldFollowUnhandledRedirect()
+bool AbstractWebDAVJobPrivate::shouldFollowUnhandledRedirect(QNetworkReply* reply)
 {
     if (reply && networkAccessManager
         && networkAccessManager->redirectPolicy() == QNetworkRequest::NoLessSafeRedirectPolicy) {

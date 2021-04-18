@@ -53,6 +53,7 @@ void WebDAVUploadFileJobTest::uploadLocalFile()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     QTemporaryDir tmpDir;
     QDir dir(tmpDir.path());
@@ -120,6 +121,7 @@ void WebDAVUploadFileJobTest::uploadDevice()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     QByteArray data = "Hello World!\n";
     auto buffer = new QBuffer(&data);
@@ -182,6 +184,7 @@ void WebDAVUploadFileJobTest::uploadData()
     QFETCH(SynqClient::WebDAVServerType, type);
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVUploadFileJobTest-uploadData-" + testDirUid.toString();
@@ -238,8 +241,14 @@ void WebDAVUploadFileJobTest::uploadSyncAttribute()
 
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
+    QFETCH(int, flags);
+
+    if (flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoIfMatch)) {
+        QSKIP("WebDAV server does not support If-Match properly - skipping test");
+    }
 
     QNetworkAccessManager nam;
+    nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto testDirUid = QUuid::createUuid();
     auto remotePath = "/WebDAVUploadFileJobTest-uploadSyncAttribute-" + testDirUid.toString();
@@ -277,6 +286,22 @@ void WebDAVUploadFileJobTest::uploadSyncAttribute()
         // back is not updated.
         QThread::sleep(1);
     }
+
+    if (originalEtag.toString().isEmpty()) {
+        WebDAVGetFileInfoJob job;
+        job.setNetworkAccessManager(&nam);
+        job.setUrl(url);
+        job.setServerType(type);
+        job.setPath(remoteFileName);
+        QSignalSpy spy(&job, &WebDAVGetFileInfoJob::finished);
+        job.start();
+        QVERIFY(spy.wait());
+        QCOMPARE(job.errorString(), QString());
+        QCOMPARE(job.error(), JobError::NoError);
+        originalEtag = job.fileInfo().syncAttribute();
+    }
+
+    QVERIFY(!originalEtag.toString().isEmpty());
 
     {
         // Override the file without checking for etag (i.e. update by other client).
