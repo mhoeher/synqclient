@@ -65,6 +65,15 @@ enum class JobError : quint32 {
      * deleted.
      */
     ResourceDeleted,
+
+    /**
+     * @brief The remote path provided to a job did not point to a folder.
+     *
+     * This error is used to indicate that the resource that a job was pointed to on the remote
+     * did not refer to a folder. For example, not all implementations of the ListFilesJob
+     * might support "listing" a remote file.
+     */
+    RemoteResourceIsNotAFolder,
 };
 
 Q_ENUM_NS(JobError);

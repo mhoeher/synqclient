@@ -21,7 +21,8 @@
 
 namespace SynqClient {
 
-DropboxListFilesJobPrivate::DropboxListFilesJobPrivate(DropboxListFilesJob* q) : ListFilesJobPrivate(q)
+DropboxListFilesJobPrivate::DropboxListFilesJobPrivate(DropboxListFilesJob* q)
+    : ListFilesJobPrivate(q), cursor()
 {
 }
 

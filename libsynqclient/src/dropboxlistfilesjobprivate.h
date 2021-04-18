@@ -31,6 +31,8 @@ public:
     explicit DropboxListFilesJobPrivate(DropboxListFilesJob* q);
 
     Q_DECLARE_PUBLIC(DropboxListFilesJob);
+
+    QString cursor;
 };
 
 } // namespace SynqClient

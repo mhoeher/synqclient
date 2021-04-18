@@ -32,9 +32,10 @@ namespace SynqClient {
  * remote folder. Additionally, information about the folder itself can be retrieved by using the
  * folder() method.
  *
- * @note If the path() configured points to a remote file, the job still shall succeed. In this
- * case, information about the file is found in the file informaiton returned by folder() and
- * entries() shall return an empty list.
+ * @note If the path() configured points to a remote file, the job still should succeed. In this
+ * case, information about the file is found in the file information returned by folder() and
+ * entries() shall return an empty list. If a concrete implementation does not support this, it
+ * shall fail with a JobError::RemoteResourceIsNotAFolder error.
  */
 
 /**
