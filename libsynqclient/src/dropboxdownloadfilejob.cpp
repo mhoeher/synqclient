@@ -19,6 +19,10 @@
 
 #include "../inc/SynqClient/dropboxdownloadfilejob.h"
 
+#include <QJsonDocument>
+#include <QJsonObject>
+
+#include "abstractdropboxjobprivate.h"
 #include "dropboxdownloadfilejobprivate.h"
 
 namespace SynqClient {
@@ -46,7 +50,60 @@ DropboxDownloadFileJob::~DropboxDownloadFileJob() {}
  */
 void DropboxDownloadFileJob::start()
 {
-    // TODO: Implement me
+    Q_D(DropboxDownloadFileJob);
+    d->state = JobState::Running;
+
+    {
+        auto error = d_ptr2->checkDefaultParameters();
+        auto code = std::get<0>(error);
+        if (code != JobError::NoError) {
+            setError(code, std::get<1>(error));
+            finishLater();
+            return;
+        }
+    }
+
+    d->downloadDevice = getDownloadDevice();
+
+    if (!d->downloadDevice) {
+        finishLater();
+        return;
+    }
+
+    QVariantMap data { { "path", d->remoteFilename } };
+
+    d->downloadDevice->seek(0);
+    auto reply = d_ptr2->postData("/files/download", data, nullptr);
+
+    if (reply) {
+        connect(reply, &QNetworkReply::readyRead, this, [=]() {
+            if (d->downloadDevice) {
+                d->downloadDevice->write(reply->readAll());
+            }
+        });
+        connect(reply, &QNetworkReply::finished, this, [=]() {
+            reply->deleteLater();
+            if (reply->error() == QNetworkReply::NoError) {
+                QJsonParseError error;
+                auto doc = QJsonDocument::fromJson(reply->rawHeader("Dropbox-API-Result"), &error);
+                if (error.error == QJsonParseError::NoError) {
+                    setFileInfo(d_ptr2->fileInfoFromJson(doc.object(), QString(), "file"));
+                } else {
+                    setError(JobError::InvalidResponse,
+                             tr("Failed to parse JSON response: %s").arg(error.errorString()));
+                }
+            } else {
+                // Unrecognized error - "fail generically"
+                setError(JobError::NetworkRequestFailed,
+                         reply->errorString() + " " + reply->readAll());
+            }
+            finishLater();
+        });
+        d_ptr2->reply = reply;
+    } else {
+        setError(JobError::InvalidResponse, tr("Received null network reply"));
+        finishLater();
+    }
 }
 
 /**
@@ -54,7 +111,14 @@ void DropboxDownloadFileJob::start()
  */
 void DropboxDownloadFileJob::stop()
 {
-    // TODO: Implement me
+    auto reply = d_ptr2->reply;
+    if (reply) {
+        reply->abort();
+        delete reply;
+        d_ptr2->reply = nullptr;
+    }
+    setError(JobError::Stopped, "The job has been stopped");
+    finishLater();
 }
 
 /**

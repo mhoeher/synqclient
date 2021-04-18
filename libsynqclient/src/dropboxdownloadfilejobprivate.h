@@ -31,6 +31,8 @@ public:
     explicit DropboxDownloadFileJobPrivate(DropboxDownloadFileJob* q);
 
     Q_DECLARE_PUBLIC(DropboxDownloadFileJob);
+
+    QIODevice* downloadDevice;
 };
 
 } // namespace SynqClient

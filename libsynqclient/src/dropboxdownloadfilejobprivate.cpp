@@ -21,7 +21,8 @@
 
 namespace SynqClient {
 
-DropboxDownloadFileJobPrivate::DropboxDownloadFileJobPrivate(DropboxDownloadFileJob* q) : DownloadFileJobPrivate(q)
+DropboxDownloadFileJobPrivate::DropboxDownloadFileJobPrivate(DropboxDownloadFileJob* q)
+    : DownloadFileJobPrivate(q), downloadDevice(nullptr)
 {
 }
 
