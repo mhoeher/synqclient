@@ -19,6 +19,7 @@
 
 #include "../inc/SynqClient/dropboxdeletejob.h"
 
+#include "abstractdropboxjobprivate.h"
 #include "dropboxdeletejobprivate.h"
 
 namespace SynqClient {
@@ -46,7 +47,64 @@ DropboxDeleteJob::~DropboxDeleteJob() {}
  */
 void DropboxDeleteJob::start()
 {
-    // TODO: Implement me
+    Q_D(DropboxDeleteJob);
+    d->state = JobState::Running;
+
+    {
+        auto error = d_ptr2->checkDefaultParameters();
+        auto code = std::get<0>(error);
+        if (code != JobError::NoError) {
+            setError(code, std::get<1>(error));
+            finishLater();
+            return;
+        }
+    }
+
+    QVariantMap data { { "path", d->path } };
+
+    if (syncAttribute().isValid()) {
+        data["parent_rev"] = syncAttribute();
+    }
+
+    auto reply = d_ptr2->post("/files/delete_v2", data);
+
+    if (reply) {
+        connect(reply, &QNetworkReply::finished, this, [=]() {
+            reply->deleteLater();
+            if (reply->error() == QNetworkReply::NoError) {
+                // Done!
+            } else {
+                // Check if this is a "known" error
+                auto notAnError = false;
+                auto errorData = reply->readAll();
+                d_ptr2->tryHandleKnownError(
+                        errorData,
+                        { { { { "error", "path", ".tag" }, "not_found" },
+                            [&](const QJsonDocument&) {
+                                // Resource no longer present - all good!
+                                notAnError = true;
+                            } },
+                          // {"error_summary": "path_write/conflict/file/..", "error": {".tag":
+                          // "path_write", "path_write": {".tag": "conflict", "conflict": {".tag":
+                          // "file"}}}}
+                          { { { "error", "path_write", "conflict", ".tag" }, "file" },
+                            [=](const QJsonDocument&) {
+                                setError(JobError::SyncAttributeMismatch,
+                                         tr("The file on the server was updated"));
+                            } } });
+
+                if (this->error() == JobError::NoError && !notAnError) {
+                    // Unrecognized error - "fail generically"
+                    setError(JobError::NetworkRequestFailed, reply->errorString());
+                }
+            }
+            finishLater();
+        });
+        d_ptr2->reply = reply;
+    } else {
+        setError(JobError::InvalidResponse, tr("Received null network reply"));
+        finishLater();
+    }
 }
 
 /**
@@ -54,7 +112,13 @@ void DropboxDeleteJob::start()
  */
 void DropboxDeleteJob::stop()
 {
-    // TODO: Implement me
+    auto reply = d_ptr2->reply;
+    if (reply) {
+        reply->abort();
+        delete reply;
+    }
+    setError(JobError::Stopped, "The job has been stopped");
+    finishLater();
 }
 
 /**
