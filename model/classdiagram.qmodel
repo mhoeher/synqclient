@@ -3584,7 +3584,7 @@
                                     <object>{a59b0689-1a88-4f7c-8954-eb1b8b4231c4}</object>
                                     <name>ListFilesJob</name>
                                     <pos>x:195;y:550</pos>
-                                    <rect>x:-80;y:-50;w:160;h:100</rect>
+                                    <rect>x:-80;y:-60;w:160;h:120</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -4441,23 +4441,37 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{85d59d12-68e9-44fd-b50e-590c603718ff}</uid>
+                               <uid>{c49191e3-4aa6-45e2-a4a1-c8fc814e37fb}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{887d2c2d-51ea-4c6c-aa7d-040be43b42cf}</uid>
+                               <uid>{9ecd10fb-d3b2-48da-84ce-a604b80975e8}</uid>
                                <type>1</type>
                                <declaration>QVector&lt;FileInfo&gt; entries</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{8df9172f-59ba-4c2c-b397-dad80bda8017}</uid>
+                               <uid>{6586311b-2ba1-4108-9a42-0c9e64f7a71c}</uid>
                                <type>1</type>
                                <declaration>FileInfo folder</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{0b770703-c8d9-4600-9497-019a2ce06801}</uid>
+                               <type>1</type>
+                               <declaration>bool recursive</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{77189886-b76b-4298-8706-7617f0a18ec3}</uid>
+                               <type>1</type>
+                               <declaration>QString cursor</declaration>
                               </MClassMember>
                              </item>
                             </qlist>

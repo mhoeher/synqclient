@@ -90,6 +90,52 @@ FileInfo ListFilesJob::folder() const
 }
 
 /**
+ * @brief Shall files and folders be listed recursively.
+ *
+ * If this property is set to true, listing entries within a folder is done recursively. The default
+ * is false.
+ *
+ * @note Not all implementations support recursive listing.
+ */
+bool ListFilesJob::recursive() const
+{
+    Q_D(const ListFilesJob);
+    return d->recursive;
+}
+
+/**
+ * @brief Set if files and folder shall be listed recursively.
+ */
+void ListFilesJob::setRecursive(bool recursive)
+{
+    Q_D(ListFilesJob);
+    d->recursive = recursive;
+}
+
+/**
+ * @brief A cursor to continue the folder listing later on.
+ *
+ * This property holds a cursor - i.e. a token which is backend specific - which allows to query
+ * the folder later on for any changes. After listing a specific folder, one can read the cursor and
+ * - later on - create a new ListFilesJob object, setting the cursor on it. The new job will then
+ * only list changes compared to the last list operation.
+ *
+ * @note Not all implementations support cursors. Refer to the implementation of the concrete class
+ * to learn if it has this capability or not.
+ */
+QString ListFilesJob::cursor() const
+{
+    Q_D(const ListFilesJob);
+    return d->cursor;
+}
+
+void ListFilesJob::setCursor(const QString& cursor)
+{
+    Q_D(ListFilesJob);
+    d->cursor = cursor;
+}
+
+/**
  * @brief Constructor.
  */
 ListFilesJob::ListFilesJob(ListFilesJobPrivate* d, QObject* parent) : AbstractJob(d, parent) {}

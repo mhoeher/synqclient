@@ -31,6 +31,13 @@ namespace SynqClient {
 /**
  * @class DropboxListFilesJob
  * @brief Implementation of the ListFilesJob for Dropbox.
+ *
+ * This class implements the ListFilesJob for Dropbox. The Dropbox implementation has the following
+ * additional capabilities:
+ *
+ * - Folders can be listed recursively.
+ * - The implementation supports cursors, which allow to efficiently get updates inside a remote
+ *   folder.
  */
 
 /**
@@ -74,14 +81,14 @@ void DropboxListFilesJob::start()
     QVariantMap data;
     QString endpoint;
     if (d->cursor.isEmpty()) {
-        data = QVariantMap { { "path", d->path } };
+        data = QVariantMap { { "path", d->path }, { "recursive", d->recursive } };
         endpoint = "/files/list_folder";
     } else {
         data = QVariantMap { { "cursor", d->cursor } };
         endpoint = "/files/list_folder/continue";
     }
 
-    auto reply = d_ptr2->post("/files/list_folder", data);
+    auto reply = d_ptr2->post(endpoint, data);
 
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {
@@ -95,11 +102,14 @@ void DropboxListFilesJob::start()
                     auto newEntries = docObject.value("entries").toArray();
                     for (int i = 0; i < newEntries.count(); ++i) {
                         auto entry = newEntries.at(i).toObject();
-                        previousEntries << d_ptr2->fileInfoFromJson(entry, d->path);
+                        auto dirEntry = d_ptr2->fileInfoFromJson(entry, d->path);
+                        if (dirEntry.path() != ".") {
+                            previousEntries << dirEntry;
+                        }
                     }
                     setEntries(previousEntries);
+                    d->cursor = docObject.value("cursor").toString();
                     if (docObject.value("has_more").toBool(false)) {
-                        d->cursor = docObject.value("cursor").toString();
                         start();
                         return;
                     }
@@ -109,13 +119,24 @@ void DropboxListFilesJob::start()
                 }
             } else {
                 // Check if this is a "known" error
-                d_ptr2->tryHandleKnownError(reply->readAll(),
-                                            { { { { "error", "path", ".tag" }, "not_folder" },
-                                                [=](const QJsonDocument&) {
-                                                    auto folderInfo = folder();
-                                                    folderInfo.setIsFile();
-                                                    setFolder(folderInfo);
-                                                } } });
+                bool notAnError = false;
+                auto errorData = reply->readAll();
+                d_ptr2->tryHandleKnownError(
+                        errorData,
+                        { { { { "error", "path", ".tag" }, "not_folder" },
+                            [=](const QJsonDocument&) {
+                                auto folderInfo = folder();
+                                folderInfo.setIsFile();
+                                setFolder(folderInfo);
+                            } },
+                          { { { "error", ".tag" }, "reset" }, [&](const QJsonDocument&) {
+                               // The cursor is too old - retry getting a new one. See
+                               // https://www.dropbox.com/developers/documentation/http/documentation#files-list_folder-continue
+                               setEntries({});
+                               d->cursor.clear();
+                               start();
+                               notAnError = true;
+                           } } });
 
                 if (this->error() == JobError::NoError && folder().isDirectory()) {
                     // Unrecognized error - "fail generically" (except we detected the remote is a

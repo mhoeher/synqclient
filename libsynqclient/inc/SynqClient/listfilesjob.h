@@ -47,6 +47,12 @@ public:
     FileInfos entries() const;
     FileInfo folder() const;
 
+    bool recursive() const;
+    void setRecursive(bool recursive);
+
+    QString cursor() const;
+    void setCursor(const QString& cursor);
+
 protected:
     explicit ListFilesJob(ListFilesJobPrivate* d, QObject* parent = nullptr);
 
