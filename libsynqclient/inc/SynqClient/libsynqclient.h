@@ -57,6 +57,15 @@ enum class JobError : quint32 {
      * already exists.
      */
     FolderExists,
+
+    /**
+     * @brief The remote unexpectedly closed the connection.
+     *
+     * This error indicates that the server closed a network connection in an unexpected way.
+     * This can be due to network issues but also be a sign of potential server overload
+     * scenarios.
+     */
+    ServerClosedConnection,
 };
 
 Q_ENUM_NS(JobError);
