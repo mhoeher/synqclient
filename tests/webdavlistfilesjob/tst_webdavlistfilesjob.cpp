@@ -150,6 +150,7 @@ void WebDAVListFilesJobTest::listFiles()
             }
             if (name == "file1.txt" || name == "file2.txt") {
                 QVERIFY(entry.isFile());
+                QVERIFY(!entry.syncAttribute().isEmpty());
             }
         }
         std::sort(gotNames.begin(), gotNames.end());

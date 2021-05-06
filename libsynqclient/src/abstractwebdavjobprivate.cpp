@@ -177,8 +177,7 @@ FileInfo AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDo
                 child = child.nextSiblingElement();
             }
         } else {
-            qCWarning(log) << "Properties not retrieved -" << status.text();
-            ok = false;
+            qCDebug(log) << "Properties not retrieved -" << status.text();
         }
     }
 

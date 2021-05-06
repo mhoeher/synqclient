@@ -47,6 +47,7 @@ void WebDAVDownloadFileJobTest::downloadLocalFile()
 
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
+    QFETCH(int, flags);
 
     QNetworkAccessManager nam;
     nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
@@ -106,7 +107,9 @@ void WebDAVDownloadFileJobTest::downloadLocalFile()
         QFile f2(localFileName2);
         QVERIFY(f2.open(QIODevice::ReadOnly));
         QCOMPARE(f2.readAll(), f1.readAll());
-        QVERIFY(!job.fileInfo().syncAttribute().isEmpty());
+        if (!(flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoEtagOnDownload))) {
+            QVERIFY(!job.fileInfo().syncAttribute().isEmpty());
+        }
     }
 }
 
@@ -123,6 +126,7 @@ void WebDAVDownloadFileJobTest::downloadDevice()
 
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
+    QFETCH(int, flags);
 
     QNetworkAccessManager nam;
     nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
@@ -175,7 +179,9 @@ void WebDAVDownloadFileJobTest::downloadDevice()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(localData, data);
-        QVERIFY(!job.fileInfo().syncAttribute().isEmpty());
+        if (!(flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoEtagOnDownload))) {
+            QVERIFY(!job.fileInfo().syncAttribute().isEmpty());
+        }
     }
 }
 
@@ -192,6 +198,7 @@ void WebDAVDownloadFileJobTest::downloadData()
 
     QFETCH(QUrl, url);
     QFETCH(SynqClient::WebDAVServerType, type);
+    QFETCH(int, flags);
 
     QNetworkAccessManager nam;
     nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
@@ -236,7 +243,9 @@ void WebDAVDownloadFileJobTest::downloadData()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(job.data(), "Hello World!\n");
-        QVERIFY(!job.fileInfo().syncAttribute().isEmpty());
+        if (!(flags & static_cast<int>(SynqClient::UnitTest::WebDAVServerFlag::NoEtagOnDownload))) {
+            QVERIFY(!job.fileInfo().syncAttribute().isEmpty());
+        }
     }
 }
 
