@@ -19,6 +19,8 @@
 
 #include "webdavdownloadfilejobprivate.h"
 
+#include <QTimer>
+
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
@@ -49,6 +51,12 @@ void WebDAVDownloadFileJobPrivate::handleRequestFinished()
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
+        if (q->d_ptr2->checkIfRequestShallBeRetried(reply)) {
+            q->d_ptr2->numRetries += 1;
+            QTimer::singleShot(q->d_ptr2->getRetryDelayInMilliseconds(reply), q,
+                               &WebDAVDownloadFileJob::start);
+            return;
+        }
         if (reply->error() != QNetworkReply::NoError) {
             q->setError(q->fromNetworkError(*reply), reply->errorString());
             q->finishLater();

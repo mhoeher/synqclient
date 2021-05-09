@@ -31,7 +31,8 @@ AbstractWebDAVJobPrivate::AbstractWebDAVJobPrivate(AbstractWebDAVJob* q)
       serverType(WebDAVServerType::Generic),
       numManualRedirects(0),
       nextUrl(QUrl()),
-      reply(nullptr)
+      reply(nullptr),
+      numRetries(0)
 {
 }
 
@@ -122,6 +123,39 @@ FileInfos AbstractWebDAVJobPrivate::parseEntryList(const QUrl& url, const QByteA
         result = parsePropFindResponse(url, doc, ok);
     } else {
         qCWarning(log) << "Failed to parse WebDAV response:" << errorMsg << "in line" << errorLine;
+    }
+    return result;
+}
+
+bool AbstractWebDAVJobPrivate::checkIfRequestShallBeRetried(QNetworkReply* reply) const
+{
+    if (reply && reply->error() != QNetworkReply::NoError && numRetries < MaxRetries) {
+        auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if (code == 429) {
+            qCDebug(log) << "Server replied with code 429 (Too Many Requests) - retrying";
+            return true;
+        }
+    }
+    return false;
+}
+
+int AbstractWebDAVJobPrivate::getRetryDelayInMilliseconds(QNetworkReply* reply) const
+{
+    int result = 0;
+    if (reply) {
+        bool ok;
+        // Check if Retry-After is set and contains an integer value. In this case, it
+        // is a delay to wait (in seconds), see
+        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After.
+        // Note, that currently, we don't support the alternative HTTP Date response.
+        result = reply->rawHeader("Retry-After").toInt(&ok) * 1000;
+        qCDebug(log) << "Server provided retry delay of" << result << "ms";
+        if (!ok) {
+            result = 0;
+        }
+    }
+    if (result == 0) {
+        result = 5000;
     }
     return result;
 }
