@@ -238,7 +238,12 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
             switch (job->error()) {
             case JobError::NoError: {
                 auto previousEntry = syncStateDatabase->getEntry(nextRemoteFolder);
-                if (job->folder().syncAttribute() != previousEntry.syncProperty()) {
+                qCDebug(log) << "Sync attribute of" << nextRemoteFolder << "is now"
+                             << job->folder().syncAttribute() << "- previously was"
+                             << previousEntry.syncProperty();
+                if (job->folder().syncAttribute() != previousEntry.syncProperty()
+                    || job->folder().syncAttribute().isEmpty()) {
+                    qCDebug(log) << "Change in " << nextRemoteFolder << "detected!";
                     auto node =
                             remoteChangeTree.findNode(nextRemoteFolder, ChangeTree::FindAndCreate);
                     node->type = ChangeTree::Folder;
@@ -255,16 +260,22 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
 
                     auto jobEntries = job->entries();
                     for (const auto& remoteEntry : qAsConst(jobEntries)) {
+                        qCDebug(log) << "Checking remote entry" << remoteEntry.name()
+                                     << "with sync attribute" << remoteEntry.syncAttribute();
                         auto remoteEntryPath = SyncStateEntry::makePath(nextRemoteFolder + "/"
                                                                         + remoteEntry.name());
                         handledEntries.insert(remoteEntryPath);
                         if (!filter(remoteEntryPath, remoteEntry)) {
+                            qCDebug(log) << "Remote entry" << remoteEntry.name()
+                                         << "not matched by filter - ignoring it";
                             continue;
                         }
 
                         auto previousRemoteEntry = previousEntriesMap.value(remoteEntryPath);
-                        if (previousRemoteEntry.syncProperty() != remoteEntry.syncAttribute()) {
+                        if (previousRemoteEntry.syncProperty() != remoteEntry.syncAttribute()
+                            || remoteEntry.syncAttribute().isEmpty()) {
                             // The item changed
+                            qCDebug(log) << "Change in" << remoteEntry.name() << "detected!";
                             node = remoteChangeTree.findNode(remoteEntryPath,
                                                              ChangeTree::FindAndCreate);
                             if (remoteEntry.isDirectory()) {
