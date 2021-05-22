@@ -59,6 +59,15 @@ enum class JobError : quint32 {
     FolderExists,
 
     /**
+     * @brief The remote unexpectedly closed the connection.
+     *
+     * This error indicates that the server closed a network connection in an unexpected way.
+     * This can be due to network issues but also be a sign of potential server overload
+     * scenarios.
+     */
+    ServerClosedConnection,
+
+    /**
      * @brief The remove file or folder has been deleted.
      *
      * This error is used to indicate that the remote resource which the job worked on has been

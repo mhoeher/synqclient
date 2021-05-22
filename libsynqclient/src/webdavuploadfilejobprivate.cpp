@@ -19,6 +19,8 @@
 
 #include "webdavuploadfilejobprivate.h"
 
+#include <QTimer>
+
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
@@ -49,6 +51,12 @@ void WebDAVUploadFileJobPrivate::handleRequestFinished()
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
+        if (q->d_ptr2->checkIfRequestShallBeRetried(reply)) {
+            q->d_ptr2->numRetries += 1;
+            QTimer::singleShot(q->d_ptr2->getRetryDelayInMilliseconds(reply), q,
+                               &WebDAVUploadFileJob::start);
+            return;
+        }
         auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (reply->error() != QNetworkReply::NoError) {
             if (code == AbstractWebDAVJobPrivate::HTTPPreconditionFailed) {

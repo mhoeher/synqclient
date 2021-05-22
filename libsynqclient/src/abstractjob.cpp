@@ -209,7 +209,7 @@ void AbstractJob::finishLater()
     auto timer = new QTimer(this);
     timer->setInterval(0);
     timer->setSingleShot(true);
-    connect(timer, &QTimer::timeout, [=]() {
+    connect(timer, &QTimer::timeout, this, [=]() {
         d->state = JobState::Finished;
         emit finished();
         timer->deleteLater();
@@ -233,6 +233,8 @@ JobError AbstractJob::fromNetworkError(const QNetworkReply& reply)
         return JobError::ServerContentConflict;
     case QNetworkReply::ContentNotFoundError:
         return JobError::ResourceNotFound;
+    case QNetworkReply::RemoteHostClosedError:
+        return JobError::ServerClosedConnection;
     default:
         return JobError::NetworkRequestFailed;
     }

@@ -18,6 +18,9 @@
  */
 
 #include "abstractwebdavjobprivate.h"
+
+#include <QTimer>
+
 #include "webdavcreatedirectoryjobprivate.h"
 #include "abstractwebdavjobprivate.h"
 
@@ -49,6 +52,12 @@ void WebDAVCreateDirectoryJobPrivate::handleRequestFinished()
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
+        if (q->d_ptr2->checkIfRequestShallBeRetried(reply)) {
+            q->d_ptr2->numRetries += 1;
+            QTimer::singleShot(q->d_ptr2->getRetryDelayInMilliseconds(reply), q,
+                               &WebDAVCreateDirectoryJob::start);
+            return;
+        }
         if (reply->error() != QNetworkReply::NoError) {
             auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
             switch (code) {

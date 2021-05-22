@@ -19,6 +19,7 @@
 
 #include "webdavlistfilesjobprivate.h"
 
+#include <QTimer>
 #include <QVariant>
 
 #include "abstractwebdavjobprivate.h"
@@ -48,6 +49,12 @@ void WebDAVListFilesJobPrivate::handleRequestFinished()
     q->d_ptr2->reply = nullptr;
     if (reply) {
         reply->deleteLater();
+        if (q->d_ptr2->checkIfRequestShallBeRetried(reply)) {
+            q->d_ptr2->numRetries += 1;
+            QTimer::singleShot(q->d_ptr2->getRetryDelayInMilliseconds(reply), q,
+                               &WebDAVListFilesJob::start);
+            return;
+        }
         if (reply->error() != QNetworkReply::NoError) {
             q->setError(q->fromNetworkError(*reply), reply->errorString());
             if (!retryWithoutTrailingSlash && !q->url().path().endsWith("/")) {

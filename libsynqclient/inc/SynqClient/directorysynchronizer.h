@@ -64,6 +64,8 @@ public:
     int maxJobs() const;
     void setMaxJobs(int maxJobs);
 
+    bool retryWithFewerJobs() const;
+
     SyncConflictStrategy syncConflictStrategy() const;
     void setSyncConflictStrategy(SyncConflictStrategy strategy);
 

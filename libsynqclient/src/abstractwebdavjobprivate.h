@@ -47,14 +47,18 @@ public:
     int numManualRedirects;
     QUrl nextUrl;
     QNetworkReply* reply;
+    int numRetries;
 
     const int MaxRedirects = 30;
+    const int MaxRetries = 30;
 
     QUrl urlFromPath(const QString& path);
     void prepareNetworkRequest(QNetworkRequest& request);
     void disableCaching(QNetworkRequest& request);
     bool shouldFollowUnhandledRedirect(QNetworkReply* reply);
     FileInfos parseEntryList(const QUrl& url, const QByteArray& reply, bool& ok);
+    bool checkIfRequestShallBeRetried(QNetworkReply* reply) const;
+    int getRetryDelayInMilliseconds(QNetworkReply* reply) const;
 
 private:
     FileInfos parsePropFindResponse(const QUrl& baseUrl, const QDomDocument& response, bool& ok);

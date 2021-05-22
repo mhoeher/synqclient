@@ -56,6 +56,7 @@ public:
     SynchronizerError error;
     QString errorString;
     int maxJobs;
+    bool retryWithFewerJobs;
     SyncConflictStrategy syncConflictStrategy;
     SynchronizerFlags flags;
     bool stopped;
@@ -63,7 +64,7 @@ public:
     int numTotalSyncActionsToRun;
 
     void finishLater();
-    void setError(SynchronizerError error, const QString& errorString);
+    void setError(SynchronizerError error, const QString& errorString, JobError jobError);
 
     // Sync Stages:
     void createRemoteFolder();

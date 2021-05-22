@@ -258,6 +258,25 @@ void DirectorySynchronizer::setMaxJobs(int maxJobs)
 }
 
 /**
+ * @brief Indicates that the sync should be retried with fewer parallel jobs.
+ *
+ * If this flag is set after a sync, this indicate that the remote had issues and hence we could
+ * potentially retry the sync with fewer parallel workers (if possible). Users of the class should
+ * check if the sync finished with this error and retry it, with the maximum number of parallel jobs
+ * reduced (in the worst case to e.g. only 1 worker). This sometimes is necessary when the
+ * server used is not capable to handle too many requests in parallel and hence starts closing
+ * connections prematurely.
+ *
+ * @note Do not reuse the same DirectorySynchronizer object. Each object can be used only once,
+ * hence, a new object must be created for the retry.
+ */
+bool DirectorySynchronizer::retryWithFewerJobs() const
+{
+    Q_D(const DirectorySynchronizer);
+    return d->retryWithFewerJobs;
+}
+
+/**
  * @brief The strategy to be used in case a sync conflict is detected.
  *
  * This determines how the synchronizer proceeds in case it detects a sync conflict.
@@ -365,25 +384,26 @@ void DirectorySynchronizer::start()
 
     if (!d->jobFactory || !d->syncStateDatabase || !d->filter || d->localDirectoryPath.isEmpty()
         || d->remoteDirectoryPath.isEmpty()) {
-        d->setError(SynchronizerError::MissingParameter, tr("Some parameters are missing"));
+        d->setError(SynchronizerError::MissingParameter, tr("Some parameters are missing"),
+                    JobError::NoError);
         return;
     }
 
     if (d->maxJobs < 1) {
         d->setError(SynchronizerError::InvalidParameter,
-                    tr("The maximum number of jobs must be at least 1"));
+                    tr("The maximum number of jobs must be at least 1"), JobError::NoError);
         return;
     }
 
     if (!QFileInfo(d->localDirectoryPath).isDir()) {
         d->setError(SynchronizerError::MissingParameter,
-                    tr("The local directory to be synced must exist"));
+                    tr("The local directory to be synced must exist"), JobError::NoError);
         return;
     }
 
     if (!d->syncStateDatabase->openDatabase()) {
         d->setError(SynchronizerError::FailedOpeningSyncStateDatabase,
-                    tr("Failed to open the sync state database"));
+                    tr("Failed to open the sync state database"), JobError::NoError);
     }
 
     // Check if the CreateRemoteFolderOnFirstSync flag is unset. If so, do not try to create the
@@ -415,7 +435,7 @@ void DirectorySynchronizer::start()
 void DirectorySynchronizer::stop()
 {
     Q_D(DirectorySynchronizer);
-    d->setError(SynchronizerError::Stopped, "The sync has been stopped");
+    d->setError(SynchronizerError::Stopped, "The sync has been stopped", JobError::NoError);
     d->stopped = true;
     emit d->stopRequested();
 }

@@ -55,6 +55,7 @@ DirectorySynchronizerPrivate::DirectorySynchronizerPrivate(DirectorySynchronizer
       error(SynchronizerError::NoError),
       errorString(),
       maxJobs(12),
+      retryWithFewerJobs(false),
       syncConflictStrategy(SyncConflictStrategy::RemoteWins),
       flags(SynchronizerFlag::DefaultFlags),
       stopped(false),
@@ -141,7 +142,8 @@ void DirectorySynchronizerPrivate::createNextRemoteFolderPart()
             break;
         default:
             setError(SynchronizerError::FailedCreatingRemoteFolder,
-                     tr("Failed creating remote directory: %1").arg(job->errorString()));
+                     tr("Failed creating remote directory: %1").arg(job->errorString()),
+                     job->error());
         }
     });
     job->start();
@@ -158,7 +160,8 @@ ChangeTree DirectorySynchronizerPrivate::buildLocalChangeTree()
         auto previousEntries = syncStateDatabase->findEntries(path, &innerOk);
         if (!innerOk) {
             setError(SynchronizerError::SyncStateDatabaseLookupFailed,
-                     tr("Failed to read sync state database for entry %1").arg(path));
+                     tr("Failed to read sync state database for entry %1").arg(path),
+                     JobError::NoError);
             break;
         }
         auto previousEntriesMap = syncStateListToMap(previousEntries);
@@ -235,7 +238,12 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
             switch (job->error()) {
             case JobError::NoError: {
                 auto previousEntry = syncStateDatabase->getEntry(nextRemoteFolder);
-                if (job->folder().syncAttribute() != previousEntry.syncProperty()) {
+                qCDebug(log) << "Sync attribute of" << nextRemoteFolder << "is now"
+                             << job->folder().syncAttribute() << "- previously was"
+                             << previousEntry.syncProperty();
+                if (job->folder().syncAttribute() != previousEntry.syncProperty()
+                    || job->folder().syncAttribute().isEmpty()) {
+                    qCDebug(log) << "Change in " << nextRemoteFolder << "detected!";
                     auto node =
                             remoteChangeTree.findNode(nextRemoteFolder, ChangeTree::FindAndCreate);
                     node->type = ChangeTree::Folder;
@@ -252,16 +260,22 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
 
                     auto jobEntries = job->entries();
                     for (const auto& remoteEntry : qAsConst(jobEntries)) {
+                        qCDebug(log) << "Checking remote entry" << remoteEntry.name()
+                                     << "with sync attribute" << remoteEntry.syncAttribute();
                         auto remoteEntryPath = SyncStateEntry::makePath(nextRemoteFolder + "/"
                                                                         + remoteEntry.name());
                         handledEntries.insert(remoteEntryPath);
                         if (!filter(remoteEntryPath, remoteEntry)) {
+                            qCDebug(log) << "Remote entry" << remoteEntry.name()
+                                         << "not matched by filter - ignoring it";
                             continue;
                         }
 
                         auto previousRemoteEntry = previousEntriesMap.value(remoteEntryPath);
-                        if (previousRemoteEntry.syncProperty() != remoteEntry.syncAttribute()) {
+                        if (previousRemoteEntry.syncProperty() != remoteEntry.syncAttribute()
+                            || remoteEntry.syncAttribute().isEmpty()) {
                             // The item changed
+                            qCDebug(log) << "Change in" << remoteEntry.name() << "detected!";
                             node = remoteChangeTree.findNode(remoteEntryPath,
                                                              ChangeTree::FindAndCreate);
                             if (remoteEntry.isDirectory()) {
@@ -296,9 +310,10 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
                 break;
             }
             default:
-                setError(SynchronizerError::FailedListingRemoteFolder,
-                         tr("Failed to list contents of the remote folder %1")
-                                 .arg(nextRemoteFolder));
+                setError(
+                        SynchronizerError::FailedListingRemoteFolder,
+                        tr("Failed to list contents of the remote folder %1").arg(nextRemoteFolder),
+                        job->error());
                 return;
             }
             buildRemoteChangeTree(); // Continue processing remote folders
@@ -711,7 +726,8 @@ void DirectorySynchronizerPrivate::runLocalActions()
             QDir dir(localDirectoryPath + "/" + action->path);
             if (!dir.mkpath(".")) {
                 setError(SynchronizerError::FailedCreatingLocalFolder,
-                         tr("Creating folder %1 has failed").arg(dir.absolutePath()));
+                         tr("Creating folder %1 has failed").arg(dir.absolutePath()),
+                         JobError::NoError);
                 return;
             }
             remoteFoldersSyncAttributes[action->path] =
@@ -728,7 +744,8 @@ void DirectorySynchronizerPrivate::runLocalActions()
                 if (!syncStateDatabase->removeEntries(action->path)
                     || !syncStateDatabase->removeEntry(action->path)) {
                     setError(SynchronizerError::SyncStateDatabaseDeleteFailed,
-                             tr("Failed to delete entries from the sync state database"));
+                             tr("Failed to delete entries from the sync state database"),
+                             JobError::NoError);
                     return;
                 }
             }
@@ -776,7 +793,8 @@ void DirectorySynchronizerPrivate::runRemoteActions()
 
     if (remainingSyncActions.length() == syncActionsToRun.length() && runningJobs <= 0
         && !syncActionsToRun.isEmpty()) {
-        setError(SynchronizerError::Stuck, tr("Cannot continue sync - it is stuck"));
+        setError(SynchronizerError::Stuck, tr("Cannot continue sync - it is stuck"),
+                 JobError::NoError);
         return;
     }
 
@@ -793,7 +811,8 @@ void DirectorySynchronizerPrivate::runRemoteActions()
                 if (!syncStateDatabase->addEntry(
                             SyncStateEntry(it.key(), QDateTime(), it.value()))) {
                     setError(SynchronizerError::SyncStateDatabaseWriteFailed,
-                             tr("Failed to write folder sync attribute to sync state database"));
+                             tr("Failed to write folder sync attribute to sync state database"),
+                             JobError::NoError);
                     break;
                 }
             }
@@ -811,7 +830,8 @@ bool DirectorySynchronizerPrivate::deleteLocally(const QString& path)
         if (file.exists() && !file.remove()) {
             setError(SynchronizerError::FailedDeletingLocalFile,
                      tr("Failed deleting local file %1: %2")
-                             .arg(fi.absolutePath(), file.errorString()));
+                             .arg(fi.absolutePath(), file.errorString()),
+                     JobError::NoError);
             return false;
         }
     } else {
@@ -835,7 +855,8 @@ bool DirectorySynchronizerPrivate::deleteLocally(const QString& path)
                         if (!file.remove()) {
                             setError(SynchronizerError::FailedDeletingLocalFile,
                                      tr("Failed deleting local file %1: %2")
-                                             .arg(next, file.errorString()));
+                                             .arg(next, file.errorString()),
+                                     JobError::NoError);
                             return false;
                         }
                     }
@@ -852,7 +873,8 @@ bool DirectorySynchronizerPrivate::deleteLocally(const QString& path)
                         QFileInfo dirFi(next);
                         if (!dirFi.dir().rmdir(dirFi.fileName())) {
                             setError(SynchronizerError::FailedDeletingLocalFolder,
-                                     tr("Failed deleting local folder %1").arg(next));
+                                     tr("Failed deleting local folder %1").arg(next),
+                                     JobError::NoError);
                             return false;
                         }
                     }
@@ -861,7 +883,8 @@ bool DirectorySynchronizerPrivate::deleteLocally(const QString& path)
             QFileInfo dirFi(fullPath);
             if (!dirFi.dir().rmdir(dirFi.fileName())) {
                 setError(SynchronizerError::FailedDeletingLocalFolder,
-                         tr("Failed deleting local folder %1").arg(dir.absolutePath()));
+                         tr("Failed deleting local folder %1").arg(dir.absolutePath()),
+                         JobError::NoError);
                 return false;
             }
         }
@@ -951,7 +974,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                                                                 uploadAction->lastModified,
                                                                 job->fileInfo().syncAttribute()))) {
                     setError(SynchronizerError::SyncStateDatabaseWriteFailed,
-                             tr("Failed to write to the sync state database"));
+                             tr("Failed to write to the sync state database"), JobError::NoError);
                     return;
                 }
                 break;
@@ -960,7 +983,8 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                 break;
             default:
                 setError(SynchronizerError::UploadFailed,
-                         tr("Uploading %1 failed: %2").arg(uploadAction->path, job->errorString()));
+                         tr("Uploading %1 failed: %2").arg(uploadAction->path, job->errorString()),
+                         job->error());
                 return;
             }
             runRemoteActions();
@@ -980,7 +1004,8 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
         if (!saveFile->open(QIODevice::WriteOnly)) {
             setError(SynchronizerError::OpeningLocalFileFailed,
                      tr("Opening file %1 for reading/writing failed: %2")
-                             .arg(saveFile->fileName(), saveFile->errorString()));
+                             .arg(saveFile->fileName(), saveFile->errorString()),
+                     JobError::NoError);
             return;
         }
         job->setOutput(saveFile);
@@ -1014,20 +1039,22 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                                 downloadAction->path,
                                 QFileInfo(saveFile->fileName()).lastModified(), syncAttribute))) {
                         setError(SynchronizerError::SyncStateDatabaseWriteFailed,
-                                 tr("Failed to write to sync state database"));
+                                 tr("Failed to write to sync state database"), JobError::NoError);
                         return;
                     }
                 } else {
                     setError(SynchronizerError::WritingToLocalFileFailed,
                              tr("Failed to commit downloaded data to file %1: %2")
-                                     .arg(saveFile->fileName(), saveFile->errorString()));
+                                     .arg(saveFile->fileName(), saveFile->errorString()),
+                             JobError::NoError);
                     return;
                 }
                 break;
             default:
                 setError(SynchronizerError::DownloadFailed,
                          tr("Downloading %1 failed: %2")
-                                 .arg(downloadAction->path, job->errorString()));
+                                 .arg(downloadAction->path, job->errorString()),
+                         job->error());
                 return;
             }
             runRemoteActions();
@@ -1063,7 +1090,8 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                     }
                     setError(SynchronizerError::FailedDeletingRemoteResource,
                              tr("Remote resource %1 is not empty (it still contains %2)")
-                                     .arg(action->path, remoteEntryNames.join(", ")));
+                                     .arg(action->path, remoteEntryNames.join(", ")),
+                             JobError::NoError);
                     return;
                 }
                 auto job = jobFactory->deleteResource(this);
@@ -1093,13 +1121,15 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                                         "retries - it keeps being updated too fast | %3")
                                              .arg(action->path)
                                              .arg(action->retries)
-                                             .arg(job->syncAttribute().toString()));
+                                             .arg(job->syncAttribute().toString()),
+                                     job->error());
                             return;
                         }
                     default:
                         setError(SynchronizerError::FailedDeletingRemoteResource,
                                  tr("Failed deleting remote resource %1: %2")
-                                         .arg(action->path, job->errorString()));
+                                         .arg(action->path, job->errorString()),
+                                 job->error());
                         return;
                     }
                     runRemoteActions(); // Currently dead code - keep to ensure we "keep going" in
@@ -1117,7 +1147,8 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
             default:
                 setError(SynchronizerError::FailedDeletingRemoteResource,
                          tr("Failed to list remote resource %1: %2")
-                                 .arg(action->path, listJob->errorString()));
+                                 .arg(action->path, listJob->errorString()),
+                         listJob->error());
                 break;
             }
         });
@@ -1143,7 +1174,8 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
             default:
                 setError(SynchronizerError::FailedCreatingRemoteFolder,
                          tr("Failed to create remote folder %1: %2")
-                                 .arg(action->path, job->errorString()));
+                                 .arg(action->path, job->errorString()),
+                         job->error());
                 return;
             }
             runRemoteActions();
@@ -1173,7 +1205,7 @@ void DirectorySynchronizerPrivate::finishLater()
                 && !syncStateDatabase->closeDatabase()) {
                 if (error == SynchronizerError::NoError) {
                     setError(SynchronizerError::FailedClosingSyncStateDatabase,
-                             tr("Failed to close the sync state database"));
+                             tr("Failed to close the sync state database"), JobError::NoError);
                 }
             }
             state = SynchronizerState::Finished;
@@ -1182,11 +1214,17 @@ void DirectorySynchronizerPrivate::finishLater()
     });
 }
 
-void DirectorySynchronizerPrivate::setError(SynchronizerError error, const QString& errorString)
+void DirectorySynchronizerPrivate::setError(SynchronizerError error, const QString& errorString,
+                                            JobError jobError)
 {
     Q_Q(DirectorySynchronizer);
     emit q->logMessageAvailable(SynchronizerLogEntryType::Error, errorString);
     if (this->error == SynchronizerError::NoError) {
+        // Check if this could be a server overload scenario - if so, check if we should retry
+        // with fewer parallel jobs:
+        if (jobError == JobError::ServerClosedConnection && maxJobs > 1) {
+            this->retryWithFewerJobs = true;
+        }
         this->error = error;
         this->errorString = errorString;
     }

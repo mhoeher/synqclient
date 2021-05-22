@@ -40,10 +40,11 @@
 namespace SynqClient {
 namespace UnitTest {
 
-enum class WebDAVServerFlag { Empty = 0, NoIfMatch = 1 << 0 };
+enum class WebDAVServerFlag { Empty = 0, NoIfMatch = 1 << 0, NoEtagOnDownload = 1 << 2 };
 
 static const QMap<QByteArray, WebDAVServerFlag> WebDavServerFlagsMap = {
-    { "NoIfMatch", WebDAVServerFlag::NoIfMatch }
+    { "NoIfMatch", WebDAVServerFlag::NoIfMatch },
+    { "NoEtagOnDownload", WebDAVServerFlag::NoEtagOnDownload },
 };
 
 inline QList<QPair<QUrl, int>> getWebDAVServersFromEnv()
@@ -60,7 +61,7 @@ inline QList<QPair<QUrl, int>> getWebDAVServersFromEnv()
                 for (int i = 1; i < parts.length(); ++i) {
                     auto flagName = parts[i];
                     flags |= static_cast<int>(
-                            WebDavServerFlagsMap.value(flagName, WebDAVServerFlag::NoIfMatch));
+                            WebDavServerFlagsMap.value(flagName, WebDAVServerFlag::Empty));
                 }
                 result.append({ url, flags });
             }
