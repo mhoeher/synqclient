@@ -573,6 +573,7 @@ void DropboxListFilesJobTest::listFilesRecursivelyWithCursor()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(job.entries().length(), 4);
+        QVERIFY(!job.incremental());
         cursor = job.cursor();
     }
 
@@ -664,6 +665,7 @@ void DropboxListFilesJobTest::listFilesRecursivelyWithCursor()
         QCOMPARE(entry.name(), "dir2.2");
         QCOMPARE(entry.path(), "dir2/dir2.2");
         QVERIFY(entry.isDirectory());
+        QVERIFY(job.incremental());
         cursor = job.cursor();
     }
 
@@ -690,6 +692,7 @@ void DropboxListFilesJobTest::listFilesRecursivelyWithCursor()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(job.entries().length(), 1);
+        QVERIFY(job.incremental());
         auto entry = job.entries().at(0);
         QCOMPARE(entry.name(), "dir2.2");
         QCOMPARE(entry.path(), "dir2/dir2.2");
@@ -720,6 +723,7 @@ void DropboxListFilesJobTest::listFilesRecursivelyWithCursor()
         QVERIFY(spy.wait());
         QCOMPARE(job.error(), JobError::NoError);
         QCOMPARE(job.entries().length(), 2);
+        QVERIFY(job.incremental());
         for (const auto& entry : job.entries()) {
             QVERIFY(entry.name() == "dir2" || entry.name() == "dir2.1");
             QVERIFY(entry.path() == "dir2" || entry.path() == "dir2/dir2.1");

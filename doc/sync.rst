@@ -119,3 +119,7 @@ Functions suitable for being used as filters to determine of a particular file o
 Log messages produced by the synchronizer use the :any:`SynqClient::SynchronizerLogEntryType` enumeration to encode the concrete type of log message.
 
 .. doxygenenum:: SynqClient::SynchronizerLogEntryType
+
+The :any:`SynqClient::RemoteChangeDetectionMode` enumeration is used to select the way the synchronizer tries to discover remote changes.
+
+.. doxygenenum:: SynqClient::RemoteChangeDetectionMode

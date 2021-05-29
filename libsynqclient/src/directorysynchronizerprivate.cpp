@@ -225,6 +225,18 @@ ChangeTree DirectorySynchronizerPrivate::buildLocalChangeTree()
 
 void DirectorySynchronizerPrivate::buildRemoteChangeTree()
 {
+    switch (jobFactory->remoteChangeDetectionMode()) {
+    case RemoteChangeDetectionMode::FoldersWithSyncAttributes:
+        buildRemoteChangeTreeWebDAVLike();
+        break;
+    case RemoteChangeDetectionMode::RootFolderSyncStream:
+        buildRemoteChangeTreeDropboxLike();
+        break;
+    }
+}
+
+void DirectorySynchronizerPrivate::buildRemoteChangeTreeWebDAVLike()
+{
     while (!remoteFoldersToScan.isEmpty() && error == SynchronizerError::NoError
            && runningJobs < maxJobs) {
         auto nextRemoteFolder = remoteFoldersToScan.dequeue();
@@ -316,7 +328,7 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
                         job->error());
                 return;
             }
-            buildRemoteChangeTree(); // Continue processing remote folders
+            buildRemoteChangeTreeWebDAVLike(); // Continue processing remote folders
         });
         job->start();
     }
@@ -324,6 +336,67 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
     if (error == SynchronizerError::NoError && remoteFoldersToScan.isEmpty() && runningJobs <= 0) {
         mergeChangeTrees();
     }
+}
+
+void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
+{
+    // There is only one folder in the queue - the root folder.
+    remoteFoldersToScan.clear();
+
+    auto job = jobFactory->listFiles(this);
+    job->setPath(remoteDirectoryPath);
+    job->setRecursive(true);
+
+    // Check if we have a sync token - we save it as sync attribute of the root folder:
+    auto rootFolderEntry = syncStateDatabase->getEntry("/");
+    if (rootFolderEntry.isValid() && !rootFolderEntry.syncProperty().isEmpty()) {
+        job->setCursor(rootFolderEntry.syncProperty());
+    }
+
+    job->start();
+    connect(job, &ListFilesJob::finished, this, [=]() {
+        switch (job->error()) {
+        case JobError::NoError: {
+            const auto& entries = job->entries();
+            for (const auto& entry : entries) {
+                if (entry.isFile()) {
+                    auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
+                    node->change = ChangeTree::Created;
+                    node->type = ChangeTree::File;
+                    node->syncAttribute = entry.syncAttribute();
+                    // Check if this is a known entry - i.e. we have a change instead of a create:
+                    auto lastSyncStateEntry = syncStateDatabase->getEntry(entry.path());
+                    if (lastSyncStateEntry.isValid()
+                        && !lastSyncStateEntry.syncProperty().isEmpty()) {
+                        node->change = ChangeTree::Changed;
+                    }
+                } else if (entry.isDeleted()) {
+                    auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
+                    node->change = ChangeTree::Deleted;
+                } else {
+                    // Ignore folders - they don't have sync attributes, hence, we cannot make
+                    // use of any information this entry might hold.
+                }
+            }
+            // If the listing was non-incremental (i.e. we have a full listing) we need to manually
+            // check for deletions as they won't be reported in that case.
+            if (!job->incremental()) {
+                //                QSet<QString> allRemoteEntries;
+                //                for (const auto& entry : entries) {
+                //                    allRemoteEntries.insert(entry.path());
+                //                }
+                // const auto& previousEntries = syncStateDatabase->findEntries()
+            }
+
+            // Save the curstor as sync attribute of the remote root folder for the sync.
+            remoteFoldersSyncAttributes["/"] = job->cursor();
+        }
+        default:
+            setError(SynchronizerError::FailedListingRemoteFolder,
+                     tr("Failed to list contents of the remote folder"), job->error());
+            return;
+        }
+    });
 }
 
 /**

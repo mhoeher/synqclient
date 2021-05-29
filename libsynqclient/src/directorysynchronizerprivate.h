@@ -85,6 +85,8 @@ public:
     // Create sync plan stage
     ChangeTree buildLocalChangeTree();
     void buildRemoteChangeTree();
+    void buildRemoteChangeTreeWebDAVLike();
+    void buildRemoteChangeTreeDropboxLike();
     void mergeChangeTrees();
     void mergeChangeNodes(const QString& path, const ChangeTreeNode* localChange,
                           const ChangeTreeNode* remoteChange);

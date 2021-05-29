@@ -29,8 +29,10 @@ class AbstractJobFactoryPrivate
 public:
     explicit AbstractJobFactoryPrivate(AbstractJobFactory* q);
 
-    AbstractJobFactory *q_ptr;
+    AbstractJobFactory* q_ptr;
     Q_DECLARE_PUBLIC(AbstractJobFactory);
+
+    RemoteChangeDetectionMode syncDetectionMode;
 };
 
 } // namespace SynqClient

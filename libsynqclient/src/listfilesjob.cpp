@@ -136,6 +136,29 @@ void ListFilesJob::setCursor(const QString& cursor)
 }
 
 /**
+ * @brief Indicates if the listing is incremental.
+ *
+ * If a backend implements cursors for listing files, i.e. they are capable to only list changes
+ * since the last time the folder was listed, this property indicates if the listing is an
+ * update or - e.g. because the used cursor timed out and the a full listing was done - a full
+ * listing.
+ *
+ * A value of true indicates that this is an incremental update and the job holds only changes
+ * compared to the last listing. A value of false indicates that the listing contains everything.
+ *
+ * It is important to check this property, e.g. when searching for remote deletions. An incremental
+ * update will report individually deleted files. If a full listing is done, the client needs to
+ * keep track of previous listings to detect deletions on its own.
+ *
+ * Concrete subclasses shall use setIncremental() to set this property during job execution.
+ */
+bool ListFilesJob::incremental() const
+{
+    Q_D(const ListFilesJob);
+    return d->incremental;
+}
+
+/**
  * @brief Constructor.
  */
 ListFilesJob::ListFilesJob(ListFilesJobPrivate* d, QObject* parent) : AbstractJob(d, parent) {}
@@ -161,6 +184,18 @@ void ListFilesJob::setFolder(const FileInfo& folder)
 {
     Q_D(ListFilesJob);
     d->folder = folder;
+}
+
+/**
+ * @brief Set if the listing is incremental.
+ *
+ * This sets the incremental property of the job. The default value is false. Jobs shall set this
+ * to true if the listing is done incrementally.
+ */
+void ListFilesJob::setIncremental(bool incremental)
+{
+    Q_D(ListFilesJob);
+    d->incremental = incremental;
 }
 
 } // namespace SynqClient

@@ -142,11 +142,46 @@ ListFilesJob* AbstractJobFactory::listFiles(QObject* parent)
 }
 
 /**
+ * @brief Returns the mode that is used to detect remote changes.
+ *
+ * This returns the mode that is used for the backend represented by the factory to detect changes
+ * on the remote server.
+ *
+ * @sa setRemoteChangeDetectionMode
+ */
+RemoteChangeDetectionMode AbstractJobFactory::remoteChangeDetectionMode() const
+{
+    Q_D(const AbstractJobFactory);
+    return d->syncDetectionMode;
+}
+
+/**
  * @brief Constructor.
  */
 AbstractJobFactory::AbstractJobFactory(AbstractJobFactoryPrivate* d, QObject* parent)
     : QObject(parent), d_ptr(d)
 {
+}
+
+/**
+ * @brief Set the mode used to detect remote changes during synchronization.
+ *
+ * This sets the mode that is used by synchronization code to detect changes on the remote server.
+ * Different backends behave differently, so the way remote changes are detected efficiently might
+ * require backend specific handling.
+ *
+ * The default value is RemoteChangeDetectionMode::FoldersWithSyncAttributes, but concrete factories
+ * might call this in their constructor to change the mode something else if the backend they
+ * represent need specific handling.
+ *
+ * Note that the default mode should in general work with any backend, however, a more efficient
+ * handling (usually resulting in fewer queries that need to be run) might be possible by changing
+ * to a different mode.
+ */
+void AbstractJobFactory::setRemoteChangeDetectionMode(RemoteChangeDetectionMode mode)
+{
+    Q_D(AbstractJobFactory);
+    d->syncDetectionMode = mode;
 }
 
 } // namespace SynqClient

@@ -11,6 +11,7 @@
 #include "../shared/utils.h"
 #include "SynqClient/AbstractJobFactory"
 #include "SynqClient/DirectorySynchronizer"
+#include "SynqClient/DropboxJobFactory"
 #include "SynqClient/FileInfo"
 #include "SynqClient/JSONSyncStateDatabase"
 #include "SynqClient/WebDAVJobFactory"
@@ -73,8 +74,9 @@ void DirectorySynchronizerTest::initTestCase() {}
 
 void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -104,8 +106,9 @@ void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
 
 void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -164,8 +167,9 @@ void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
 
 void DirectorySynchronizerTest::editVsDeleteConflictResolution()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -236,8 +240,9 @@ void DirectorySynchronizerTest::editVsDeleteConflictResolution()
 
 void DirectorySynchronizerTest::sync()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -433,6 +438,13 @@ void DirectorySynchronizerTest::prepareTestData()
         webdavJobFactory->setNetworkAccessManager(nam);
         QTest::newRow(url.toString().toUtf8())
                 << static_cast<AbstractJobFactory*>(webdavJobFactory) << flags;
+    }
+
+    if (SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        auto factory = new SynqClient::DropboxJobFactory(this);
+        factory->setNetworkAccessManager(nam);
+        factory->setToken(SynqClient::UnitTest::getDropboxTokenFromEnv());
+        QTest::newRow("Dropbox") << static_cast<AbstractJobFactory*>(factory) << 0;
     }
 }
 

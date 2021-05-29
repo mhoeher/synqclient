@@ -86,6 +86,7 @@ void DropboxListFilesJob::start()
     } else {
         data = QVariantMap { { "cursor", d->cursor } };
         endpoint = "/files/list_folder/continue";
+        setIncremental(true);
     }
 
     auto reply = d_ptr2->post(endpoint, data);
@@ -136,6 +137,7 @@ void DropboxListFilesJob::start()
                                d->cursor.clear();
                                start();
                                notAnError = true;
+                               setIncremental(false);
                            } } });
 
                 if (this->error() == JobError::NoError && folder().isDirectory()) {

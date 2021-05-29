@@ -53,6 +53,8 @@ public:
     QString cursor() const;
     void setCursor(const QString& cursor);
 
+    bool incremental() const;
+
 protected:
     explicit ListFilesJob(ListFilesJobPrivate* d, QObject* parent = nullptr);
 
@@ -60,6 +62,7 @@ protected:
 
     void setEntries(const FileInfos& entries);
     void setFolder(const FileInfo& folder);
+    void setIncremental(bool incremental);
 };
 
 } // namespace SynqClient

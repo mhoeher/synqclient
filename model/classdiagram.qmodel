@@ -1475,7 +1475,7 @@
                                     <object>{4b68c8b1-ba25-4725-889d-39845252d4d8}</object>
                                     <name>AbstractJobFactory</name>
                                     <pos>x:600;y:185</pos>
-                                    <rect>x:-225;y:-75;w:450;h:150</rect>
+                                    <rect>x:-225;y:-80;w:450;h:160</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -1563,7 +1563,7 @@
                                      </qlist>
                                     </stereotypes>
                                     <name>JobType</name>
-                                    <pos>x:580;y:-135</pos>
+                                    <pos>x:455;y:-115</pos>
                                     <rect>x:-55;y:-75;w:110;h:150</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
@@ -2061,9 +2061,60 @@
                                  </DAssociation>
                                 </instance>
                                </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{fe02966c-2942-44d2-90f9-3bb6221576cd}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{73d8664d-c487-414d-9735-30d9abbe0370}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
+                                    <name>RemoteChangeDetectionMode</name>
+                                    <pos>x:685;y:-140</pos>
+                                    <rect>x:-95;y:-50;w:190;h:100</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{7cb38888-cfda-40e8-ab3d-729a002d2282}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{602a25ee-6d78-48b9-b8b2-011592baf9c3}</object>
+                                    <a>{73b76013-0cc9-4953-a629-d8cb7f206c92}</a>
+                                    <b>{fe02966c-2942-44d2-90f9-3bb6221576cd}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <cradinality>1</cradinality>
+                                    <navigable>true</navigable>
+                                    <kind>1</kind>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
                               </qlist>
                              </elements>
-                             <last-modified>1619471245448</last-modified>
+                             <last-modified>1621695800646</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -2626,6 +2677,35 @@
                                    </target>
                                   </handle>
                                  </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{602a25ee-6d78-48b9-b8b2-011592baf9c3}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{602a25ee-6d78-48b9-b8b2-011592baf9c3}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{4b68c8b1-ba25-4725-889d-39845252d4d8}</a>
+                                        <b>{73d8664d-c487-414d-9735-30d9abbe0370}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <cardinality>1</cardinality>
+                                        <navigable>true</navigable>
+                                        <kind>1</kind>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
                                 </qlist>
                                </handles>
                               </handles>
@@ -2636,7 +2716,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{b4d431d5-aef4-43a8-a684-d1559b63a31d}</uid>
+                               <uid>{88b25c57-bdc8-4102-9f8a-7911b42530c5}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>CreateDirectoryJob* createDirectory(QObject* parent = nullptr)</declaration>
@@ -2644,7 +2724,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{140b4998-281f-4233-8e90-28664ea451ec}</uid>
+                               <uid>{a5ea6312-ba97-4dd4-b27b-d87943fd2e09}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DeleteJob* deleteResource(QObject* parent = nullptr)</declaration>
@@ -2652,7 +2732,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{7fb64d3f-0fa5-4163-929e-66d1de7b5dfa}</uid>
+                               <uid>{01b4fa67-75ad-453d-987c-2c3e2aec0870}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DownloadFileJob* downloadFile(QObject* parent = nullptr)</declaration>
@@ -2660,7 +2740,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{f4511bcf-3fe9-456d-b0e4-251c930b690e}</uid>
+                               <uid>{29fe3d3f-6822-421b-b96d-e042bdb0ef4b}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>UploadFileJob* uploadFile(QObject* parent = nullptr)</declaration>
@@ -2668,7 +2748,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{6dde1008-4eca-4ec0-b0cf-b85fe444cbc0}</uid>
+                               <uid>{2d0dadb7-2d35-42b8-81e3-458303c7a73f}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>GetFileInfoJob* getFileInfo(QObject* parent = nullptr)</declaration>
@@ -2676,7 +2756,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{90bd3e08-0dea-484c-b40e-745c695b22cb}</uid>
+                               <uid>{8893306b-5305-49d8-b42b-e51d52a9d980}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>ListFilesJob* listFiles(QObject* parent = nullptr)</declaration>
@@ -2684,7 +2764,15 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a1b589db-ef4b-4a8a-84b6-a5813d336c0a}</uid>
+                               <uid>{21ae0bb6-4930-488d-864a-0d43d522977b}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <declaration>RemoteChangeDetectionMode remoteChangeDetectionMode()</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{111f9833-6862-4d15-af14-47ad4ce965d5}</uid>
                                <visibility>2</visibility>
                                <type>2</type>
                                <properties>3</properties>
@@ -2723,42 +2811,42 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{d8d4ed35-46e1-41f6-a730-07411e05fb9f}</uid>
+                               <uid>{24283861-20a4-4c57-81d9-91097ffa4bd9}</uid>
                                <type>1</type>
                                <declaration>CreateDirectory</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{ef846aa4-afef-44dc-a7f6-91bab7c4ea4a}</uid>
+                               <uid>{a8c1a2c4-8f39-433c-8889-2f7f57055843}</uid>
                                <type>1</type>
                                <declaration>DeleteResource</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{1f43df8f-522e-427f-8218-5890d4ce0b44}</uid>
+                               <uid>{03017c05-f3c8-405c-ad76-49630e0a95c9}</uid>
                                <type>1</type>
                                <declaration>DownloadFile</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c38cb04f-8743-4ba6-b264-4b093e127828}</uid>
+                               <uid>{4322c8b2-b2b4-480d-b4ac-51366b6211cf}</uid>
                                <type>1</type>
                                <declaration>UploadFile</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{59114d3f-523b-498f-beb6-7fc98ef72eef}</uid>
+                               <uid>{b7471813-25eb-46c1-8962-fa4bf475c8ce}</uid>
                                <type>1</type>
                                <declaration>GetFileInfo</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c7aaef01-e159-4803-a55d-84dfc82ae5fa}</uid>
+                               <uid>{099b03a3-6bf2-4673-8817-e9576894d97a}</uid>
                                <type>1</type>
                                <declaration>ListFiles</declaration>
                               </MClassMember>
@@ -3387,6 +3475,50 @@
                         </target>
                        </handle>
                       </item>
+                      <item>
+                       <handle>
+                        <uid>{73d8664d-c487-414d-9735-30d9abbe0370}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{73d8664d-c487-414d-9735-30d9abbe0370}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
+                              </MElement>
+                             </base-MElement>
+                             <name>RemoteChangeDetectionMode</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{b517a2e7-9e55-436a-a18e-72633bbbaeb1}</uid>
+                               <type>1</type>
+                               <declaration>FoldersWithSyncAttributes</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{d8fe5526-01fa-48e2-8cb6-08b6ce519c75}</uid>
+                               <type>1</type>
+                               <declaration>RootFolderSyncStream</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
                      </qlist>
                     </handles>
                    </handles>
@@ -3593,7 +3725,7 @@
                                     <object>{a59b0689-1a88-4f7c-8954-eb1b8b4231c4}</object>
                                     <name>ListFilesJob</name>
                                     <pos>x:195;y:550</pos>
-                                    <rect>x:-80;y:-60;w:160;h:120</rect>
+                                    <rect>x:-80;y:-70;w:160;h:140</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -4450,37 +4582,44 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{c49191e3-4aa6-45e2-a4a1-c8fc814e37fb}</uid>
+                               <uid>{002776ce-44c2-48e5-b7e2-4a97132fc706}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{9ecd10fb-d3b2-48da-84ce-a604b80975e8}</uid>
+                               <uid>{ed202579-61f7-40f7-b8b8-530ce3a6d519}</uid>
                                <type>1</type>
                                <declaration>QVector&lt;FileInfo&gt; entries</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{6586311b-2ba1-4108-9a42-0c9e64f7a71c}</uid>
+                               <uid>{accb8d33-8856-4e3b-a743-f0a90a4c548e}</uid>
                                <type>1</type>
                                <declaration>FileInfo folder</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{0b770703-c8d9-4600-9497-019a2ce06801}</uid>
+                               <uid>{45cddcf1-c06b-49a6-8ad4-6d1b03d20b64}</uid>
                                <type>1</type>
                                <declaration>bool recursive</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{77189886-b76b-4298-8706-7617f0a18ec3}</uid>
+                               <uid>{9d57f31d-0c83-4117-8fe9-3cfb42d85ea3}</uid>
                                <type>1</type>
                                <declaration>QString cursor</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{569609b4-340e-4c12-b895-77d740a36d25}</uid>
+                               <type>1</type>
+                               <declaration>bool isIncremental</declaration>
                               </MClassMember>
                              </item>
                             </qlist>
