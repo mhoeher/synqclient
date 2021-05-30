@@ -97,7 +97,8 @@ FileInfo AbstractDropboxJobPrivate::fileInfoFromJson(const QJsonObject& obj,
     if (result.isValid() || result.isDeleted()) {
         result.setName(obj.value("name").toString());
         if (!basePath.isNull()) {
-            result.setPath(QDir(basePath).relativeFilePath(obj.value("path_display").toString()));
+            result.setPath(
+                    QDir(fixPath(basePath)).relativeFilePath(obj.value("path_display").toString()));
         }
         result.setCustomProperty(AbstractDropboxJob::DropboxFileInfoKey, obj.toVariantMap());
     }
@@ -173,6 +174,21 @@ void AbstractDropboxJobPrivate::tryHandleKnownError(
                 }
             }
         }
+    }
+}
+
+/**
+ * @brief Fix a remote path.
+ *
+ * This makes sure that the @p path (which refers to a remote file or folder) starts with a slash.
+ */
+QString AbstractDropboxJobPrivate::fixPath(const QString& path)
+{
+    auto p = QDir::cleanPath(path);
+    if (!p.startsWith("/")) {
+        return "/" + p;
+    } else {
+        return p;
     }
 }
 

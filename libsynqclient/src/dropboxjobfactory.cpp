@@ -35,6 +35,7 @@ namespace SynqClient {
 DropboxJobFactory::DropboxJobFactory(QObject* parent)
     : AbstractJobFactory(new DropboxJobFactoryPrivate(this), parent)
 {
+    setRemoteChangeDetectionMode(RemoteChangeDetectionMode::RootFolderSyncStream);
 }
 
 /**

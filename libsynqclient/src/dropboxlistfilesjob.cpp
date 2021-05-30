@@ -81,7 +81,8 @@ void DropboxListFilesJob::start()
     QVariantMap data;
     QString endpoint;
     if (d->cursor.isEmpty()) {
-        data = QVariantMap { { "path", d->path }, { "recursive", d->recursive } };
+        data = QVariantMap { { "path", AbstractDropboxJobPrivate::fixPath(d->path) },
+                             { "recursive", d->recursive } };
         endpoint = "/files/list_folder";
     } else {
         data = QVariantMap { { "cursor", d->cursor } };

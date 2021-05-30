@@ -69,6 +69,8 @@ public:
     void
     tryHandleKnownError(const QByteArray& body,
                         QMap<QPair<QStringList, QVariant>, KnownErrorHandlerFunction> handlers);
+
+    static QString fixPath(const QString& path);
 };
 
 } // namespace SynqClient

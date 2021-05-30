@@ -69,7 +69,7 @@ void DropboxGetFileInfoJob::start()
         }
     }
 
-    QVariantMap data { { "path", d->path } };
+    QVariantMap data { { "path", AbstractDropboxJobPrivate::fixPath(d->path) } };
 
     auto reply = d_ptr2->post("/files/get_metadata", data);
 

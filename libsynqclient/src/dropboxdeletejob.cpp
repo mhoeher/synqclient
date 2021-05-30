@@ -60,7 +60,7 @@ void DropboxDeleteJob::start()
         }
     }
 
-    QVariantMap data { { "path", d->path } };
+    QVariantMap data { { "path", AbstractDropboxJobPrivate::fixPath(d->path) } };
 
     if (syncAttribute().isValid()) {
         data["parent_rev"] = syncAttribute();

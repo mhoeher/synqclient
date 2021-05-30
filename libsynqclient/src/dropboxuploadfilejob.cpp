@@ -75,7 +75,7 @@ void DropboxUploadFileJob::start()
         d->uploadDevice = getUploadDevice();
     }
 
-    QVariantMap data { { "path", d->remoteFilename },
+    QVariantMap data { { "path", AbstractDropboxJobPrivate::fixPath(d->remoteFilename) },
                        { "mode", "overwrite" },
                        { "autorename", false },
                        { "mute", true } };

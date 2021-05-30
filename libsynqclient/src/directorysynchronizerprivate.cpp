@@ -355,10 +355,16 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
 
     job->start();
     connect(job, &ListFilesJob::finished, this, [=]() {
+        job->deleteLater();
         switch (job->error()) {
         case JobError::NoError: {
             const auto& entries = job->entries();
+            QDir remoteDir(remoteDirectoryPath);
             for (const auto& entry : entries) {
+                const auto entryPath = entry.path();
+                if (!filter(entryPath, entry)) {
+                    continue;
+                }
                 if (entry.isFile()) {
                     auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
                     node->change = ChangeTree::Created;
@@ -374,8 +380,9 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
                     auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
                     node->change = ChangeTree::Deleted;
                 } else {
-                    // Ignore folders - they don't have sync attributes, hence, we cannot make
-                    // use of any information this entry might hold.
+                    auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
+                    node->change = ChangeTree::Created;
+                    node->type = ChangeTree::Folder;
                 }
             }
             // If the listing was non-incremental (i.e. we have a full listing) we need to manually
@@ -390,11 +397,14 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
 
             // Save the curstor as sync attribute of the remote root folder for the sync.
             remoteFoldersSyncAttributes["/"] = job->cursor();
+            mergeChangeTrees();
+            break;
         }
         default:
             setError(SynchronizerError::FailedListingRemoteFolder,
-                     tr("Failed to list contents of the remote folder"), job->error());
-            return;
+                     tr("Failed to list contents of the remote folder: %1").arg(job->errorString()),
+                     job->error());
+            break;
         }
     });
 }

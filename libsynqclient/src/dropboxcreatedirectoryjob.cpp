@@ -74,7 +74,8 @@ void DropboxCreateDirectoryJob::start()
         return;
     }
 
-    QVariantMap data { { "path", d->path }, { "autorename", false } };
+    QVariantMap data { { "path", AbstractDropboxJobPrivate::fixPath(d->path) },
+                       { "autorename", false } };
 
     auto reply = d_ptr2->post("/files/create_folder_v2", data);
 
