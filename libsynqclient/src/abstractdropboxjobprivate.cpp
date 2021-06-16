@@ -22,10 +22,13 @@
 #include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QLoggingCategory>
 
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
+
+static Q_LOGGING_CATEGORY(log, "SynqClient.AbstractDropboxJob", QtWarningMsg);
 
 const QString AbstractDropboxJobPrivate::APIv2 = "https://api.dropboxapi.com/2";
 const QString AbstractDropboxJobPrivate::ContentAPIv2 = "https://content.dropboxapi.com/2";
@@ -35,6 +38,7 @@ AbstractDropboxJobPrivate::AbstractDropboxJobPrivate(AbstractDropboxJob* q)
       networkAccessManager(nullptr),
       userAgent(AbstractWebDAVJobPrivate::DefaultUserAgent),
       token(),
+      numRetries(0),
       reply(nullptr)
 {
 }
@@ -190,6 +194,39 @@ QString AbstractDropboxJobPrivate::fixPath(const QString& path)
     } else {
         return p;
     }
+}
+
+bool AbstractDropboxJobPrivate::checkIfRequestShallBeRetried(QNetworkReply* reply) const
+{
+    if (reply && reply->error() != QNetworkReply::NoError && numRetries < MaxRetries) {
+        auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if (code == 429) {
+            qCDebug(log) << "Server replied with code 429 (Too Many Requests) - retrying";
+            return true;
+        }
+    }
+    return false;
+}
+
+int AbstractDropboxJobPrivate::getRetryDelayInMilliseconds(QNetworkReply* reply) const
+{
+    int result = 0;
+    if (reply) {
+        bool ok;
+        // Check if Retry-After is set and contains an integer value. In this case, it
+        // is a delay to wait (in seconds), see
+        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After.
+        // Note, that currently, we don't support the alternative HTTP Date response.
+        result = reply->rawHeader("Retry-After").toInt(&ok) * 1000;
+        qCDebug(log) << "Server provided retry delay of" << result << "ms";
+        if (!ok) {
+            result = 0;
+        }
+    }
+    if (result == 0) {
+        result = 5000;
+    }
+    return result;
 }
 
 } // namespace SynqClient

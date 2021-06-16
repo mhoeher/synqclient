@@ -30,6 +30,8 @@ class DropboxListFilesJobPrivate : public ListFilesJobPrivate
 public:
     explicit DropboxListFilesJobPrivate(DropboxListFilesJob* q);
 
+    bool isFirstCall;
+
     Q_DECLARE_PUBLIC(DropboxListFilesJob);
 };
 

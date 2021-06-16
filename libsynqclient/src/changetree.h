@@ -5,6 +5,7 @@
 
 #include <QDateTime>
 #include <QMap>
+#include <QQueue>
 #include <QSet>
 #include <QString>
 
@@ -12,7 +13,7 @@
 
 // Uncomment to enable debug output of the change trees to stderr. Useful during writing code/unit
 // tests.
-// #define SYNQCLIENT_ENABLE_CHANGETREE_DUMP
+//#define SYNQCLIENT_ENABLE_CHANGETREE_DUMP
 
 namespace SynqClient {
 
@@ -44,6 +45,7 @@ struct ChangeTree
                                     const QString& prefix = "");
 
     void dump(const QString& text);
+    void normalize();
 };
 
 /**
@@ -61,6 +63,7 @@ struct ChangeTreeNode
     Children children = Children();
 
     void dump(const QString& name, const QString& indentation = "") const;
+    void normalize();
 };
 
 inline ChangeTree::ChangeTree() : root(new ChangeTreeNode)
@@ -122,12 +125,15 @@ inline ChangeTreeNode* ChangeTree::findNode(const QString& path, ChangeTree::Fin
 inline const ChangeTreeNode* ChangeTree::findNode(const ChangeTreeNode& node,
                                                   std::function<bool(const ChangeTreeNode&)> filter)
 {
-    if (filter(node)) {
-        return &node;
-    }
-    for (const auto& childNode : node.children) {
-        if (filter(childNode)) {
-            return &childNode;
+    QQueue<const ChangeTreeNode*> queue;
+    queue << &node;
+    while (!queue.isEmpty()) {
+        const auto n = queue.dequeue();
+        if (filter(*n)) {
+            return n;
+        }
+        for (auto& child : n->children) {
+            queue << &child;
         }
     }
     return nullptr;
@@ -168,6 +174,18 @@ inline void ChangeTree::dump(const QString& text)
 #endif
 }
 
+/**
+ * @brief Normalizes the change tree.
+ *
+ * This runs some normalizations on the tree. In particular:
+ *
+ * - Do not mark a node as deleted, if some child nodes have changes.
+ */
+inline void ChangeTree::normalize()
+{
+    root->normalize();
+}
+
 template<ChangeTree::ChangeType changeType>
 bool ChangeTree::has(const ChangeTreeNode& node)
 {
@@ -186,7 +204,8 @@ inline void ChangeTreeNode::dump(const QString& name, const QString& indentation
                                          { ChangeTree::Changed, "U" },
                                          { ChangeTree::Deleted, "D" } };
     std::cerr << qUtf8Printable(indentation) << typeNames[type] << " " << changeNames[change] << " "
-              << qUtf8Printable(name) << std::endl;
+              << qUtf8Printable(name) << " " << qUtf8Printable(lastModified.toString()) << " "
+              << qUtf8Printable(syncAttribute) << std::endl;
     for (auto it = children.cbegin(); it != children.cend(); ++it) {
         it.value().dump(it.key(), indentation + "    ");
     }
@@ -194,6 +213,35 @@ inline void ChangeTreeNode::dump(const QString& name, const QString& indentation
     Q_UNUSED(name);
     Q_UNUSED(indentation);
 #endif
+}
+
+inline void ChangeTreeNode::normalize()
+{
+    bool hasChildChanges = false;
+
+    // First, normalize children:
+    for (auto& child : children) {
+        child.normalize();
+        switch (child.change) {
+        case ChangeTree::Changed:
+        case ChangeTree::Created:
+            hasChildChanges = true;
+            break;
+        }
+    }
+
+    // Correct own state:
+    if (hasChildChanges) {
+        switch (change) {
+        case ChangeTree::Deleted:
+        case ChangeTree::Unknown:
+            change = ChangeTree::Changed;
+            break;
+        case ChangeTree::Created:
+        case ChangeTree::Changed:
+            break;
+        }
+    }
 }
 
 } // namespace SynqClient

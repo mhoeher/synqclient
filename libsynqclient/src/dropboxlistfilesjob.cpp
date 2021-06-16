@@ -22,6 +22,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTimer>
 
 #include "abstractdropboxjobprivate.h"
 #include "dropboxlistfilesjobprivate.h"
@@ -87,14 +88,32 @@ void DropboxListFilesJob::start()
     } else {
         data = QVariantMap { { "cursor", d->cursor } };
         endpoint = "/files/list_folder/continue";
-        setIncremental(true);
+        // Remember that this was an incremental listing - but only if this isn't
+        // one of the later "pages":
+        if (d->isFirstCall) {
+            setIncremental(true);
+        }
     }
+
+    // Remember we were here - this has influence on large listings when we have
+    // to get several pages of entries:
+    d->isFirstCall = false;
 
     auto reply = d_ptr2->post(endpoint, data);
 
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {
             reply->deleteLater();
+            if (d_ptr2->checkIfRequestShallBeRetried(reply)) {
+                d_ptr2->numRetries += 1;
+                setEntries(FileInfos());
+                d->cursor.clear();
+                d->isFirstCall = true;
+                setIncremental(false);
+                QTimer::singleShot(d_ptr2->getRetryDelayInMilliseconds(reply), this,
+                                   &DropboxListFilesJob::start);
+                return;
+            }
             if (reply->error() == QNetworkReply::NoError) {
                 QJsonParseError error;
                 auto doc = QJsonDocument::fromJson(reply->readAll(), &error);

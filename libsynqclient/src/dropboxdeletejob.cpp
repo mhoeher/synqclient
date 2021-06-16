@@ -19,6 +19,8 @@
 
 #include "../inc/SynqClient/dropboxdeletejob.h"
 
+#include <QTimer>
+
 #include "abstractdropboxjobprivate.h"
 #include "dropboxdeletejobprivate.h"
 
@@ -71,6 +73,12 @@ void DropboxDeleteJob::start()
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {
             reply->deleteLater();
+            if (d_ptr2->checkIfRequestShallBeRetried(reply)) {
+                d_ptr2->numRetries += 1;
+                QTimer::singleShot(d_ptr2->getRetryDelayInMilliseconds(reply), this,
+                                   &DropboxDeleteJob::start);
+                return;
+            }
             if (reply->error() == QNetworkReply::NoError) {
                 // Done!
             } else {

@@ -55,10 +55,13 @@ public:
     QPointer<QNetworkAccessManager> networkAccessManager;
     QString userAgent;
     QString token;
+    int numRetries;
 
     QPointer<QNetworkReply> reply;
 
     std::tuple<JobError, QString> checkDefaultParameters();
+
+    const int MaxRetries = 30;
 
     static FileInfo fileInfoFromJson(const QJsonObject& obj, const QString& basePath = QString(),
                                      const QString& forceTag = QString());
@@ -71,6 +74,10 @@ public:
                         QMap<QPair<QStringList, QVariant>, KnownErrorHandlerFunction> handlers);
 
     static QString fixPath(const QString& path);
+
+    // Helpers for "Too Many Requests" errors from server
+    bool checkIfRequestShallBeRetried(QNetworkReply* reply) const;
+    int getRetryDelayInMilliseconds(QNetworkReply* reply) const;
 };
 
 } // namespace SynqClient

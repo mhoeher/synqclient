@@ -21,6 +21,7 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTimer>
 
 #include "abstractdropboxjobprivate.h"
 #include "dropboxgetfileinfojobprivate.h"
@@ -76,6 +77,12 @@ void DropboxGetFileInfoJob::start()
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {
             reply->deleteLater();
+            if (d_ptr2->checkIfRequestShallBeRetried(reply)) {
+                d_ptr2->numRetries += 1;
+                QTimer::singleShot(d_ptr2->getRetryDelayInMilliseconds(reply), this,
+                                   &DropboxGetFileInfoJob::start);
+                return;
+            }
             if (reply->error() == QNetworkReply::NoError) {
                 QJsonParseError error;
                 auto doc = QJsonDocument::fromJson(reply->readAll(), &error);

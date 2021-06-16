@@ -22,7 +22,7 @@
 namespace SynqClient {
 
 DropboxListFilesJobPrivate::DropboxListFilesJobPrivate(DropboxListFilesJob* q)
-    : ListFilesJobPrivate(q)
+    : ListFilesJobPrivate(q), isFirstCall(true)
 {
 }
 

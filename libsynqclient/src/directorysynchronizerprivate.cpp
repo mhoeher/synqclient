@@ -202,6 +202,8 @@ ChangeTree DirectorySynchronizerPrivate::buildLocalChangeTree()
                     node->type = ChangeTree::File;
                 }
                 node->change = ChangeTree::Created;
+                QFileInfo fi(entry.absoluteFilePath());
+                node->lastModified = fi.lastModified();
             }
         }
 
@@ -366,15 +368,20 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
                     continue;
                 }
                 if (entry.isFile()) {
-                    auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
-                    node->change = ChangeTree::Created;
-                    node->type = ChangeTree::File;
-                    node->syncAttribute = entry.syncAttribute();
-                    // Check if this is a known entry - i.e. we have a change instead of a create:
                     auto lastSyncStateEntry = syncStateDatabase->getEntry(entry.path());
-                    if (lastSyncStateEntry.isValid()
-                        && !lastSyncStateEntry.syncProperty().isEmpty()) {
-                        node->change = ChangeTree::Changed;
+                    if (!lastSyncStateEntry.isValid()
+                        || lastSyncStateEntry.syncProperty() != entry.syncAttribute()) {
+                        auto node =
+                                remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
+                        node->change = ChangeTree::Created;
+                        node->type = ChangeTree::File;
+                        node->syncAttribute = entry.syncAttribute();
+                        // Check if this is a known entry - i.e. we have a change instead of a
+                        // create:
+                        if (lastSyncStateEntry.isValid()
+                            && !lastSyncStateEntry.syncProperty().isEmpty()) {
+                            node->change = ChangeTree::Changed;
+                        }
                     }
                 } else if (entry.isDeleted()) {
                     auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
@@ -417,6 +424,14 @@ void DirectorySynchronizerPrivate::mergeChangeTrees()
     QQueue<QString> paths;
     localChangeTree.dump("Local Change Tree");
     remoteChangeTree.dump("Remote Change Tree");
+
+    // Normalize change trees:
+    localChangeTree.normalize();
+    remoteChangeTree.normalize();
+
+    localChangeTree.dump("Local Change Tree (Normalized)");
+    remoteChangeTree.dump("Remote Change Tree (Normalized)");
+
     {
         auto topLevelChanges =
                 ChangeTree::mergeNames(localChangeTree.root, remoteChangeTree.root, "/");
@@ -1084,6 +1099,13 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
         job->setRemoteFilename(remoteDirectoryPath + "/" + action->path);
         auto saveFile = new QSaveFile(job);
         saveFile->setFileName(localDirectoryPath + "/" + action->path);
+        auto parentDir = QFileInfo(saveFile->fileName()).dir();
+        if (!parentDir.exists() && !parentDir.mkpath(".")) {
+            setError(SynchronizerError::FailedCreatingLocalFolder,
+                     tr("Failed to create the local folder %1").arg(parentDir.path()),
+                     JobError::NoError);
+            return;
+        }
         if (!saveFile->open(QIODevice::WriteOnly)) {
             setError(SynchronizerError::OpeningLocalFileFailed,
                      tr("Opening file %1 for reading/writing failed: %2")
