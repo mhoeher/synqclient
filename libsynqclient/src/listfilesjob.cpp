@@ -116,12 +116,14 @@ void ListFilesJob::setRecursive(bool recursive)
  * @brief A cursor to continue the folder listing later on.
  *
  * This property holds a cursor - i.e. a token which is backend specific - which allows to query
- * the folder later on for any changes. After listing a specific folder, one can read the cursor and
- * - later on - create a new ListFilesJob object, setting the cursor on it. The new job will then
- * only list changes compared to the last list operation.
+ * the folder later on for any changes. After listing a specific folder, one can read the cursor
+ * and - later on - create a new ListFilesJob object, setting the cursor on it. The new job will
+ * then only list changes compared to the last list operation.
  *
  * @note Not all implementations support cursors. Refer to the implementation of the concrete class
- * to learn if it has this capability or not.
+ * to learn if it has this capability or not. Implementations not supporting cursors usually should
+ * return an empty string. Setting an empty string on a job before starting it should have no effect
+ * as well.
  */
 QString ListFilesJob::cursor() const
 {

@@ -140,13 +140,15 @@ void DropboxUploadFileJob::start()
  */
 void DropboxUploadFileJob::stop()
 {
-    auto reply = d_ptr2->reply;
-    if (reply) {
-        reply->abort();
-        delete reply;
+    if (state() == JobState::Running) {
+        auto reply = d_ptr2->reply;
+        if (reply) {
+            reply->abort();
+            delete reply;
+        }
+        setError(JobError::Stopped, "The job has been stopped");
+        finishLater();
     }
-    setError(JobError::Stopped, "The job has been stopped");
-    finishLater();
 }
 
 /**

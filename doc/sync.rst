@@ -112,10 +112,6 @@ The valid flags are encoded in the :any:`SynqClient::SynchronizerFlag` enum:
 
 .. doxygenenum:: SynqClient::SynchronizerFlag
 
-Functions suitable for being used as filters to determine of a particular file or folder shall be included in the synchronization are defined by the :any:`SynqClient::DirectorySynchronizer::Filter` type:
-
-.. doxygentypedef:: SynqClient::DirectorySynchronizer::Filter
-
 Log messages produced by the synchronizer use the :any:`SynqClient::SynchronizerLogEntryType` enumeration to encode the concrete type of log message.
 
 .. doxygenenum:: SynqClient::SynchronizerLogEntryType

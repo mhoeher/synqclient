@@ -217,6 +217,11 @@ UploadFileJob::UploadFileJob(UploadFileJobPrivate* d, QObject* parent) : Abstrac
  * from the set input source. If the input is invalid (e.g. not set, points to a non-existing
  * file, etc), a nullptr is returned and an appropriate error is set.
  *
+ * Note that in case an upload device is used, this will try to seek to the beginning of the input
+ * device, so don't call this method more than once (e.g. once whenever you need access to the
+ * upload device). Instead, store it and only call this method another time when you e.g. need to
+ * retry an upload.
+ *
  * @sa error()
  */
 QSharedPointer<QIODevice> UploadFileJob::getUploadDevice()
