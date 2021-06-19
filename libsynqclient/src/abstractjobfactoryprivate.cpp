@@ -21,7 +21,8 @@
 
 namespace SynqClient {
 
-AbstractJobFactoryPrivate::AbstractJobFactoryPrivate(AbstractJobFactory* q) : q_ptr(q)
+AbstractJobFactoryPrivate::AbstractJobFactoryPrivate(AbstractJobFactory* q)
+    : q_ptr(q), syncDetectionMode(RemoteChangeDetectionMode::FoldersWithSyncAttributes)
 {
 }
 

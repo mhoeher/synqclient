@@ -66,6 +66,23 @@ enum class JobError : quint32 {
      * scenarios.
      */
     ServerClosedConnection,
+
+    /**
+     * @brief The remove file or folder has been deleted.
+     *
+     * This error is used to indicate that the remote resource which the job worked on has been
+     * deleted.
+     */
+    ResourceDeleted,
+
+    /**
+     * @brief The remote path provided to a job did not point to a folder.
+     *
+     * This error is used to indicate that the resource that a job was pointed to on the remote
+     * did not refer to a folder. For example, not all implementations of the ListFilesJob
+     * might support "listing" a remote file.
+     */
+    RemoteResourceIsNotAFolder,
 };
 
 Q_ENUM_NS(JobError);
@@ -242,6 +259,42 @@ enum class JobType : quint32 {
 };
 
 Q_ENUM_NS(JobType);
+
+/**
+ * @brief Determines the way remote updates are detected.
+ *
+ * This enum is used to select the way remote updates are detected during a synchronization.
+ */
+enum class RemoteChangeDetectionMode : quint32 {
+    /**
+     * @brief Remote folders report a sync attribute.
+     *
+     * This mode is used e.g. for WebDAV. The assumption is, that the server reports sync attributes
+     * also for folders. Whenever a file in that folder or in a sub-folder changes, the sync
+     * attribute of that folder changes. This way, the sync can build the list of remote changes by
+     * querying the remote root folder. If the sync attribute of that folder changed, we know that
+     * some file inside this folder changed, so the sync proceeds to check the files and
+     * sub-folders. This procedure is done recursively, to find all remote changes.
+     *
+     * Note that this modes also works if no sync attributes are reported for folders - however, in
+     * this case the sync will have to scan all folders each time a sync is run. This means that the
+     * minimum number of queries grows with the number of folders that need to be synchronized.
+     * Hence, if a backend does not provide sync attributes on folders, ideally an other mechanism
+     * is used to discover remote changes.
+     */
+    FoldersWithSyncAttributes = 1,
+
+    /**
+     * @brief The remote provides continuous updates recursively for the root folder.
+     *
+     * This mode is used for e.g. Dropbox. In this case, the sync assumes that the remote root
+     * folder can be queried recursively and that a cursor is returned such that the next time, only
+     * the changes since the previous sync can be queried from the server.
+     */
+    RootFolderSyncStream,
+};
+
+Q_ENUM_NS(RemoteChangeDetectionMode);
 
 /**
  * @enum SynqClient::JobState

@@ -164,12 +164,17 @@ DownloadFileJob::DownloadFileJob(DownloadFileJobPrivate* d, QObject* parent)
  * a valid output device is set, it is returned as-is.
  *
  * If creating a suitable output device fails, a nullptr is returned and a job error is set.
+ *
+ * @note When using an output device, this method will seek to the beginning of that device before
+ * returning it. Hence, buffer the returned value and only call this a second time of e.g. you need
+ * to retry the download.
  */
 QIODevice* DownloadFileJob::getDownloadDevice()
 {
     Q_D(DownloadFileJob);
     switch (d->targetType) {
     case DownloadFileJobPrivate::DownloadTarget::Data: {
+        d->data.clear();
         auto buffer = new QBuffer(&d->data);
         buffer->setParent(this);
         if (!buffer->open(QIODevice::WriteOnly)) {
@@ -184,6 +189,7 @@ QIODevice* DownloadFileJob::getDownloadDevice()
         if (!d->output) {
             setError(JobError::MissingParameter, "No output device set");
         }
+        d->output->seek(0);
         return d->output;
 
     case DownloadFileJobPrivate::DownloadTarget::Path: {

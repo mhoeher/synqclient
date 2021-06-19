@@ -56,7 +56,8 @@ The following concrete factory classes are provided by SynqClient in order to al
 .. doxygenclass:: SynqClient::WebDAVJobFactory
     :members:
 
-
+.. doxygenclass:: SynqClient::DropboxJobFactory
+    :members:
 
 Synchronization State Database
 ++++++++++++++++++++++++++++++
@@ -111,10 +112,10 @@ The valid flags are encoded in the :any:`SynqClient::SynchronizerFlag` enum:
 
 .. doxygenenum:: SynqClient::SynchronizerFlag
 
-Functions suitable for being used as filters to determine of a particular file or folder shall be included in the synchronization are defined by the :any:`SynqClient::DirectorySynchronizer::Filter` type:
-
-.. doxygentypedef:: SynqClient::DirectorySynchronizer::Filter
-
 Log messages produced by the synchronizer use the :any:`SynqClient::SynchronizerLogEntryType` enumeration to encode the concrete type of log message.
 
 .. doxygenenum:: SynqClient::SynchronizerLogEntryType
+
+The :any:`SynqClient::RemoteChangeDetectionMode` enumeration is used to select the way the synchronizer tries to discover remote changes.
+
+.. doxygenenum:: SynqClient::RemoteChangeDetectionMode

@@ -49,7 +49,7 @@
                          </base-DElement>
                          <object>{e6b2f0cc-e84f-4615-a1e2-3e0e6e70fa12}</object>
                          <name>WebDAV</name>
-                         <pos>x:180;y:85</pos>
+                         <pos>x:465;y:250</pos>
                          <rect>x:-50;y:-35;w:100;h:70</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -69,7 +69,7 @@
                          </base-DElement>
                          <object>{713d0a74-caee-4d9a-ad65-869894b1f004}</object>
                          <name>Sync</name>
-                         <pos>x:425;y:80</pos>
+                         <pos>x:330;y:415</pos>
                          <rect>x:-50;y:-35;w:100;h:70</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -89,7 +89,7 @@
                          </base-DElement>
                          <object>{a27fdc95-9501-444f-adb3-9053ceac8c36}</object>
                          <name>Core</name>
-                         <pos>x:275;y:250</pos>
+                         <pos>x:200;y:70</pos>
                          <rect>x:-50;y:-35;w:100;h:70</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -109,7 +109,27 @@
                          </base-DElement>
                          <object>{51be3633-7c01-4b18-88fd-d9cb885e24ce}</object>
                          <name>Utils</name>
-                         <pos>x:520;y:240</pos>
+                         <pos>x:455;y:70</pos>
+                         <rect>x:-50;y:-35;w:100;h:70</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DPackage>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DPackage">
+                      <DPackage>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{6e410a5f-04c9-49d0-86bf-a54db217c8f7}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{47ece1e1-2e6d-4f92-a998-1953471fefc8}</object>
+                         <name>Dropbox</name>
+                         <pos>x:200;y:240</pos>
                          <rect>x:-50;y:-35;w:100;h:70</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -119,7 +139,7 @@
                     </item>
                    </qlist>
                   </elements>
-                  <last-modified>1606419474989</last-modified>
+                  <last-modified>1617911283730</last-modified>
                   <toolbarid>Classes</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
@@ -1142,28 +1162,28 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{c7e55855-fcbd-49c8-ad7d-e5e14c072517}</uid>
+                               <uid>{2a465eea-0c1f-49d8-9d0e-ee1477ddb498}</uid>
                                <type>1</type>
                                <declaration>QNetworkAccessManager *networkAccessManager</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{ca8acf00-e987-4b98-abc2-0599d4c4fd68}</uid>
+                               <uid>{a6264c10-39d0-43e8-8daa-abb4a04f9fa2}</uid>
                                <type>1</type>
                                <declaration>QUrl url</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{b00baed7-8c66-43d9-a2a5-744a348e0900}</uid>
+                               <uid>{35180d89-7e84-44c6-b6fd-b50b0a1f5f4c}</uid>
                                <type>1</type>
                                <declaration>WebDAVServerType serverType</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{b8f64d0c-155d-48d9-b715-f84a67a34d7e}</uid>
+                               <uid>{3ca4b065-c698-4ca5-8c5e-2096cef4e2ca}</uid>
                                <type>1</type>
                                <declaration>QString userAgent</declaration>
                               </MClassMember>
@@ -1455,7 +1475,7 @@
                                     <object>{4b68c8b1-ba25-4725-889d-39845252d4d8}</object>
                                     <name>AbstractJobFactory</name>
                                     <pos>x:600;y:185</pos>
-                                    <rect>x:-225;y:-75;w:450;h:150</rect>
+                                    <rect>x:-225;y:-80;w:450;h:160</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -1543,7 +1563,7 @@
                                      </qlist>
                                     </stereotypes>
                                     <name>JobType</name>
-                                    <pos>x:580;y:-135</pos>
+                                    <pos>x:455;y:-115</pos>
                                     <rect>x:-55;y:-75;w:110;h:150</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
@@ -2041,9 +2061,60 @@
                                  </DAssociation>
                                 </instance>
                                </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{fe02966c-2942-44d2-90f9-3bb6221576cd}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{73d8664d-c487-414d-9735-30d9abbe0370}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
+                                    <name>RemoteChangeDetectionMode</name>
+                                    <pos>x:685;y:-140</pos>
+                                    <rect>x:-95;y:-50;w:190;h:100</rect>
+                                    <visual-role>5</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{7cb38888-cfda-40e8-ab3d-729a002d2282}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{602a25ee-6d78-48b9-b8b2-011592baf9c3}</object>
+                                    <a>{73b76013-0cc9-4953-a629-d8cb7f206c92}</a>
+                                    <b>{fe02966c-2942-44d2-90f9-3bb6221576cd}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <cradinality>1</cradinality>
+                                    <navigable>true</navigable>
+                                    <kind>1</kind>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
                               </qlist>
                              </elements>
-                             <last-modified>1619471245448</last-modified>
+                             <last-modified>1621695800646</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -2606,6 +2677,35 @@
                                    </target>
                                   </handle>
                                  </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{602a25ee-6d78-48b9-b8b2-011592baf9c3}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{602a25ee-6d78-48b9-b8b2-011592baf9c3}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{4b68c8b1-ba25-4725-889d-39845252d4d8}</a>
+                                        <b>{73d8664d-c487-414d-9735-30d9abbe0370}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <cardinality>1</cardinality>
+                                        <navigable>true</navigable>
+                                        <kind>1</kind>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
                                 </qlist>
                                </handles>
                               </handles>
@@ -2616,7 +2716,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{75232a27-f75a-42dd-9766-9890034ecddd}</uid>
+                               <uid>{88b25c57-bdc8-4102-9f8a-7911b42530c5}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>CreateDirectoryJob* createDirectory(QObject* parent = nullptr)</declaration>
@@ -2624,7 +2724,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{b19a7920-9f97-42a7-8833-05c9b59524e0}</uid>
+                               <uid>{a5ea6312-ba97-4dd4-b27b-d87943fd2e09}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DeleteJob* deleteResource(QObject* parent = nullptr)</declaration>
@@ -2632,7 +2732,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{04a42ced-dc29-4d4a-b28d-56690acaaed5}</uid>
+                               <uid>{01b4fa67-75ad-453d-987c-2c3e2aec0870}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DownloadFileJob* downloadFile(QObject* parent = nullptr)</declaration>
@@ -2640,7 +2740,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{f938d9d7-a2f7-4464-ab6f-11f7805aa9b0}</uid>
+                               <uid>{29fe3d3f-6822-421b-b96d-e042bdb0ef4b}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>UploadFileJob* uploadFile(QObject* parent = nullptr)</declaration>
@@ -2648,7 +2748,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{776283bd-1157-4d91-bbc7-5769a2737aee}</uid>
+                               <uid>{2d0dadb7-2d35-42b8-81e3-458303c7a73f}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>GetFileInfoJob* getFileInfo(QObject* parent = nullptr)</declaration>
@@ -2656,7 +2756,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{2b4467dd-eb3f-4521-beb4-5a44c4d1f21c}</uid>
+                               <uid>{8893306b-5305-49d8-b42b-e51d52a9d980}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>ListFilesJob* listFiles(QObject* parent = nullptr)</declaration>
@@ -2664,7 +2764,15 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{67c609af-7b5b-408c-8dc1-2ffdaaad219d}</uid>
+                               <uid>{21ae0bb6-4930-488d-864a-0d43d522977b}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <declaration>RemoteChangeDetectionMode remoteChangeDetectionMode()</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{111f9833-6862-4d15-af14-47ad4ce965d5}</uid>
                                <visibility>2</visibility>
                                <type>2</type>
                                <properties>3</properties>
@@ -2703,42 +2811,42 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{d8d4ed35-46e1-41f6-a730-07411e05fb9f}</uid>
+                               <uid>{24283861-20a4-4c57-81d9-91097ffa4bd9}</uid>
                                <type>1</type>
                                <declaration>CreateDirectory</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{ef846aa4-afef-44dc-a7f6-91bab7c4ea4a}</uid>
+                               <uid>{a8c1a2c4-8f39-433c-8889-2f7f57055843}</uid>
                                <type>1</type>
                                <declaration>DeleteResource</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{1f43df8f-522e-427f-8218-5890d4ce0b44}</uid>
+                               <uid>{03017c05-f3c8-405c-ad76-49630e0a95c9}</uid>
                                <type>1</type>
                                <declaration>DownloadFile</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c38cb04f-8743-4ba6-b264-4b093e127828}</uid>
+                               <uid>{4322c8b2-b2b4-480d-b4ac-51366b6211cf}</uid>
                                <type>1</type>
                                <declaration>UploadFile</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{59114d3f-523b-498f-beb6-7fc98ef72eef}</uid>
+                               <uid>{b7471813-25eb-46c1-8962-fa4bf475c8ce}</uid>
                                <type>1</type>
                                <declaration>GetFileInfo</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c7aaef01-e159-4803-a55d-84dfc82ae5fa}</uid>
+                               <uid>{099b03a3-6bf2-4673-8817-e9576894d97a}</uid>
                                <type>1</type>
                                <declaration>ListFiles</declaration>
                               </MClassMember>
@@ -3367,6 +3475,50 @@
                         </target>
                        </handle>
                       </item>
+                      <item>
+                       <handle>
+                        <uid>{73d8664d-c487-414d-9735-30d9abbe0370}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{73d8664d-c487-414d-9735-30d9abbe0370}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
+                              </MElement>
+                             </base-MElement>
+                             <name>RemoteChangeDetectionMode</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{b517a2e7-9e55-436a-a18e-72633bbbaeb1}</uid>
+                               <type>1</type>
+                               <declaration>FoldersWithSyncAttributes</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{d8fe5526-01fa-48e2-8cb6-08b6ce519c75}</uid>
+                               <type>1</type>
+                               <declaration>RootFolderSyncStream</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
                      </qlist>
                     </handles>
                    </handles>
@@ -3573,7 +3725,7 @@
                                     <object>{a59b0689-1a88-4f7c-8954-eb1b8b4231c4}</object>
                                     <name>ListFilesJob</name>
                                     <pos>x:195;y:550</pos>
-                                    <rect>x:-80;y:-50;w:160;h:100</rect>
+                                    <rect>x:-80;y:-70;w:160;h:140</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -3786,7 +3938,7 @@
                                     <object>{c503f7f7-01b9-4257-aab6-f97b4c8d9b48}</object>
                                     <name>FileInfo</name>
                                     <pos>x:315;y:835</pos>
-                                    <rect>x:-235;y:-105;w:470;h:210</rect>
+                                    <rect>x:-235;y:-120;w:470;h:240</rect>
                                     <visual-role>0</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -4334,14 +4486,14 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{777e0f64-2e80-4dea-aba8-530c82d4a40e}</uid>
+                               <uid>{005a5456-534e-4489-a716-ddbd56574112}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{85679fef-13ac-4c21-8882-3bf9bec440b6}</uid>
+                               <uid>{88a9358e-7e9b-4a61-92dc-f176b307e268}</uid>
                                <type>1</type>
                                <declaration>FileInfo fileInfo</declaration>
                               </MClassMember>
@@ -4430,23 +4582,44 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{eb19533d-60f2-4cca-80ef-553c17bdba15}</uid>
+                               <uid>{002776ce-44c2-48e5-b7e2-4a97132fc706}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{b61910ce-359b-4615-a20c-e8294c4bef7a}</uid>
+                               <uid>{ed202579-61f7-40f7-b8b8-530ce3a6d519}</uid>
                                <type>1</type>
                                <declaration>QVector&lt;FileInfo&gt; entries</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{2ad0fa62-4866-4f85-bf0d-79e442b570e4}</uid>
+                               <uid>{accb8d33-8856-4e3b-a743-f0a90a4c548e}</uid>
                                <type>1</type>
                                <declaration>FileInfo folder</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{45cddcf1-c06b-49a6-8ad4-6d1b03d20b64}</uid>
+                               <type>1</type>
+                               <declaration>bool recursive</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{9d57f31d-0c83-4117-8fe9-3cfb42d85ea3}</uid>
+                               <type>1</type>
+                               <declaration>QString cursor</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{569609b4-340e-4c12-b895-77d740a36d25}</uid>
+                               <type>1</type>
+                               <declaration>bool isIncremental</declaration>
                               </MClassMember>
                              </item>
                             </qlist>
@@ -4533,42 +4706,42 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{2267ed8e-33ea-4e1e-93ca-69978e0c4eac}</uid>
+                               <uid>{2c7f905c-120f-488c-9dff-a17f72ed07c1}</uid>
                                <type>1</type>
                                <declaration>QString localFilename</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{e4a62a49-b522-4c62-a351-b556a2d7d2f7}</uid>
+                               <uid>{624eac54-000e-4a6d-bb51-0fbf8c957533}</uid>
                                <type>1</type>
                                <declaration>QIODevice* input</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{5b04703d-ddea-46fc-a2a0-5834da38c5c0}</uid>
+                               <uid>{b1253ed2-641c-4265-ab0e-d20efa6c1d33}</uid>
                                <type>1</type>
                                <declaration>QByteArray data</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{8e556a00-fd2d-42b5-a100-74bd10bf4661}</uid>
+                               <uid>{36357b39-39e1-4365-8955-f34bcc12affe}</uid>
                                <type>1</type>
                                <declaration>QString remoteFilename</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{0bf8911f-e4d4-4ae1-b840-41cbbb837f0b}</uid>
+                               <uid>{a5487927-b2b6-4836-96c9-98c9746be6ed}</uid>
                                <type>1</type>
                                <declaration>FileInfo fileInfo</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{6b141bea-b1e9-4ca8-9c7d-c908982ca15e}</uid>
+                               <uid>{1e7c0dd3-641b-40d8-a33d-6c7baa47673c}</uid>
                                <type>1</type>
                                <declaration>QVariant syncAttribute</declaration>
                               </MClassMember>
@@ -4657,35 +4830,35 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{0ef9001d-8fcb-4116-91bf-9fc1a02038bc}</uid>
+                               <uid>{3fd697be-d8de-4c97-9c1e-a6e6c471e765}</uid>
                                <type>1</type>
                                <declaration>QString localFilename</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{47898b3a-bc57-4b25-9d21-2a71b32c8043}</uid>
+                               <uid>{fbde3584-931e-44bf-84c8-a6019b6a6f54}</uid>
                                <type>1</type>
                                <declaration>QIODevice* output</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{3a7c4f9f-61de-4979-8db4-22e541555b3d}</uid>
+                               <uid>{7083ecfc-0790-46b6-b71d-4febbba4dc5e}</uid>
                                <type>1</type>
                                <declaration>QByteArray data</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{20c2fdfe-c1cd-452b-8ede-42b425290de4}</uid>
+                               <uid>{160bec64-78c7-42a7-8fae-21d62e4a7f18}</uid>
                                <type>1</type>
                                <declaration>QString remoteFilename</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{20f451a8-6f80-4f6a-9df8-b96e894d3375}</uid>
+                               <uid>{a9b2cd21-2926-4cc5-9393-8761419040c5}</uid>
                                <type>1</type>
                                <declaration>FileInfo fileInfo</declaration>
                               </MClassMember>
@@ -4747,7 +4920,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{b38c2271-4636-47d7-a84f-694540ce3052}</uid>
+                               <uid>{ddc60d31-5eaf-4ed0-8f08-fca1fd2fa89e}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
@@ -4923,7 +5096,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{9191c8d0-3d97-4122-bb1f-cea1304e2516}</uid>
+                               <uid>{e7f21f56-9db0-4c31-9ef3-19327f533511}</uid>
                                <type>1</type>
                                <declaration>QString path</declaration>
                               </MClassMember>
@@ -4955,7 +5128,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{3d8d5a34-2fad-49e9-97e3-9266272d94e7}</uid>
+                               <uid>{247ddf92-b525-4b14-b973-cf161385b9e1}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -4964,7 +5137,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{c3e8c83a-dd98-4e3d-8fa9-63e00a422a67}</uid>
+                               <uid>{d22c2af4-5ad5-4dec-afb5-3834a31e62c3}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -4973,7 +5146,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{1af48d79-ecc5-487f-8fd2-243c22f9af8b}</uid>
+                               <uid>{657e11de-393d-42de-8fd6-88ce9511c3e7}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>void setIsFile()</declaration>
@@ -4981,7 +5154,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{08f3dad2-2f51-4445-a36d-5f814482bf4c}</uid>
+                               <uid>{f98ab4ce-bcd3-4f3e-821a-056f3b92f631}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>4</properties>
@@ -4990,7 +5163,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{06807230-6f87-4227-a0e9-9c971d2ede55}</uid>
+                               <uid>{04f897ff-6705-4dd6-b845-8eb2c69d155a}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>void setIsDirectory()</declaration>
@@ -4998,7 +5171,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{6ed34e3f-0b37-4ee0-90f6-73c02de095eb}</uid>
+                               <uid>{5f6588a2-645c-4bbc-a19f-edb4970d28d2}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>QString name</declaration>
@@ -5006,7 +5179,15 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{8565e705-0a60-43fe-a45d-69531150b2b7}</uid>
+                               <uid>{2af9d2e4-d9fc-41b0-9644-b438b92ab664}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>QString path</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{a64226f7-8de1-46bb-bd98-64a95f5cb99d}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>QString syncAttribute</declaration>
@@ -5014,7 +5195,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a285380c-076a-481d-81de-a6c6d7cd9084}</uid>
+                               <uid>{33705377-2aba-4d4c-b455-91511a503473}</uid>
                                <visibility>1</visibility>
                                <type>1</type>
                                <declaration>QUrl url</declaration>
@@ -5022,7 +5203,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{37d36ba2-485c-4af5-a58e-147a565aee25}</uid>
+                               <uid>{846409a6-963d-4c06-88f4-2b2e7bfc933b}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>QVariant customProperty(const QString &amp;name)</declaration>
@@ -5030,7 +5211,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{89a13929-78e3-44b6-899a-ca8b8963f78c}</uid>
+                               <uid>{6a5927ca-b210-46be-a4b5-84cba9360679}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>void setCustomProperty(const QString &amp;name, const QVariant &amp;propertyValue)</declaration>
@@ -5038,11 +5219,19 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{e3569f04-d575-4e71-bd4b-fadf3d20b731}</uid>
+                               <uid>{93e5e59d-a29e-4657-843f-1dc4ee2474b9}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <properties>64</properties>
                                <declaration>FileInfo fromLocalFile(const QString &amp;path)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{f0fb1a72-324f-463f-9f02-147441a069f8}</uid>
+                               <visibility>1</visibility>
+                               <type>1</type>
+                               <declaration>bool isDeleted</declaration>
                               </MClassMember>
                              </item>
                             </qlist>
@@ -5383,6 +5572,946 @@
                              </item>
                             </qlist>
                            </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </children>
+                 </MObject>
+                </base-MObject>
+               </MPackage>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{47ece1e1-2e6d-4f92-a998-1953471fefc8}</uid>
+             <target>
+              <instance type="MPackage">
+               <MPackage>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{47ece1e1-2e6d-4f92-a998-1953471fefc8}</uid>
+                   </MElement>
+                  </base-MElement>
+                  <name>Dropbox</name>
+                  <children>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{cb83ab6b-f539-4c1d-beb5-38ea4201fc1c}</uid>
+                        <target>
+                         <instance type="MCanvasDiagram">
+                          <MCanvasDiagram>
+                           <base-MDiagram>
+                            <MDiagram>
+                             <base-MObject>
+                              <MObject>
+                               <base-MElement>
+                                <MElement>
+                                 <uid>{cb83ab6b-f539-4c1d-beb5-38ea4201fc1c}</uid>
+                                </MElement>
+                               </base-MElement>
+                               <name>Dropbox</name>
+                              </MObject>
+                             </base-MObject>
+                             <elements>
+                              <qlist>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</object>
+                                    <name>AbstractDropboxJob</name>
+                                    <pos>x:440;y:375</pos>
+                                    <rect>x:-150;y:-50;w:300;h:100</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{d3abe79e-2d54-4108-80ce-a9988e0b97ae}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{caf66e90-59c3-4884-aca2-6ea095d41fa4}</object>
+                                    <name>DropboxCreateDirectoryJob</name>
+                                    <pos>x:240;y:200</pos>
+                                    <rect>x:-85;y:-30;w:170;h:60</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{a50a995f-455b-430d-ab25-fe213a27b492}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{92764387-8a60-4036-86f7-cee2610a2162}</object>
+                                    <name>DropboxDeleteJob</name>
+                                    <pos>x:145;y:370</pos>
+                                    <rect>x:-60;y:-30;w:120;h:60</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{45071cce-f964-4ed1-a42d-50dfa3cda79e}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{0ef0c160-b945-42d2-9f77-f343c0653600}</object>
+                                    <name>DropboxDownloadFileJob</name>
+                                    <pos>x:780;y:340</pos>
+                                    <rect>x:-80;y:-30;w:160;h:60</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{b01b31d6-9c73-49ab-9093-98bf69e955e1}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{966d49b1-60a4-42dc-ba4d-a6fce0b3ecc5}</object>
+                                    <name>DropboxGetFileInfoJob</name>
+                                    <pos>x:580;y:175</pos>
+                                    <rect>x:-70;y:-30;w:140;h:60</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{36ae7233-1c3d-474c-94ec-27a18815b7e2}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{bd674a8e-7c87-4b23-9ab1-525d6bb3cdeb}</object>
+                                    <name>DropboxJobFactory</name>
+                                    <pos>x:180;y:595</pos>
+                                    <rect>x:-150;y:-55;w:300;h:110</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{9846c7f5-02b8-4d46-9d5f-4d1387a7b48b}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{979fc8a4-6a38-4f0e-b34a-eaee32707c2e}</object>
+                                    <name>DropboxListFilesJob</name>
+                                    <pos>x:450;y:625</pos>
+                                    <rect>x:-65;y:-30;w:130;h:60</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{26128a00-7925-4667-a717-bc8ff8a96037}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{816202ec-2b01-4487-ba5c-7ba3cc082809}</object>
+                                    <name>DropboxUploadFileJob</name>
+                                    <pos>x:705;y:595</pos>
+                                    <rect>x:-70;y:-30;w:140;h:60</rect>
+                                    <visual-role>0</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{55d4a5a5-4bf2-46d5-8038-076d8184c80f}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{1c0c00a4-e27f-411d-bcbc-64920dab3913}</object>
+                                    <a>{d3abe79e-2d54-4108-80ce-a9988e0b97ae}</a>
+                                    <b>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{ec338d97-c11e-4bfb-a130-d080425398e4}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{a64ce1f9-f7dc-43ef-9864-2a1f9fa721fc}</object>
+                                    <a>{a50a995f-455b-430d-ab25-fe213a27b492}</a>
+                                    <b>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{89ba958b-c783-4f1f-83c9-ec11ae8b6262}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{1942ac6b-4bcb-4c0f-957d-978af0e552bf}</object>
+                                    <a>{9846c7f5-02b8-4d46-9d5f-4d1387a7b48b}</a>
+                                    <b>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{526d8fae-5ce4-414a-a858-90e1396a464c}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{6f1d8c71-209d-4477-ad1b-eaa6e4bd7f90}</object>
+                                    <a>{26128a00-7925-4667-a717-bc8ff8a96037}</a>
+                                    <b>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{8723b903-8884-4036-9798-3b162fc7c144}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{a8d2b807-c4ff-4fd2-b36a-116838f7cba7}</object>
+                                    <a>{45071cce-f964-4ed1-a42d-50dfa3cda79e}</a>
+                                    <b>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DInheritance">
+                                 <DInheritance>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{bb216feb-6919-4a96-8a36-69b7951b821b}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{c1f20363-5356-4c72-a8f9-c6a22fbd97fa}</object>
+                                    <a>{b01b31d6-9c73-49ab-9093-98bf69e955e1}</a>
+                                    <b>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DInheritance>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DAssociation">
+                                 <DAssociation>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{4f91e767-3b5a-469b-bb2f-dbcc7b7fc814}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{3ec678bf-9043-413e-902d-eddcd9315bd2}</object>
+                                    <a>{36ae7233-1c3d-474c-94ec-27a18815b7e2}</a>
+                                    <b>{7ef266c3-1195-42b5-8237-67e6f1cf3933}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                  <a>
+                                   <DAssociationEnd>
+                                    <navigable>true</navigable>
+                                   </DAssociationEnd>
+                                  </a>
+                                 </DAssociation>
+                                </instance>
+                               </item>
+                              </qlist>
+                             </elements>
+                             <last-modified>1617973110759</last-modified>
+                             <toolbarid>Classes</toolbarid>
+                            </MDiagram>
+                           </base-MDiagram>
+                          </MCanvasDiagram>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>AbstractDropboxJob</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{aa1c32c7-b931-4d99-ae4f-913349304ad0}</uid>
+                               <type>1</type>
+                               <declaration>QNetworkAccessManager *networkAccessManager</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{ffa8bd5a-e693-419d-8ed0-ce6a9e4256dc}</uid>
+                               <type>1</type>
+                               <declaration>QString userAgent</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{91418ea8-8c13-4e1d-ba10-fc0beaeab447}</uid>
+                               <type>1</type>
+                               <declaration>QString token</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{caf66e90-59c3-4884-aca2-6ea095d41fa4}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{caf66e90-59c3-4884-aca2-6ea095d41fa4}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>DropboxCreateDirectoryJob</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{1c0c00a4-e27f-411d-bcbc-64920dab3913}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{1c0c00a4-e27f-411d-bcbc-64920dab3913}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{caf66e90-59c3-4884-aca2-6ea095d41fa4}</a>
+                                        <b>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{be903ce8-90f3-4351-a4a1-548db24746eb}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{be903ce8-90f3-4351-a4a1-548db24746eb}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{caf66e90-59c3-4884-aca2-6ea095d41fa4}</a>
+                                        <b>{99a70cbe-da40-4b55-8f5a-b009dde0c993}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{92764387-8a60-4036-86f7-cee2610a2162}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{92764387-8a60-4036-86f7-cee2610a2162}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>DropboxDeleteJob</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{a64ce1f9-f7dc-43ef-9864-2a1f9fa721fc}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{a64ce1f9-f7dc-43ef-9864-2a1f9fa721fc}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{92764387-8a60-4036-86f7-cee2610a2162}</a>
+                                        <b>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{e435ac71-a34b-41b4-a644-d2fc4c989123}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{e435ac71-a34b-41b4-a644-d2fc4c989123}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{92764387-8a60-4036-86f7-cee2610a2162}</a>
+                                        <b>{de027435-b8b8-4e64-9f42-c7343e5e0afc}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{0ef0c160-b945-42d2-9f77-f343c0653600}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{0ef0c160-b945-42d2-9f77-f343c0653600}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>DropboxDownloadFileJob</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{a8d2b807-c4ff-4fd2-b36a-116838f7cba7}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{a8d2b807-c4ff-4fd2-b36a-116838f7cba7}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{0ef0c160-b945-42d2-9f77-f343c0653600}</a>
+                                        <b>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{a8daaec4-4bfd-41b5-9121-6650103efab0}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{a8daaec4-4bfd-41b5-9121-6650103efab0}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{0ef0c160-b945-42d2-9f77-f343c0653600}</a>
+                                        <b>{da94e358-fbe1-45d4-9dfe-a4d7a38ff71e}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{966d49b1-60a4-42dc-ba4d-a6fce0b3ecc5}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{966d49b1-60a4-42dc-ba4d-a6fce0b3ecc5}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>DropboxGetFileInfoJob</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{c1f20363-5356-4c72-a8f9-c6a22fbd97fa}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{c1f20363-5356-4c72-a8f9-c6a22fbd97fa}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{966d49b1-60a4-42dc-ba4d-a6fce0b3ecc5}</a>
+                                        <b>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{0748c18c-5ef9-45c5-a147-4ca62f9e5f83}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{0748c18c-5ef9-45c5-a147-4ca62f9e5f83}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{966d49b1-60a4-42dc-ba4d-a6fce0b3ecc5}</a>
+                                        <b>{a2c03f5d-35da-460f-8751-ec978a6b81b3}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{bd674a8e-7c87-4b23-9ab1-525d6bb3cdeb}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{bd674a8e-7c87-4b23-9ab1-525d6bb3cdeb}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>DropboxJobFactory</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{3ec678bf-9043-413e-902d-eddcd9315bd2}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{3ec678bf-9043-413e-902d-eddcd9315bd2}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{bd674a8e-7c87-4b23-9ab1-525d6bb3cdeb}</a>
+                                        <b>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <navigable>true</navigable>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{3a3c273e-9896-426d-a18a-151f37e0201a}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{3a3c273e-9896-426d-a18a-151f37e0201a}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{bd674a8e-7c87-4b23-9ab1-525d6bb3cdeb}</a>
+                                        <b>{4b68c8b1-ba25-4725-889d-39845252d4d8}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{0fcfd6c8-a081-4270-99dc-bb86b916e62f}</uid>
+                               <type>1</type>
+                               <declaration>QNetworkAccessManager *networkAccessManager</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{475783a1-52ee-45dd-80a0-3e2ddfa7273c}</uid>
+                               <type>1</type>
+                               <declaration>QString userAgent</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{78bec26b-5c6b-4629-b27a-b4c630c0e5de}</uid>
+                               <type>1</type>
+                               <declaration>QString token</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{979fc8a4-6a38-4f0e-b34a-eaee32707c2e}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{979fc8a4-6a38-4f0e-b34a-eaee32707c2e}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>DropboxListFilesJob</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{1942ac6b-4bcb-4c0f-957d-978af0e552bf}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{1942ac6b-4bcb-4c0f-957d-978af0e552bf}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{979fc8a4-6a38-4f0e-b34a-eaee32707c2e}</a>
+                                        <b>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{23cd2d17-1e09-40d1-86fd-36b0a6b96c7e}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{23cd2d17-1e09-40d1-86fd-36b0a6b96c7e}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{979fc8a4-6a38-4f0e-b34a-eaee32707c2e}</a>
+                                        <b>{a59b0689-1a88-4f7c-8954-eb1b8b4231c4}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{816202ec-2b01-4487-ba5c-7ba3cc082809}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{816202ec-2b01-4487-ba5c-7ba3cc082809}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <name>DropboxUploadFileJob</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{6f1d8c71-209d-4477-ad1b-eaa6e4bd7f90}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{6f1d8c71-209d-4477-ad1b-eaa6e4bd7f90}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{816202ec-2b01-4487-ba5c-7ba3cc082809}</a>
+                                        <b>{289e7f48-97cd-4bd1-bfd3-03fd794949b9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{c8042b66-0275-4293-856c-5ebd6d3bee0a}</uid>
+                                   <target>
+                                    <instance type="MInheritance">
+                                     <MInheritance>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{c8042b66-0275-4293-856c-5ebd6d3bee0a}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{816202ec-2b01-4487-ba5c-7ba3cc082809}</a>
+                                        <b>{7160e9e0-76c5-4582-9313-b102c7d89de3}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MInheritance>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
                           </MClass>
                          </instance>
                         </target>

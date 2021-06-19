@@ -1,2 +1,2 @@
-#include "libsyncclient.h"
-#include "libsyncclient_global.h"
+#include "libsynqclient.h"
+#include "libsynqclient_global.h"

@@ -92,8 +92,10 @@ void CompositeJob::setErrorMode(CompositeJobErrorMode errorMode)
  * @brief Add a child job to the composite.
  *
  * This adds the given child @p job to this composite job. This function can be called before
- * starting the composite job or also while it is running. The composite - once started - will start
- * all child jobs and wait for them to finish.
+ * starting the composite job or also while it is running (e.g. it is possible to add another job to
+ * the composite after a previous job finished by creating *follow up* jobs in the first child job's
+ * finished handler). The composite - once started - will start all child jobs and wait for them to
+ * finish.
  *
  * @note The composite will not take ownership of the job. It is up to the user to ensure, that jobs
  * are eventually deleted. Ideally, connect the finished signal of the child job to
@@ -103,7 +105,7 @@ void CompositeJob::setErrorMode(CompositeJobErrorMode errorMode)
  * error. Hence, the configured errorMode() might be ignored. If you delete a job by wiring its
  * finished signal to deleteLater, this should not be an issue.
  *
- * @warning Jobs which are in the JobState::Ready state are ignored.
+ * @warning Jobs which are in the JobState::Finished state are ignored.
  */
 void CompositeJob::addJob(AbstractJob* job)
 {

@@ -11,6 +11,7 @@
 #include "../shared/utils.h"
 #include "SynqClient/AbstractJobFactory"
 #include "SynqClient/DirectorySynchronizer"
+#include "SynqClient/DropboxJobFactory"
 #include "SynqClient/FileInfo"
 #include "SynqClient/JSONSyncStateDatabase"
 #include "SynqClient/WebDAVJobFactory"
@@ -73,8 +74,9 @@ void DirectorySynchronizerTest::initTestCase() {}
 
 void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -104,8 +106,9 @@ void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
 
 void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -164,8 +167,9 @@ void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
 
 void DirectorySynchronizerTest::editVsDeleteConflictResolution()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -236,8 +240,9 @@ void DirectorySynchronizerTest::editVsDeleteConflictResolution()
 
 void DirectorySynchronizerTest::sync()
 {
-    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()) {
-        QSKIP("No WebDAV servers configured - skipping test");
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
     }
 
     QFETCH(AbstractJobFactory*, jobFactory);
@@ -275,8 +280,13 @@ void DirectorySynchronizerTest::sync()
         } else {
             // If files are synced, make sure they are equal:
             auto msg = QString("File %1 missing").arg(syncedFilePath);
+            (void)msg;
             QVERIFY2(files2.contains(syncedFilePath), qUtf8Printable(msg));
-            QCOMPARE(files2.value(syncedFilePath), files1.value(syncedFilePath));
+            msg = QString("File %1 differs: Expected content - %3. Got content - %2")
+                          .arg(syncedFilePath, files2.value(syncedFilePath),
+                               files1.value(syncedFilePath));
+            QVERIFY2(files2.value(syncedFilePath) == files1.value(syncedFilePath),
+                     qUtf8Printable(msg));
         }
     }
 
@@ -356,12 +366,17 @@ void DirectorySynchronizerTest::sync()
             QVERIFY(!files2.contains(syncedFilePath));
         } else {
             auto msg = QString("Content mismatch of %1 in dir1").arg(syncedFilePath);
+            (void)msg;
             QVERIFY2(files1.value(syncedFilePath) == expectedFiles.value(syncedFilePath),
                      qUtf8Printable(msg));
 
             // If files are synced, make sure they are equal:
             QVERIFY(files2.contains(syncedFilePath));
-            QCOMPARE(files2.value(syncedFilePath), files1.value(syncedFilePath));
+            msg = QString("File %1 differs: Expected content - %3. Got content - %2")
+                          .arg(syncedFilePath, files2.value(syncedFilePath),
+                               files1.value(syncedFilePath));
+            QVERIFY2(files2.value(syncedFilePath) == files1.value(syncedFilePath),
+                     qUtf8Printable(msg));
         }
     }
 
@@ -408,7 +423,12 @@ void DirectorySynchronizerTest::sync()
             // If files are synced, make sure they are equal:
             QCOMPARE(files1.value(syncedFilePath), expectedFiles.value(syncedFilePath));
             QVERIFY(files2.contains(syncedFilePath));
-            QCOMPARE(files2.value(syncedFilePath), files1.value(syncedFilePath));
+
+            auto msg = QString("File %1 differs: Expected content - %3. Got content - %2")
+                               .arg(syncedFilePath, files2.value(syncedFilePath),
+                                    files1.value(syncedFilePath));
+            QVERIFY2(files2.value(syncedFilePath) == files1.value(syncedFilePath),
+                     qUtf8Printable(msg));
         }
     }
 }
@@ -433,6 +453,13 @@ void DirectorySynchronizerTest::prepareTestData()
         webdavJobFactory->setNetworkAccessManager(nam);
         QTest::newRow(url.toString().toUtf8())
                 << static_cast<AbstractJobFactory*>(webdavJobFactory) << flags;
+    }
+
+    if (SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        auto factory = new SynqClient::DropboxJobFactory(this);
+        factory->setNetworkAccessManager(nam);
+        factory->setToken(SynqClient::UnitTest::getDropboxTokenFromEnv());
+        QTest::newRow("Dropbox") << static_cast<AbstractJobFactory*>(factory) << 0;
     }
 }
 

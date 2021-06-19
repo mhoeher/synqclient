@@ -202,6 +202,8 @@ ChangeTree DirectorySynchronizerPrivate::buildLocalChangeTree()
                     node->type = ChangeTree::File;
                 }
                 node->change = ChangeTree::Created;
+                QFileInfo fi(entry.absoluteFilePath());
+                node->lastModified = fi.lastModified();
             }
         }
 
@@ -224,6 +226,18 @@ ChangeTree DirectorySynchronizerPrivate::buildLocalChangeTree()
 }
 
 void DirectorySynchronizerPrivate::buildRemoteChangeTree()
+{
+    switch (jobFactory->remoteChangeDetectionMode()) {
+    case RemoteChangeDetectionMode::FoldersWithSyncAttributes:
+        buildRemoteChangeTreeWebDAVLike();
+        break;
+    case RemoteChangeDetectionMode::RootFolderSyncStream:
+        buildRemoteChangeTreeDropboxLike();
+        break;
+    }
+}
+
+void DirectorySynchronizerPrivate::buildRemoteChangeTreeWebDAVLike()
 {
     while (!remoteFoldersToScan.isEmpty() && error == SynchronizerError::NoError
            && runningJobs < maxJobs) {
@@ -316,7 +330,7 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
                         job->error());
                 return;
             }
-            buildRemoteChangeTree(); // Continue processing remote folders
+            buildRemoteChangeTreeWebDAVLike(); // Continue processing remote folders
         });
         job->start();
     }
@@ -324,6 +338,118 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTree()
     if (error == SynchronizerError::NoError && remoteFoldersToScan.isEmpty() && runningJobs <= 0) {
         mergeChangeTrees();
     }
+}
+
+void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
+{
+    // There is only one folder in the queue - the root folder.
+    remoteFoldersToScan.clear();
+
+    auto job = jobFactory->listFiles(this);
+    job->setPath(remoteDirectoryPath);
+    job->setRecursive(true);
+
+    // Check if we have a sync token - we save it as sync attribute of the root folder:
+    auto rootFolderEntry = syncStateDatabase->getEntry("/");
+    if (rootFolderEntry.isValid() && !rootFolderEntry.syncProperty().isEmpty()) {
+        // The following is for testing, but could potentially be used to work around issues when
+        // retrieving "delta updates": Check if the user asked up explicitly to not use incremental
+        // updates ->
+        if (qEnvironmentVariableIsSet(
+                    "SYNQCLIENT_DIRECTORYSYNCHRONIZER_NO_INCREMENTAL_REMOTE_FOLDER_SCAN")) {
+            qCWarning(log) << "SYNQCLIENT_DIRECTORYSYNCHRONIZER_NO_INCREMENTAL_REMOTE_FOLDER_SCAN "
+                              "is set - NOT using the stored cursor but instead recursively "
+                              "reading the full remote folder.";
+        } else {
+            job->setCursor(rootFolderEntry.syncProperty());
+        }
+    }
+
+    job->start();
+    connect(job, &ListFilesJob::finished, this, [=]() {
+        job->deleteLater();
+        switch (job->error()) {
+        case JobError::NoError: {
+            const auto& entries = job->entries();
+            QDir remoteDir(remoteDirectoryPath);
+            for (const auto& entry : entries) {
+                const auto entryPath = entry.path();
+                if (!filter(entryPath, entry)) {
+                    continue;
+                }
+                if (entry.isFile()) {
+                    auto lastSyncStateEntry = syncStateDatabase->getEntry(entry.path());
+                    if (!lastSyncStateEntry.isValid()
+                        || lastSyncStateEntry.syncProperty() != entry.syncAttribute()) {
+                        auto node =
+                                remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
+                        node->change = ChangeTree::Created;
+                        node->type = ChangeTree::File;
+                        node->syncAttribute = entry.syncAttribute();
+                        // Check if this is a known entry - i.e. we have a change instead of a
+                        // create:
+                        if (lastSyncStateEntry.isValid()
+                            && !lastSyncStateEntry.syncProperty().isEmpty()) {
+                            node->change = ChangeTree::Changed;
+                        }
+                    }
+                } else if (entry.isDeleted()) {
+                    auto node = remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
+                    node->change = ChangeTree::Deleted;
+                } else {
+                    // Check if we already have that folder locally. Otherwise, we would get an
+                    // "impossible" local changed, remote created merge conflict, which actually
+                    // would not hurt but generate useless log messages.
+                    QFileInfo fi(localDirectoryPath + "/" + entry.path());
+                    if (!fi.exists()) {
+                        auto node =
+                                remoteChangeTree.findNode(entry.path(), ChangeTree::FindAndCreate);
+                        node->change = ChangeTree::Created;
+                        node->type = ChangeTree::Folder;
+                    }
+                }
+            }
+
+            // If the listing was non-incremental (i.e. we have a full listing) we need to manually
+            // check for deletions as they won't be reported in that case.
+            if (!job->incremental()) {
+                QSet<QString> allRemoteEntries;
+                for (const auto& entry : entries) {
+                    allRemoteEntries.insert(SyncStateEntry::makePath(entry.path()));
+                }
+                qWarning() << "All remote entries:" << allRemoteEntries;
+                syncStateDatabase->iterate([&](const SyncStateEntry& dbEntry) {
+                    if (dbEntry.path() == "/") {
+                        // Do not consider the root folder - might not be included in remote
+                        // listings.
+                        return;
+                    }
+                    if (!allRemoteEntries.contains(dbEntry.path())) {
+                        qWarning() << "Marking" << dbEntry.path() << "as deleted";
+                        // The entry could not be found in the DB, so assume it has been deleted on
+                        // the server side. Hence, we're going to delete it:
+                        auto node = remoteChangeTree.findNode(dbEntry.path(),
+                                                              ChangeTree::FindAndCreate);
+                        node->change = ChangeTree::Deleted;
+                        node->syncAttribute = dbEntry.syncProperty();
+                    } else {
+                        qWarning() << "Entry" << dbEntry.path() << "found remotely - all fine";
+                    }
+                });
+            }
+
+            // Save the curstor as sync attribute of the remote root folder for the sync.
+            remoteFoldersSyncAttributes["/"] = job->cursor();
+            mergeChangeTrees();
+            break;
+        }
+        default:
+            setError(SynchronizerError::FailedListingRemoteFolder,
+                     tr("Failed to list contents of the remote folder: %1").arg(job->errorString()),
+                     job->error());
+            break;
+        }
+    });
 }
 
 /**
@@ -334,6 +460,14 @@ void DirectorySynchronizerPrivate::mergeChangeTrees()
     QQueue<QString> paths;
     localChangeTree.dump("Local Change Tree");
     remoteChangeTree.dump("Remote Change Tree");
+
+    // Normalize change trees:
+    localChangeTree.normalize();
+    remoteChangeTree.normalize();
+
+    localChangeTree.dump("Local Change Tree (Normalized)");
+    remoteChangeTree.dump("Remote Change Tree (Normalized)");
+
     {
         auto topLevelChanges =
                 ChangeTree::mergeNames(localChangeTree.root, remoteChangeTree.root, "/");
@@ -455,12 +589,18 @@ void DirectorySynchronizerPrivate::mergeChangeNodesLocalWins(const QString& path
             }
             break;
         case ChangeTree::Changed:
-            // Note: Actually, we shouldn't land here.
-            emit q->logMessageAvailable(
-                    SynchronizerLogEntryType::Warning,
-                    tr("Impossible sync conflict on %1: Local created, remote changed").arg(path));
-            qCWarning(log) << "Impossible sync conflict on path" << path
-                           << " - local created, remote changed";
+            if (localChange.type == ChangeTree::Folder && remoteChange.type == ChangeTree::Folder) {
+                // This is "okay" - happens when using Dropbox style remote change discovery, as we
+                // always detect local folders as being new.
+            } else {
+                // Note: Actually, we shouldn't land here.
+                emit q->logMessageAvailable(
+                        SynchronizerLogEntryType::Warning,
+                        tr("Impossible sync conflict on %1: Local created, remote changed")
+                                .arg(path));
+                qCWarning(log) << "Impossible sync conflict on path" << path
+                               << " - local created, remote changed";
+            }
             break;
         case ChangeTree::Deleted:
             // Note: Actually, we shouldn't land here.
@@ -618,12 +758,17 @@ void DirectorySynchronizerPrivate::mergeChangeNodesRemoteWins(const QString& pat
             }
             break;
         case ChangeTree::Changed:
-            // Note: Actually, we shouldn't land here.
-            emit q->logMessageAvailable(
-                    SynchronizerLogEntryType::Warning,
-                    tr("Impossible sync conflict on %1: Local created, remote changed").arg(path));
-            qCWarning(log) << "Impossible sync conflict on path" << path
-                           << " - local created, remote changed";
+            if (localChange.type == ChangeTree::Folder && remoteChange.type == ChangeTree::Folder) {
+                // Okay, happens with Dropbox style remote change discovery
+            } else {
+                // Note: Actually, we shouldn't land here.
+                emit q->logMessageAvailable(
+                        SynchronizerLogEntryType::Warning,
+                        tr("Impossible sync conflict on %1: Local created, remote changed")
+                                .arg(path));
+                qCWarning(log) << "Impossible sync conflict on path" << path
+                               << " - local created, remote changed";
+            }
             break;
         case ChangeTree::Deleted:
             // Note: Actually, we shouldn't land here.
@@ -1001,6 +1146,13 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
         job->setRemoteFilename(remoteDirectoryPath + "/" + action->path);
         auto saveFile = new QSaveFile(job);
         saveFile->setFileName(localDirectoryPath + "/" + action->path);
+        auto parentDir = QFileInfo(saveFile->fileName()).dir();
+        if (!parentDir.exists() && !parentDir.mkpath(".")) {
+            setError(SynchronizerError::FailedCreatingLocalFolder,
+                     tr("Failed to create the local folder %1").arg(parentDir.path()),
+                     JobError::NoError);
+            return;
+        }
         if (!saveFile->open(QIODevice::WriteOnly)) {
             setError(SynchronizerError::OpeningLocalFileFailed,
                      tr("Opening file %1 for reading/writing failed: %2")

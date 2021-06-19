@@ -35,6 +35,9 @@ public:
     QString path;
     FileInfos entries;
     FileInfo folder;
+    QString cursor;
+    bool recursive;
+    bool incremental;
 };
 
 } // namespace SynqClient

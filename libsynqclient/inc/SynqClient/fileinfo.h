@@ -50,11 +50,17 @@ public:
     QString name() const;
     void setName(const QString& name);
 
+    QString path() const;
+    void setPath(const QString& path);
+
     QString syncAttribute() const;
     void setSyncAttribute(const QString& syncAttribute);
 
     QUrl url() const;
     void setUrl(const QUrl& url);
+
+    bool isDeleted() const;
+    void setDeleted(bool deleted);
 
     QVariant customProperty(const QString& name) const;
     void setCustomProperty(const QString& name, const QVariant& propertyValue);

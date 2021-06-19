@@ -2,3 +2,4 @@
 *.pro.user*
 /doc/doxygen
 /.vscode
+CMakeLists.txt.user*

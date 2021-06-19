@@ -91,14 +91,16 @@ void WebDAVCreateDirectoryJob::start()
  */
 void WebDAVCreateDirectoryJob::stop()
 {
-    auto reply = d_ptr2->reply;
-    if (reply) {
-        reply->abort();
-        delete reply;
-        d_ptr2->reply = nullptr;
+    if (state() == JobState::Running) {
+        auto reply = d_ptr2->reply;
+        if (reply) {
+            reply->abort();
+            delete reply;
+            d_ptr2->reply = nullptr;
+        }
+        setError(JobError::Stopped, "The job has been stopped");
+        finishLater();
     }
-    setError(JobError::Stopped, "The job has been stopped");
-    finishLater();
 }
 
 /**

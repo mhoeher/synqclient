@@ -32,9 +32,10 @@ namespace SynqClient {
  * remote folder. Additionally, information about the folder itself can be retrieved by using the
  * folder() method.
  *
- * @note If the path() configured points to a remote file, the job still shall succeed. In this
- * case, information about the file is found in the file informaiton returned by folder() and
- * entries() shall return an empty list.
+ * @note If the path() configured points to a remote file, the job still should succeed. In this
+ * case, information about the file is found in the file information returned by folder() and
+ * entries() shall return an empty list. If a concrete implementation does not support this, it
+ * shall fail with a JobError::RemoteResourceIsNotAFolder error.
  */
 
 /**
@@ -89,6 +90,77 @@ FileInfo ListFilesJob::folder() const
 }
 
 /**
+ * @brief Shall files and folders be listed recursively.
+ *
+ * If this property is set to true, listing entries within a folder is done recursively. The default
+ * is false.
+ *
+ * @note Not all implementations support recursive listing.
+ */
+bool ListFilesJob::recursive() const
+{
+    Q_D(const ListFilesJob);
+    return d->recursive;
+}
+
+/**
+ * @brief Set if files and folder shall be listed recursively.
+ */
+void ListFilesJob::setRecursive(bool recursive)
+{
+    Q_D(ListFilesJob);
+    d->recursive = recursive;
+}
+
+/**
+ * @brief A cursor to continue the folder listing later on.
+ *
+ * This property holds a cursor - i.e. a token which is backend specific - which allows to query
+ * the folder later on for any changes. After listing a specific folder, one can read the cursor
+ * and - later on - create a new ListFilesJob object, setting the cursor on it. The new job will
+ * then only list changes compared to the last list operation.
+ *
+ * @note Not all implementations support cursors. Refer to the implementation of the concrete class
+ * to learn if it has this capability or not. Implementations not supporting cursors usually should
+ * return an empty string. Setting an empty string on a job before starting it should have no effect
+ * as well.
+ */
+QString ListFilesJob::cursor() const
+{
+    Q_D(const ListFilesJob);
+    return d->cursor;
+}
+
+void ListFilesJob::setCursor(const QString& cursor)
+{
+    Q_D(ListFilesJob);
+    d->cursor = cursor;
+}
+
+/**
+ * @brief Indicates if the listing is incremental.
+ *
+ * If a backend implements cursors for listing files, i.e. they are capable to only list changes
+ * since the last time the folder was listed, this property indicates if the listing is an
+ * update or - e.g. because the used cursor timed out and the a full listing was done - a full
+ * listing.
+ *
+ * A value of true indicates that this is an incremental update and the job holds only changes
+ * compared to the last listing. A value of false indicates that the listing contains everything.
+ *
+ * It is important to check this property, e.g. when searching for remote deletions. An incremental
+ * update will report individually deleted files. If a full listing is done, the client needs to
+ * keep track of previous listings to detect deletions on its own.
+ *
+ * Concrete subclasses shall use setIncremental() to set this property during job execution.
+ */
+bool ListFilesJob::incremental() const
+{
+    Q_D(const ListFilesJob);
+    return d->incremental;
+}
+
+/**
  * @brief Constructor.
  */
 ListFilesJob::ListFilesJob(ListFilesJobPrivate* d, QObject* parent) : AbstractJob(d, parent) {}
@@ -114,6 +186,18 @@ void ListFilesJob::setFolder(const FileInfo& folder)
 {
     Q_D(ListFilesJob);
     d->folder = folder;
+}
+
+/**
+ * @brief Set if the listing is incremental.
+ *
+ * This sets the incremental property of the job. The default value is false. Jobs shall set this
+ * to true if the listing is done incrementally.
+ */
+void ListFilesJob::setIncremental(bool incremental)
+{
+    Q_D(ListFilesJob);
+    d->incremental = incremental;
 }
 
 } // namespace SynqClient

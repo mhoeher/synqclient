@@ -53,6 +53,8 @@ public:
     GetFileInfoJob* getFileInfo(QObject* parent = nullptr);
     ListFilesJob* listFiles(QObject* parent = nullptr);
 
+    RemoteChangeDetectionMode remoteChangeDetectionMode() const;
+
 protected:
     explicit AbstractJobFactory(AbstractJobFactoryPrivate* d, QObject* parent = nullptr);
 
@@ -70,6 +72,8 @@ protected:
      * nullptr.
      */
     virtual AbstractJob* createJob(JobType type, QObject* parent = nullptr) = 0;
+
+    void setRemoteChangeDetectionMode(RemoteChangeDetectionMode mode);
 };
 
 } // namespace SynqClient

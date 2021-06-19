@@ -77,12 +77,12 @@ namespace SynqClient {
  * @fn AbstractJob::start()
  * @brief Start the job.
  *
- * This method is used to start the job after it has been set up. It only has an effect when being
- * called while the job is in the JobState::Ready state. Calling this method will cause the job to
- * transition to JobState::Running. Eventually, finished() will be emitted to indicate the job
- * finished. Check the error() to learn if the job succeeded or not.
+ * This method is used to start the job after it has been set up. This must only be called when the
+ * job is in the JobState::Ready state. Calling this method will cause the job to transition to
+ * JobState::Running. Eventually, finished() will be emitted to indicate the job finished. Check the
+ * error() to learn if the job succeeded or not.
  *
- * Calling this method while the job is in any other state has no effect.
+ * Calling this method while the job is in any other state is undefined behavior.
  */
 
 /**

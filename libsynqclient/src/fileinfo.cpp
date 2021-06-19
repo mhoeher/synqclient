@@ -123,6 +123,30 @@ void FileInfo::setName(const QString& name)
 }
 
 /**
+ * @brief Get the path to the file or folder.
+ *
+ * This returns the path to the file or folder. By default, this is the same value as then name
+ * property. However, in some cases (e.g. recursively listing a folder), this will be set to the
+ * path relative to the folder that is listed.
+ */
+QString FileInfo::path() const
+{
+    if (d->path.isNull()) {
+        return d->name;
+    } else {
+        return d->path;
+    }
+}
+
+/**
+ * @brief Set the path.
+ */
+void FileInfo::setPath(const QString& path)
+{
+    d->path = path;
+}
+
+/**
  * @brief The remote sync attribute.
  *
  * This attribute can be used for synchronizing a local and remote version of a file or folder. The
@@ -165,6 +189,25 @@ QUrl FileInfo::url() const
 void FileInfo::setUrl(const QUrl& url)
 {
     d->url = url;
+}
+
+/**
+ * @brief Indicates that the file or folder has been deleted.
+ *
+ * If this flag is set, the file or folder for which information has been retrieved has been
+ * deleted.
+ */
+bool FileInfo::isDeleted() const
+{
+    return d->isDeleted;
+}
+
+/**
+ * @brief Set the deleted flag of the file or folder.
+ */
+void FileInfo::setDeleted(bool deleted)
+{
+    d->isDeleted = deleted;
 }
 
 /**

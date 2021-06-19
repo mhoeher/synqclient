@@ -45,7 +45,7 @@ if __name__ == "__main__":
     if options.base_class is not None:
         BaseClass: str = options.base_class
         baseclass = BaseClass.lower()
-        with open(path / "inc" / (classname + ".h"), "w") as file:
+        with open(path / "inc" / "SynqClient" / (classname + ".h"), "w") as file:
             file.write(license_header + dedent(f"""\
                 #ifndef SYNQCLIENT_{CLASSNAME}_H
                 #define SYNQCLIENT_{CLASSNAME}_H
@@ -54,8 +54,8 @@ if __name__ == "__main__":
                 #include <QScopedPointer>
                 #include <QtGlobal>
 
-                #include "{BaseClass}"
-                #include "libsynqclient_global.h"
+                #include "SynqClient/{BaseClass}"
+                #include "SynqClient/libsynqclient_global.h"
 
                 namespace SynqClient {{
 
@@ -80,14 +80,14 @@ if __name__ == "__main__":
                 #endif // SYNQCLIENT_{CLASSNAME}_H
                 """
             ))
-        with open(path / "inc" / ClassName, "w") as file:
+        with open(path / "inc" / "SynqClient" / ClassName, "w") as file:
             file.write(dedent(f"""\
                 #include "{classname}.h"
                 """
             ))
         with open(path / "src" / (classname + ".cpp"), "w") as file:
             file.write(license_header + dedent(f"""\
-                #include "../inc/{classname}.h"
+                #include "../inc/SynqClient/{classname}.h"
 
                 #include "{classname}private.h"
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
                 #define SYNQCLIENT_{CLASSNAME}PRIVATE_H
 
                 #include "{baseclass}private.h"
-                #include "{classname}.h"
+                #include "SynqClient/{classname}.h"
 
                 namespace SynqClient {{
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
                 """
             ))
     else:
-        with open(path / "inc" / (classname + ".h"), "w") as file:
+        with open(path / "inc" / "SynqClient" / (classname + ".h"), "w") as file:
             file.write(license_header + dedent(f"""\
                 #ifndef SYNQCLIENT_{CLASSNAME}_H
                 #define SYNQCLIENT_{CLASSNAME}_H
@@ -148,7 +148,7 @@ if __name__ == "__main__":
                 #include <QScopedPointer>
                 #include <QtGlobal>
 
-                #include "libsynqclient_global.h"
+                #include "SynqClient/libsynqclient_global.h"
 
                 namespace SynqClient {{
 
@@ -174,14 +174,14 @@ if __name__ == "__main__":
                 #endif // SYNQCLIENT_{CLASSNAME}_H
                 """
             ))
-        with open(path / "inc" / ClassName, "w") as file:
+        with open(path / "inc" / "SynqClient" / ClassName, "w") as file:
             file.write(dedent(f"""\
                 #include "{classname}.h"
                 """
             ))
         with open(path / "src" / (classname + ".cpp"), "w") as file:
             file.write(license_header + dedent(f"""\
-                #include "../inc/{classname}.h"
+                #include "../inc/SynqClient/{classname}.h"
 
                 #include "{classname}private.h"
 
@@ -201,7 +201,7 @@ if __name__ == "__main__":
                 #ifndef SYNQCLIENT_{CLASSNAME}PRIVATE_H
                 #define SYNQCLIENT_{CLASSNAME}PRIVATE_H
 
-                #include "{classname}.h"
+                #include "SynqClient/{classname}.h"
 
                 namespace SynqClient {{
 
