@@ -235,6 +235,7 @@ QSharedPointer<QIODevice> UploadFileJob::getUploadDevice()
         if (d->input.isNull()) {
             setError(JobError::InvalidParameter, "Input device set to nullptr");
         }
+        d->input->seek(0);
         return d->input;
     case UploadFileJobPrivate::UploadSource::Path:
         QFile* file = new QFile(d->localFilename);

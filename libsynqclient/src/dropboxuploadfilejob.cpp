@@ -72,9 +72,10 @@ void DropboxUploadFileJob::start()
         }
     }
 
-    if (!d->uploadDevice) {
-        d->uploadDevice = getUploadDevice();
+    if (d->uploadDevice) {
+        d->uploadDevice.clear();
     }
+    d->uploadDevice = getUploadDevice();
 
     QVariantMap data { { "path", AbstractDropboxJobPrivate::fixPath(d->remoteFilename) },
                        { "mode", "overwrite" },

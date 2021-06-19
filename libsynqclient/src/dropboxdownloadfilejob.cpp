@@ -64,6 +64,12 @@ void DropboxDownloadFileJob::start()
         }
     }
 
+    if (d->downloadDevice) {
+        if (d->downloadDevice != d->output) {
+            delete d->downloadDevice;
+            d->downloadDevice = nullptr;
+        }
+    }
     d->downloadDevice = getDownloadDevice();
 
     if (!d->downloadDevice) {
@@ -95,6 +101,9 @@ void DropboxDownloadFileJob::start()
                 auto doc = QJsonDocument::fromJson(reply->rawHeader("Dropbox-API-Result"), &error);
                 if (error.error == QJsonParseError::NoError) {
                     setFileInfo(d_ptr2->fileInfoFromJson(doc.object(), QString(), "file"));
+                    if (d->downloadDevice) {
+                        d->downloadDevice->write(reply->readAll());
+                    }
                 } else {
                     setError(JobError::InvalidResponse,
                              tr("Failed to parse JSON response: %s").arg(error.errorString()));

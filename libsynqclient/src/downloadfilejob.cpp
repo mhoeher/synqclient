@@ -170,6 +170,7 @@ QIODevice* DownloadFileJob::getDownloadDevice()
     Q_D(DownloadFileJob);
     switch (d->targetType) {
     case DownloadFileJobPrivate::DownloadTarget::Data: {
+        d->data.clear();
         auto buffer = new QBuffer(&d->data);
         buffer->setParent(this);
         if (!buffer->open(QIODevice::WriteOnly)) {
@@ -184,6 +185,7 @@ QIODevice* DownloadFileJob::getDownloadDevice()
         if (!d->output) {
             setError(JobError::MissingParameter, "No output device set");
         }
+        d->output->seek(0);
         return d->output;
 
     case DownloadFileJobPrivate::DownloadTarget::Path: {

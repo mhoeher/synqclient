@@ -24,6 +24,8 @@
 #include <QJsonObject>
 #include <QLoggingCategory>
 
+#include <cmath>
+
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
@@ -216,7 +218,8 @@ int AbstractDropboxJobPrivate::getRetryDelayInMilliseconds(QNetworkReply* reply)
         // Check if Retry-After is set and contains an integer value. In this case, it
         // is a delay to wait (in seconds), see
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After.
-        // Note, that currently, we don't support the alternative HTTP Date response.
+        // According to the Dropbox API docs, the alternate datetime response is not used, so no
+        // reason to check for it here.
         result = reply->rawHeader("Retry-After").toInt(&ok) * 1000;
         qCDebug(log) << "Server provided retry delay of" << result << "ms";
         if (!ok) {
@@ -226,6 +229,8 @@ int AbstractDropboxJobPrivate::getRetryDelayInMilliseconds(QNetworkReply* reply)
     if (result == 0) {
         result = 5000;
     }
+    result = static_cast<int>(result * std::pow(1.2, numRetries));
+    qCDebug(log) << "Calculated retry delay is" << result;
     return result;
 }
 
