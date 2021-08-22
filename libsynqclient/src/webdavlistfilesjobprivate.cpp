@@ -27,7 +27,7 @@
 namespace SynqClient {
 
 WebDAVListFilesJobPrivate::WebDAVListFilesJobPrivate(WebDAVListFilesJob* q)
-    : ListFilesJobPrivate(q), retryWithoutTrailingSlash(false)
+    : ListFilesJobPrivate(q), retryWithoutTrailingSlash(false), retryWithDepthZero(false)
 {
 }
 
@@ -55,7 +55,15 @@ void WebDAVListFilesJobPrivate::handleRequestFinished()
                                &WebDAVListFilesJob::start);
             return;
         }
-        if (reply->error() != QNetworkReply::NoError) {
+        if (reply->error() == QNetworkReply::ProtocolInvalidOperationError && !retryWithDepthZero) {
+            // https://gitlab.com/rpdev/opentodolist/-/issues/471
+            // Doing a "listing" on a file might cause this error on some servers.
+            // Hence, catch it and retry, but this time with a depth of "0":
+            retryWithDepthZero = true;
+            q->d_ptr2->nextUrl.clear();
+            q->start();
+            return;
+        } else if (reply->error() != QNetworkReply::NoError) {
             q->setError(q->fromNetworkError(*reply), reply->errorString());
             if (!retryWithoutTrailingSlash && !q->url().path().endsWith("/")) {
                 // Check if this is a potential error which is due to we append a trailing

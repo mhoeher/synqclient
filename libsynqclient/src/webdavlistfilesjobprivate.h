@@ -36,6 +36,7 @@ public:
     void handleRequestFinished();
 
     bool retryWithoutTrailingSlash;
+    bool retryWithDepthZero;
 };
 
 } // namespace SynqClient

@@ -76,7 +76,7 @@ void WebDAVUploadFileJob::start()
     req.setHeader(QNetworkRequest::ContentLengthHeader, uploadDevice->size());
     req.setHeader(QNetworkRequest::ContentTypeHeader, d_ptr2->OctetStreamEncoding);
     auto etag = syncAttribute();
-    if (etag.isValid()) {
+    if (etag.isValid() && !etag.toString().isEmpty()) {
         req.setHeader(QNetworkRequest::IfMatchHeader, etag.toString());
     }
     auto reply = networkAccessManager()->put(req, uploadDevice.data());
