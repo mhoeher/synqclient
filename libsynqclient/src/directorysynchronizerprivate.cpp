@@ -1115,11 +1115,41 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
             switch (job->error()) {
             case JobError::NoError:
                 // Uploading succeeded. Save sync attribute
-                if (!syncStateDatabase->addEntry(SyncStateEntry(uploadAction->path,
-                                                                uploadAction->lastModified,
-                                                                job->fileInfo().syncAttribute()))) {
-                    setError(SynchronizerError::SyncStateDatabaseWriteFailed,
-                             tr("Failed to write to the sync state database"), JobError::NoError);
+                if (!job->fileInfo().syncAttribute().isEmpty()) {
+                    if (!syncStateDatabase->addEntry(
+                                SyncStateEntry(uploadAction->path, uploadAction->lastModified,
+                                               job->fileInfo().syncAttribute()))) {
+                        setError(SynchronizerError::SyncStateDatabaseWriteFailed,
+                                 tr("Failed to write to the sync state database"),
+                                 JobError::NoError);
+                        return;
+                    }
+                } else {
+                    // We did not receive a sync attribute on upload - fetch one from the server.
+                    qCDebug(log) << "Didn't get a sync attribute on upload - fetching from server";
+                    auto fileInfoJob = jobFactory->getFileInfo();
+                    fileInfoJob->setPath(job->remoteFilename());
+                    setupDefaultJobSignals(fileInfoJob);
+                    fileInfoJob->start();
+                    connect(fileInfoJob, &AbstractJob::finished, this, [=]() {
+                        fileInfoJob->deleteLater();
+                        if (fileInfoJob->error() == JobError::NoError) {
+                            if (!syncStateDatabase->addEntry(SyncStateEntry(
+                                        uploadAction->path, uploadAction->lastModified,
+                                        fileInfoJob->fileInfo().syncAttribute()))) {
+                                setError(SynchronizerError::SyncStateDatabaseWriteFailed,
+                                         tr("Failed to write to the sync state database"),
+                                         JobError::NoError);
+                                return;
+                            }
+                            runRemoteActions();
+                        } else {
+                            setError(SynchronizerError::UploadFailed,
+                                     tr("Failed to fetch file info from remote server: %1")
+                                             .arg(fileInfoJob->errorString()),
+                                     fileInfoJob->error());
+                        }
+                    });
                     return;
                 }
                 break;
