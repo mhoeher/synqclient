@@ -54,6 +54,7 @@ public:
     ListFilesJob* listFiles(QObject* parent = nullptr);
 
     RemoteChangeDetectionMode remoteChangeDetectionMode() const;
+    bool alwaysCheckSubfolders() const;
 
 protected:
     explicit AbstractJobFactory(AbstractJobFactoryPrivate* d, QObject* parent = nullptr);
@@ -74,6 +75,7 @@ protected:
     virtual AbstractJob* createJob(JobType type, QObject* parent = nullptr) = 0;
 
     void setRemoteChangeDetectionMode(RemoteChangeDetectionMode mode);
+    void setAlwaysCheckSubfolders(bool alwaysCheckSubfolders);
 };
 
 } // namespace SynqClient

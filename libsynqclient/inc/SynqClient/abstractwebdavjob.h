@@ -30,6 +30,9 @@ public:
     WebDAVServerType serverType() const;
     void setServerType(WebDAVServerType serverType);
 
+    WebDAVWorkarounds workarounds() const;
+    void setWorkarounds(WebDAVWorkarounds workarounds);
+
     QString userAgent() const;
     void setUserAgent(const QString& userAgent);
 

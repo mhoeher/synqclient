@@ -514,6 +514,66 @@ enum class CompositeJobErrorMode : quint32 {
 
 Q_ENUM_NS(CompositeJobErrorMode);
 
+/**
+ * @brief Workarounds required to use a specific WebDAV server.
+ *
+ * The values in this type are used to identify issues that a particular WebDAV server has and where
+ * client code might try to workaround locally.
+ *
+ * @sa WebDAVJobFactory::testServer()
+ */
+enum class WebDAVWorkaround : quint32 {
+    /**
+     * @brief No workarounds are required.
+     */
+    NoWorkarounds = 0,
+
+    /**
+     * @brief The server does not recursively update ETags on changes.
+     *
+     * Usually, ETags on folders should be updated if either the folder itself, an item within it or
+     * one (recursively) in a sub-folder changed. Some servers hwoever only report changes ETags for
+     * a folder, if a direct child of the folder changes. When running e.g. a sync, a possible
+     * workaround is to always follow sub-folders recursively, even if the server reports the same
+     * ETag as on the last sync.
+     */
+    NoRecursiveFolderETags = 1 << 0,
+
+    /**
+     * @brief ETags differ between GET and PROPFIND requests.
+     *
+     * Usually, a server shall report the same ETag for a file, no matter if it has been downloaded
+     * via a GET request or if such information has been requested from the server via a PROPFIND
+     * request.
+     *
+     * Some servers generate different ETags depending on which type of request is used. A possible
+     * workaround is that the client first issues a PROPFIND and then locally stores the ETag
+     * retrieved in that instead of the one from the GET request.
+     */
+    InconsistentETagsUsingPROPFINDAndGET = 1 << 2,
+
+    /**
+     * @brief Derive proper ETags on GET when using Apache servers.
+     *
+     * Some Apache servers are configured in a way, such that they report insonsistent ETags
+     * depending if GET or PROPFIND is used.
+     *
+     * On PROPFIND, such servers usually report an ETag of the form Y-ZZZZZ. On GET, the server
+     * returns an ETag of the form XXXX-Y-ZZZZ. As a workaround, the client can try to transform the
+     * GET ETag to the form returned by a PROPFIND.
+     */
+    DerivePROPFINDETagsFromGETETagsForApache = 1 << 3,
+
+};
+
+/**
+ * @brief Workarounds needed to work with a particular WebDAV server.
+ *
+ * This is a flags object which works with the values defined in the WebDAVWorkaround enum.
+ */
+typedef QFlags<WebDAVWorkaround> WebDAVWorkarounds;
+Q_FLAG_NS(WebDAVWorkarounds);
+
 } // namespace SynqClient
 
 #endif // LIBSYNQCLIENT_H

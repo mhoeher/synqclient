@@ -19,11 +19,15 @@
 
 #include "webdavdownloadfilejobprivate.h"
 
+#include <QLoggingCategory>
+#include <QRegularExpression>
 #include <QTimer>
 
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
+
+static Q_LOGGING_CATEGORY(log, "SynqClient.WebDAVDownloadFileJob", QtDebugMsg);
 
 WebDAVDownloadFileJobPrivate::WebDAVDownloadFileJobPrivate(WebDAVDownloadFileJob* q)
     : DownloadFileJobPrivate(q), downloadDevice(nullptr)
@@ -74,7 +78,33 @@ void WebDAVDownloadFileJobPrivate::handleRequestFinished()
                 FileInfo fileInfo;
                 fileInfo.setIsFile();
                 if (etag.isValid()) {
-                    fileInfo.setSyncAttribute(etag.toString());
+                    auto etagString = etag.toString();
+
+                    // Convert "weak" etags to normal ones:
+                    if (etagString.startsWith("W/")) {
+                        auto newEtag = etagString.mid(2);
+                        qCDebug(log)
+                                << "Converting weak etag from" << etagString << "to" << newEtag;
+                        etagString = newEtag;
+                    }
+
+                    // Workaround for https://gitlab.com/rpdev/opentodolist/-/issues/471:
+                    // If we detect a known pattern, try to extract the relevant part of the ETag
+                    // (which matches the ones we get via PROPFIND requests):
+                    if (q->d_ptr2->workarounds.testFlag(
+                                WebDAVWorkaround::DerivePROPFINDETagsFromGETETagsForApache)) {
+                        // Check if the etag follows a known (error) pattern.
+                        auto re = QRegularExpression(R"(^"[0-9a-f]+-(b-[0-9a-f]+")$)");
+                        auto match = re.match(etagString);
+                        if (match.hasMatch()) {
+                            auto newEtagString = "\"" + match.captured(1);
+                            qCDebug(log) << "Detected possible broken ETag" << etagString
+                                         << "- converting to" << newEtagString;
+                            etagString = newEtagString;
+                        }
+                    }
+
+                    fileInfo.setSyncAttribute(etagString);
                 }
                 q->setFileInfo(fileInfo);
             } else {

@@ -278,8 +278,8 @@
                                     </base-DElement>
                                     <object>{b42759d6-7ffa-4e8b-9e21-05a343fbbc27}</object>
                                     <name>WebDAVJobFactory</name>
-                                    <pos>x:690;y:125</pos>
-                                    <rect>x:-150;y:-60;w:300;h:120</rect>
+                                    <pos>x:690;y:130</pos>
+                                    <rect>x:-150;y:-85;w:300;h:170</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -372,7 +372,7 @@
                                     <object>{bbcfec83-96ac-4099-854f-b89632e76990}</object>
                                     <name>AbstractWebDAVJob</name>
                                     <pos>x:355;y:295</pos>
-                                    <rect>x:-150;y:-55;w:300;h:110</rect>
+                                    <rect>x:-150;y:-60;w:300;h:120</rect>
                                     <visual-role>6</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -530,9 +530,53 @@
                                  </DAssociation>
                                 </instance>
                                </item>
+                               <item>
+                                <instance type="DClass">
+                                 <DClass>
+                                  <base-DObject>
+                                   <DObject>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{2c491ea4-2420-4396-9219-e12ed8fb489a}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{9a6fc527-109c-4d6e-9bb9-53805fda9e11}</object>
+                                    <stereotypes>
+                                     <qlist>
+                                      <item>enum class</item>
+                                     </qlist>
+                                    </stereotypes>
+                                    <name>WebDAVWorkaround</name>
+                                    <pos>x:375;y:-30</pos>
+                                    <rect>x:-140;y:-60;w:280;h:120</rect>
+                                    <visual-role>6</visual-role>
+                                   </DObject>
+                                  </base-DObject>
+                                  <show-all-members>true</show-all-members>
+                                 </DClass>
+                                </instance>
+                               </item>
+                               <item>
+                                <instance type="DDependency">
+                                 <DDependency>
+                                  <base-DRelation>
+                                   <DRelation>
+                                    <base-DElement>
+                                     <DElement>
+                                      <uid>{f9440d68-a3e2-4b4b-a60c-4ea82d036502}</uid>
+                                     </DElement>
+                                    </base-DElement>
+                                    <object>{c7b3cb18-1911-41b5-a852-09fad9988540}</object>
+                                    <a>{702246b9-7c7d-40f4-a15e-5b6451734d09}</a>
+                                    <b>{2c491ea4-2420-4396-9219-e12ed8fb489a}</b>
+                                   </DRelation>
+                                  </base-DRelation>
+                                 </DDependency>
+                                </instance>
+                               </item>
                               </qlist>
                              </elements>
-                             <last-modified>1606945207827</last-modified>
+                             <last-modified>1630180086108</last-modified>
                              <toolbarid>Classes</toolbarid>
                             </MDiagram>
                            </base-MDiagram>
@@ -1062,6 +1106,28 @@
                                    </target>
                                   </handle>
                                  </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{c7b3cb18-1911-41b5-a852-09fad9988540}</uid>
+                                   <target>
+                                    <instance type="MDependency">
+                                     <MDependency>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{c7b3cb18-1911-41b5-a852-09fad9988540}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{b42759d6-7ffa-4e8b-9e21-05a343fbbc27}</a>
+                                        <b>{9a6fc527-109c-4d6e-9bb9-53805fda9e11}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MDependency>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
                                 </qlist>
                                </handles>
                               </handles>
@@ -1072,30 +1138,52 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{8d2f7008-83a3-4e85-9d42-41eef257b95d}</uid>
+                               <uid>{d71533a2-f132-4b6e-99e3-639499b97446}</uid>
                                <type>1</type>
                                <declaration>QNetworkAccessManager* networkAccessManager</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{0a9c7c66-e50a-40f3-9379-b2a5584c0b63}</uid>
+                               <uid>{71ce83f6-6332-4969-9104-0bd5a5923c6c}</uid>
                                <type>1</type>
                                <declaration>QUrl url</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{87a08b12-40e9-4d95-b4e9-264f122b2c75}</uid>
+                               <uid>{12396fef-f45f-4a8f-a4cb-62d9f3b4391b}</uid>
                                <type>1</type>
                                <declaration>WebDAVServerType serverType</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{0d3b60c2-ad69-4eea-88b0-a637621eae93}</uid>
+                               <uid>{70e67ba2-d41a-4d03-9a84-20e6a5e4482a}</uid>
                                <type>1</type>
-                               <declaration>QString userAgend</declaration>
+                               <declaration>QString userAgent</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{ed15a940-346a-4a70-9341-752d1e08411c}</uid>
+                               <type>1</type>
+                               <declaration>WebDAVWorkarounds workarounds</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{43ada2fb-4df2-4958-a3b7-5896ea291bbb}</uid>
+                               <type>2</type>
+                               <declaration>void testServer(const QString&amp; path)</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{e69bfc3f-dcc6-41b8-8f59-80df53e3fd4b}</uid>
+                               <type>2</type>
+                               <properties>256</properties>
+                               <declaration>serverTestFinished(bool success)</declaration>
                               </MClassMember>
                              </item>
                             </qlist>
@@ -1162,30 +1250,37 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{2a465eea-0c1f-49d8-9d0e-ee1477ddb498}</uid>
+                               <uid>{24dada6c-7e76-4df4-b49e-678a28b1987a}</uid>
                                <type>1</type>
                                <declaration>QNetworkAccessManager *networkAccessManager</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a6264c10-39d0-43e8-8daa-abb4a04f9fa2}</uid>
+                               <uid>{fd5b11c3-1de4-4005-b64b-4ce1a8532a0e}</uid>
                                <type>1</type>
                                <declaration>QUrl url</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{35180d89-7e84-44c6-b6fd-b50b0a1f5f4c}</uid>
+                               <uid>{a3942943-4d9b-4a12-a72d-ad5e6e1c51b6}</uid>
                                <type>1</type>
                                <declaration>WebDAVServerType serverType</declaration>
                               </MClassMember>
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{3ca4b065-c698-4ca5-8c5e-2096cef4e2ca}</uid>
+                               <uid>{5e1ad694-48d8-4f0a-b18d-2c67ab043a63}</uid>
                                <type>1</type>
                                <declaration>QString userAgent</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{a9dbd444-fe24-4690-af24-c231f25e7642}</uid>
+                               <type>1</type>
+                               <declaration>WebDAVWorkarounds workarounds</declaration>
                               </MClassMember>
                              </item>
                             </qlist>
@@ -1392,6 +1487,64 @@
                         </target>
                        </handle>
                       </item>
+                      <item>
+                       <handle>
+                        <uid>{9a6fc527-109c-4d6e-9bb9-53805fda9e11}</uid>
+                        <target>
+                         <instance type="MClass">
+                          <MClass>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{9a6fc527-109c-4d6e-9bb9-53805fda9e11}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>enum class</item>
+                                </qlist>
+                               </stereotypes>
+                              </MElement>
+                             </base-MElement>
+                             <name>WebDAVWorkaround</name>
+                            </MObject>
+                           </base-MObject>
+                           <members>
+                            <qlist>
+                             <item>
+                              <MClassMember>
+                               <uid>{b2f66eb7-d940-47b2-9271-b12876c47807}</uid>
+                               <type>1</type>
+                               <declaration>NoWorkarounds</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{bea45d12-789a-4210-b383-f88b66c7df82}</uid>
+                               <type>1</type>
+                               <declaration>NoRecursiveFolderETags</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{98195c4d-1dda-4e49-a623-85f3dbc00dfe}</uid>
+                               <type>1</type>
+                               <declaration>InconsistentETagsUsingPROPFINDAndGET</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{b058fc44-22fc-4a63-91ee-d6a48656b0ab}</uid>
+                               <type>1</type>
+                               <declaration>DerivePROPFINDETagsFromGETETagsForApache</declaration>
+                              </MClassMember>
+                             </item>
+                            </qlist>
+                           </members>
+                          </MClass>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
                      </qlist>
                     </handles>
                    </handles>
@@ -1475,7 +1628,7 @@
                                     <object>{4b68c8b1-ba25-4725-889d-39845252d4d8}</object>
                                     <name>AbstractJobFactory</name>
                                     <pos>x:600;y:185</pos>
-                                    <rect>x:-225;y:-80;w:450;h:160</rect>
+                                    <rect>x:-225;y:-90;w:450;h:180</rect>
                                     <visual-role>5</visual-role>
                                    </DObject>
                                   </base-DObject>
@@ -2716,7 +2869,7 @@
                             <qlist>
                              <item>
                               <MClassMember>
-                               <uid>{88b25c57-bdc8-4102-9f8a-7911b42530c5}</uid>
+                               <uid>{0e83f871-ba7f-46cd-b000-26a594f74f5f}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>CreateDirectoryJob* createDirectory(QObject* parent = nullptr)</declaration>
@@ -2724,7 +2877,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{a5ea6312-ba97-4dd4-b27b-d87943fd2e09}</uid>
+                               <uid>{e18ae3b0-1179-446f-83e5-5723b18f0288}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DeleteJob* deleteResource(QObject* parent = nullptr)</declaration>
@@ -2732,7 +2885,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{01b4fa67-75ad-453d-987c-2c3e2aec0870}</uid>
+                               <uid>{dc28cbaa-1cf2-432b-94ff-53c9279992b0}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>DownloadFileJob* downloadFile(QObject* parent = nullptr)</declaration>
@@ -2740,7 +2893,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{29fe3d3f-6822-421b-b96d-e042bdb0ef4b}</uid>
+                               <uid>{0bc44d5e-012b-4074-808a-35aa45490a0d}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>UploadFileJob* uploadFile(QObject* parent = nullptr)</declaration>
@@ -2748,7 +2901,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{2d0dadb7-2d35-42b8-81e3-458303c7a73f}</uid>
+                               <uid>{066c5def-6989-4b1a-8f30-211edcbff5b9}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>GetFileInfoJob* getFileInfo(QObject* parent = nullptr)</declaration>
@@ -2756,7 +2909,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{8893306b-5305-49d8-b42b-e51d52a9d980}</uid>
+                               <uid>{a7072273-9b0b-442a-9788-e14f90952a7e}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>ListFilesJob* listFiles(QObject* parent = nullptr)</declaration>
@@ -2764,7 +2917,7 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{21ae0bb6-4930-488d-864a-0d43d522977b}</uid>
+                               <uid>{10826c4f-bea6-4ade-af3d-c981d1c1b83a}</uid>
                                <visibility>1</visibility>
                                <type>2</type>
                                <declaration>RemoteChangeDetectionMode remoteChangeDetectionMode()</declaration>
@@ -2772,7 +2925,16 @@
                              </item>
                              <item>
                               <MClassMember>
-                               <uid>{111f9833-6862-4d15-af14-47ad4ce965d5}</uid>
+                               <uid>{303b7a50-13af-43ce-809f-4fbfbcf00dc4}</uid>
+                               <visibility>1</visibility>
+                               <type>2</type>
+                               <properties>4</properties>
+                               <declaration>bool alwaysCheckSubfolders()</declaration>
+                              </MClassMember>
+                             </item>
+                             <item>
+                              <MClassMember>
+                               <uid>{38cab70f-bbde-4c5c-a7a4-1c82c358f038}</uid>
                                <visibility>2</visibility>
                                <type>2</type>
                                <properties>3</properties>

@@ -22,6 +22,7 @@
 
 #include "abstractjobfactoryprivate.h"
 #include "SynqClient/webdavjobfactory.h"
+#include "SynqClient/CompositeJob"
 
 #include <QNetworkAccessManager>
 #include <QPointer>
@@ -39,6 +40,10 @@ public:
     QUrl url;
     QString userAgent;
     WebDAVServerType serverType;
+    WebDAVWorkarounds workarounds;
+    QVariantMap currentServerTestData;
+
+    QPointer<CompositeJob> serverTestJob;
 
     template<typename T>
     T* createJob(QObject* parent)
@@ -48,6 +53,7 @@ public:
         result->setUrl(url);
         result->setUserAgent(userAgent);
         result->setServerType(serverType);
+        result->setWorkarounds(workarounds);
         return result;
     }
 };

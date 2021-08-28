@@ -15,6 +15,11 @@
 #include "SynqClient/FileInfo"
 #include "SynqClient/JSONSyncStateDatabase"
 #include "SynqClient/WebDAVJobFactory"
+#include "SynqClient/CreateDirectoryJob"
+#include "SynqClient/GetFileInfoJob"
+#include "SynqClient/ListFilesJob"
+#include "SynqClient/UploadFileJob"
+#include "SynqClient/DownloadFileJob"
 
 using SynqClient::AbstractJobFactory;
 using SynqClient::DirectorySynchronizer;
@@ -37,6 +42,9 @@ public:
 
 private slots:
     void initTestCase();
+
+    void serverCharacteristics();
+    void serverCharacteristics_data() { prepareTestData(); }
 
     // Test individual sync corner cases
     void failIfNotCreatingRemoteFolders();
@@ -71,6 +79,117 @@ DirectorySynchronizerTest::DirectorySynchronizerTest() {}
 DirectorySynchronizerTest::~DirectorySynchronizerTest() {}
 
 void DirectorySynchronizerTest::initTestCase() {}
+
+void DirectorySynchronizerTest::serverCharacteristics()
+{
+    if (!SynqClient::UnitTest::hasWebDAVServersFromEnv()
+        && !SynqClient::UnitTest::hasDropboxTokenFromEnv()) {
+        QSKIP("No servers configured - skipping test");
+    }
+
+    QFETCH(AbstractJobFactory*, jobFactory);
+
+    QTemporaryDir tmpDir;
+    QTemporaryDir metaTmpDir;
+
+    auto uuid = QUuid::createUuid();
+    auto path = "DirectorySynchronizerTest-serverCharacteristics-" + uuid.toString();
+
+    {
+        auto job = jobFactory->createDirectory();
+        job->setPath(path);
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        delete job;
+    }
+    {
+        auto job = jobFactory->uploadFile();
+        job->setRemoteFilename(path + "/test.txt");
+        job->setData("Hello World");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        delete job;
+    }
+    {
+        auto job = jobFactory->getFileInfo();
+        job->setPath(path + "/test.txt");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        qDebug() << job->fileInfo().name() << job->fileInfo().path()
+                 << job->fileInfo().syncAttribute();
+        delete job;
+    }
+    {
+        auto job = jobFactory->listFiles();
+        job->setPath(path);
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        for (const auto& entry : job->entries()) {
+            qDebug() << entry.name() << entry.path() << entry.syncAttribute();
+        }
+        delete job;
+    }
+    {
+        auto job = jobFactory->downloadFile();
+        job->setRemoteFilename(path + "/test.txt");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        qDebug() << job->fileInfo().name() << job->fileInfo().path()
+                 << job->fileInfo().syncAttribute();
+        delete job;
+    }
+    {
+        auto job = jobFactory->createDirectory();
+        job->setPath(path + "/top");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        delete job;
+    }
+    {
+        auto job = jobFactory->createDirectory();
+        job->setPath(path + "/top/sub");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        delete job;
+    }
+    {
+        auto job = jobFactory->getFileInfo();
+        job->setPath(path + "/top");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        qDebug() << "File info of top:" << job->fileInfo().name() << job->fileInfo().path()
+                 << job->fileInfo().syncAttribute();
+        delete job;
+    }
+    {
+        auto job = jobFactory->uploadFile();
+        job->setRemoteFilename(path + "/top/sub/test.txt");
+        job->setData("Hello World");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        delete job;
+    }
+    QThread::sleep(2);
+    {
+        auto job = jobFactory->getFileInfo();
+        job->setPath(path + "/top");
+        job->start();
+        QSignalSpy spy(job, &SynqClient::AbstractJob::finished);
+        QVERIFY(spy.wait());
+        qDebug() << "File info of top after change:" << job->fileInfo().name()
+                 << job->fileInfo().path() << job->fileInfo().syncAttribute();
+        delete job;
+    }
+}
 
 void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
 {
