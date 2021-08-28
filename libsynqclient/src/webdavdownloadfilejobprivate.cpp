@@ -94,7 +94,7 @@ void WebDAVDownloadFileJobPrivate::handleRequestFinished()
                     if (q->d_ptr2->workarounds.testFlag(
                                 WebDAVWorkaround::DerivePROPFINDETagsFromGETETagsForApache)) {
                         // Check if the etag follows a known (error) pattern.
-                        auto re = QRegularExpression(R"(^"[0-9a-f]+-(b-[0-9a-f]+")$)");
+                        auto re = QRegularExpression(R"(^"[0-9a-f]+-([0-9a-f]+-[0-9a-f]+")$)");
                         auto match = re.match(etagString);
                         if (match.hasMatch()) {
                             auto newEtagString = "\"" + match.captured(1);
