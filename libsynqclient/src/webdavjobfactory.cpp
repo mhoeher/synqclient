@@ -177,8 +177,6 @@ void WebDAVJobFactory::testServer(const QString& path)
     // If a test is already running, stop it:
     if (d->serverTestJob) {
         d->serverTestJob->stop();
-        disconnect(d->serverTestJob, &CompositeJob::finished, this,
-                   &WebDAVJobFactory::serverTestFinished);
         d->serverTestJob = nullptr;
     }
 
