@@ -1189,6 +1189,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
             setError(SynchronizerError::FailedCreatingLocalFolder,
                      tr("Failed to create the local folder %1").arg(parentDir.path()),
                      JobError::NoError);
+            delete job;
             return;
         }
         if (!saveFile->open(QIODevice::WriteOnly)) {
@@ -1196,6 +1197,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                      tr("Opening file %1 for reading/writing failed: %2")
                              .arg(saveFile->fileName(), saveFile->errorString()),
                      JobError::NoError);
+            delete job;
             return;
         }
         job->setOutput(saveFile);

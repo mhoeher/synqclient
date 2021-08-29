@@ -294,6 +294,15 @@ void WebDAVJobFactory::testServer(const QString& path)
                 // Check if we can derive the PROPFIND ETag from the GET ETag (i.e.
                 // the GET etag looks like "xxxx-y-zzz" and the PROPFIND one looks like
                 // "y-zzz".
+                if (fileETagViaPROPFIND.startsWith("\"") && fileETagViaPROPFIND.endsWith("\"")) {
+                    // Remove leading and traling quotes
+                    fileETagViaPROPFIND =
+                            fileETagViaPROPFIND.mid(1, fileETagViaPROPFIND.length() - 2);
+                }
+                if (fileETagOnDownload.startsWith("\"") && fileETagOnDownload.endsWith("\"")) {
+                    // Remove leading and traling quotes
+                    fileETagOnDownload = fileETagOnDownload.mid(1, fileETagOnDownload.length() - 2);
+                }
                 auto propfindETagParts = fileETagViaPROPFIND.split("-");
                 auto getETagParts = fileETagOnDownload.split("-");
                 if (propfindETagParts.length() == 2 && getETagParts.length() == 3

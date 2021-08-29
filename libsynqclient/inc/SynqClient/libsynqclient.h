@@ -550,7 +550,7 @@ enum class WebDAVWorkaround : quint32 {
      * workaround is that the client first issues a PROPFIND and then locally stores the ETag
      * retrieved in that instead of the one from the GET request.
      */
-    InconsistentETagsUsingPROPFINDAndGET = 1 << 2,
+    InconsistentETagsUsingPROPFINDAndGET = 1 << 1,
 
     /**
      * @brief Derive proper ETags on GET when using Apache servers.
@@ -562,9 +562,11 @@ enum class WebDAVWorkaround : quint32 {
      * returns an ETag of the form XXXX-Y-ZZZZ. As a workaround, the client can try to transform the
      * GET ETag to the form returned by a PROPFIND.
      */
-    DerivePROPFINDETagsFromGETETagsForApache = 1 << 3,
+    DerivePROPFINDETagsFromGETETagsForApache = 1 << 2,
 
 };
+
+Q_ENUM_NS(WebDAVWorkaround);
 
 /**
  * @brief Workarounds needed to work with a particular WebDAV server.
