@@ -280,7 +280,7 @@ void WebDAVJobFactory::testServer(const QString& path)
 
             // Did the ETag of the top level folder change after the file change?
             if (data.contains("initialTopLevelETag") && data.contains("changedTopLevelETag")
-                && data["initialTopLevelETag"] != data["changedTopLevelETag"]) {
+                && data["initialTopLevelETag"] == data["changedTopLevelETag"]) {
                 workarounds |= WebDAVWorkaround::NoRecursiveFolderETags;
             }
 
