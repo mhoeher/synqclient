@@ -227,6 +227,9 @@ inline void ChangeTreeNode::normalize()
         case ChangeTree::Created:
             hasChildChanges = true;
             break;
+        case ChangeTree::Unknown:
+        case ChangeTree::Deleted:
+            break;
         }
     }
 

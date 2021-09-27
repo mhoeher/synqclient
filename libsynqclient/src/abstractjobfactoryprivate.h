@@ -33,6 +33,7 @@ public:
     Q_DECLARE_PUBLIC(AbstractJobFactory);
 
     RemoteChangeDetectionMode syncDetectionMode;
+    bool alwaysCheckSubfolders;
 };
 
 } // namespace SynqClient

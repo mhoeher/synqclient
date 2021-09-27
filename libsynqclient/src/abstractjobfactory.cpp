@@ -156,6 +156,18 @@ RemoteChangeDetectionMode AbstractJobFactory::remoteChangeDetectionMode() const
 }
 
 /**
+ * @brief Does a sync always need to follow sub-folders?
+ *
+ * This property indicates if a sync needs to always check all subfolders for detecting changes.
+ * @sa setAlwaysCheckSubfolders
+ */
+bool AbstractJobFactory::alwaysCheckSubfolders() const
+{
+    Q_D(const AbstractJobFactory);
+    return d->alwaysCheckSubfolders;
+}
+
+/**
  * @brief Constructor.
  */
 AbstractJobFactory::AbstractJobFactory(AbstractJobFactoryPrivate* d, QObject* parent)
@@ -182,6 +194,21 @@ void AbstractJobFactory::setRemoteChangeDetectionMode(RemoteChangeDetectionMode 
 {
     Q_D(AbstractJobFactory);
     d->syncDetectionMode = mode;
+}
+
+/**
+ * @brief Set if a sync shall always check subfolders.
+ *
+ * This method can be used to indicate to a synchronization mechanism such as DirectorySynchronizer,
+ * that subfolders always have to be checked. For example, when using WebDAV style sync, usually,
+ * sync attributes are assumed to change if there is a change either directly or recursively the
+ * sync attribute of a folder changes. If this flag is set to true, subfolders will always be
+ * followed and checked for changes, even if the server reports unchanged sync attributes.
+ */
+void AbstractJobFactory::setAlwaysCheckSubfolders(bool alwaysCheckSubfolders)
+{
+    Q_D(AbstractJobFactory);
+    d->alwaysCheckSubfolders = alwaysCheckSubfolders;
 }
 
 } // namespace SynqClient

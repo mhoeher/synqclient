@@ -119,6 +119,29 @@ void AbstractWebDAVJob::setServerType(WebDAVServerType serverType)
 }
 
 /**
+ * @brief Workarounds required to work with the server.
+ *
+ * This returns the workarounds needed to work with the server.
+ *
+ * @sa WebDAVJobFactory::workarounds()
+ * @sa WebDAVJobFactory::testServer()
+ */
+WebDAVWorkarounds AbstractWebDAVJob::workarounds() const
+{
+    Q_D(const AbstractWebDAVJob);
+    return d->workarounds;
+}
+
+/**
+ * @brief Set the workarounds needed for the server to run requests against.
+ */
+void AbstractWebDAVJob::setWorkarounds(WebDAVWorkarounds workarounds)
+{
+    Q_D(AbstractWebDAVJob);
+    d->workarounds = workarounds;
+}
+
+/**
  * @brief The user agent to be used when communicating with the WebDAV server.
  */
 QString AbstractWebDAVJob::userAgent() const

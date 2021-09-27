@@ -256,7 +256,8 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeWebDAVLike()
                              << job->folder().syncAttribute() << "- previously was"
                              << previousEntry.syncProperty();
                 if (job->folder().syncAttribute() != previousEntry.syncProperty()
-                    || job->folder().syncAttribute().isEmpty()) {
+                    || job->folder().syncAttribute().isEmpty()
+                    || jobFactory->alwaysCheckSubfolders()) {
                     qCDebug(log) << "Change in " << nextRemoteFolder << "detected!";
                     auto node =
                             remoteChangeTree.findNode(nextRemoteFolder, ChangeTree::FindAndCreate);
@@ -287,7 +288,8 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeWebDAVLike()
 
                         auto previousRemoteEntry = previousEntriesMap.value(remoteEntryPath);
                         if (previousRemoteEntry.syncProperty() != remoteEntry.syncAttribute()
-                            || remoteEntry.syncAttribute().isEmpty()) {
+                            || previousRemoteEntry.syncProperty().isEmpty()
+                            || (remoteEntry.isDirectory() && jobFactory->alwaysCheckSubfolders())) {
                             // The item changed
                             qCDebug(log) << "Change in" << remoteEntry.name() << "detected!";
                             node = remoteChangeTree.findNode(remoteEntryPath,
@@ -1115,11 +1117,47 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
             switch (job->error()) {
             case JobError::NoError:
                 // Uploading succeeded. Save sync attribute
-                if (!syncStateDatabase->addEntry(SyncStateEntry(uploadAction->path,
-                                                                uploadAction->lastModified,
-                                                                job->fileInfo().syncAttribute()))) {
-                    setError(SynchronizerError::SyncStateDatabaseWriteFailed,
-                             tr("Failed to write to the sync state database"), JobError::NoError);
+                if (!job->fileInfo().syncAttribute().isEmpty()) {
+                    if (!syncStateDatabase->addEntry(
+                                SyncStateEntry(uploadAction->path, uploadAction->lastModified,
+                                               job->fileInfo().syncAttribute()))) {
+                        setError(SynchronizerError::SyncStateDatabaseWriteFailed,
+                                 tr("Failed to write to the sync state database"),
+                                 JobError::NoError);
+                        return;
+                    }
+                    runRemoteActions();
+                } else {
+                    // We did not receive a sync attribute on upload - fetch one from the server.
+                    qCDebug(log) << "Didn't get a sync attribute on upload - fetching from server";
+                    auto fileInfoJob = jobFactory->getFileInfo();
+                    fileInfoJob->setPath(job->remoteFilename());
+                    setupDefaultJobSignals(fileInfoJob);
+                    fileInfoJob->start();
+                    connect(fileInfoJob, &AbstractJob::finished, this, [=]() {
+                        fileInfoJob->deleteLater();
+                        if (fileInfoJob->error() == JobError::NoError) {
+                            QString syncAttribute;
+                            syncAttribute = fileInfoJob->fileInfo().syncAttribute();
+                            qCDebug(log) << "Manually fetched sync attribute for"
+                                         << fileInfoJob->path() << "from server:" << syncAttribute;
+                            if (!syncStateDatabase->addEntry(SyncStateEntry(
+                                        uploadAction->path, uploadAction->lastModified,
+                                        syncAttribute))) {
+                                setError(SynchronizerError::SyncStateDatabaseWriteFailed,
+                                         tr("Failed to write to the sync state database"),
+                                         JobError::NoError);
+                                return;
+                            }
+                            runRemoteActions();
+                            return;
+                        } else {
+                            setError(SynchronizerError::UploadFailed,
+                                     tr("Failed to fetch file info from remote server: %1")
+                                             .arg(fileInfoJob->errorString()),
+                                     fileInfoJob->error());
+                        }
+                    });
                     return;
                 }
                 break;
@@ -1151,6 +1189,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
             setError(SynchronizerError::FailedCreatingLocalFolder,
                      tr("Failed to create the local folder %1").arg(parentDir.path()),
                      JobError::NoError);
+            delete job;
             return;
         }
         if (!saveFile->open(QIODevice::WriteOnly)) {
@@ -1158,6 +1197,7 @@ void DirectorySynchronizerPrivate::runRemoteAction(const QSharedPointer<SyncActi
                      tr("Opening file %1 for reading/writing failed: %2")
                              .arg(saveFile->fileName(), saveFile->errorString()),
                      JobError::NoError);
+            delete job;
             return;
         }
         job->setOutput(saveFile);

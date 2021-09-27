@@ -55,6 +55,17 @@ public:
     WebDAVServerType serverType() const;
     void setServerType(WebDAVServerType serverType);
 
+    WebDAVWorkarounds workarounds() const;
+    void setWorkarounds(WebDAVWorkarounds workarounds);
+
+public slots:
+
+    void testServer(const QString& path = QString());
+
+signals:
+
+    void serverTestFinished(bool success);
+
 protected:
     explicit WebDAVJobFactory(WebDAVJobFactoryPrivate* d, QObject* parent = nullptr);
 

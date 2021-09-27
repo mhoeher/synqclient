@@ -82,3 +82,15 @@ WebDAVServerType
 
 .. doxygenenum:: SynqClient::WebDAVServerType
 
+
+
+WebDAVWorkaround
+++++++++++++++++
+
+.. doxygenenum:: SynqClient::WebDAVWorkaround
+
+
+WebDAVWorkarounds
++++++++++++++++++
+
+.. doxygentypedef:: SynqClient::WebDAVWorkarounds

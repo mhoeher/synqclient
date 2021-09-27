@@ -29,6 +29,7 @@ AbstractWebDAVJobPrivate::AbstractWebDAVJobPrivate(AbstractWebDAVJob* q)
       networkAccessManager(nullptr),
       url(QUrl()),
       serverType(WebDAVServerType::Generic),
+      workarounds(WebDAVWorkaround::NoWorkarounds),
       numManualRedirects(0),
       nextUrl(QUrl()),
       reply(nullptr),

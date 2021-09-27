@@ -20,10 +20,13 @@
 #include "webdavuploadfilejobprivate.h"
 
 #include <QTimer>
+#include <QLoggingCategory>
 
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
+
+static Q_LOGGING_CATEGORY(log, "SynqClient.WebDAVUploadFileJob", QtDebugMsg);
 
 WebDAVUploadFileJobPrivate::WebDAVUploadFileJobPrivate(WebDAVUploadFileJob* q)
     : UploadFileJobPrivate(q), uploadDevice(nullptr)
@@ -80,6 +83,8 @@ void WebDAVUploadFileJobPrivate::handleRequestFinished()
                 // we would take over another file version's etag. The best we can is probably just
                 // keep the etag empty and live with it...
                 fileInfo.setSyncAttribute(etag.toString());
+            } else {
+                qCDebug(log) << "Did not receive an eTag on upload";
             }
             q->setFileInfo(fileInfo);
             if (code == q->d_ptr2->HTTPOkay || code == q->d_ptr2->HTTPCreated

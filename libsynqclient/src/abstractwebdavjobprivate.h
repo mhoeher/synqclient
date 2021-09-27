@@ -44,6 +44,7 @@ public:
     QNetworkAccessManager* networkAccessManager;
     QUrl url;
     WebDAVServerType serverType;
+    WebDAVWorkarounds workarounds;
     int numManualRedirects;
     QUrl nextUrl;
     QNetworkReply* reply;

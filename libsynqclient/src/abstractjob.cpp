@@ -19,12 +19,15 @@
 
 #include "SynqClient/abstractjob.h"
 
-#include <QTimer>
+#include <QLoggingCategory>
 #include <QNetworkReply>
+#include <QTimer>
 
 #include "abstractjobprivate.h"
 
 namespace SynqClient {
+
+static Q_LOGGING_CATEGORY(log, "SynqClient.AbstractJob", QtWarningMsg);
 
 /**
  * @class AbstractJob
@@ -236,6 +239,8 @@ JobError AbstractJob::fromNetworkError(const QNetworkReply& reply)
     case QNetworkReply::RemoteHostClosedError:
         return JobError::ServerClosedConnection;
     default:
+        qCWarning(log) << "Unhandled QNetworkReply error" << reply.error() << reply.errorString()
+                       << "in AbstractJob::fromNetworkError";
         return JobError::NetworkRequestFailed;
     }
 }

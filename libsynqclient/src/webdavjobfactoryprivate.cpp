@@ -28,7 +28,10 @@ WebDAVJobFactoryPrivate::WebDAVJobFactoryPrivate(WebDAVJobFactory* q)
       networkAccessManager(nullptr),
       url(),
       userAgent(AbstractWebDAVJobPrivate::DefaultUserAgent),
-      serverType(WebDAVServerType::Generic)
+      serverType(WebDAVServerType::Generic),
+      workarounds(WebDAVWorkaround::NoWorkarounds),
+      currentServerTestData(),
+      serverTestJob()
 {
 }
 
