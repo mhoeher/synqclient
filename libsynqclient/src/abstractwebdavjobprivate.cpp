@@ -205,7 +205,20 @@ FileInfo AbstractWebDAVJobPrivate::parseResponseEntry(const QUrl& url, const QDo
                         result.setIsDirectory();
                     }
                 } else if (child.tagName() == "getetag") {
-                    result.setSyncAttribute(child.text());
+                    // WA for https://gitlab.com/rpdev/synqclient/-/issues/28:
+                    // Some servers report the etags in a PROPFIND without the leading and
+                    // trailing quotes. This causes mismatches between etags we got during
+                    // an upload/download and ones we get when scanning for changes. Hence,
+                    // add the quotes here (as they are expected,
+                    // cf https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag):
+                    auto etagValue = child.text();
+                    if (!etagValue.startsWith('"')) {
+                        etagValue.prepend('"');
+                    }
+                    if (!etagValue.endsWith('"')) {
+                        etagValue.append('"');
+                    }
+                    result.setSyncAttribute(etagValue);
                 } else {
                     qCWarning(log) << "Unknown DAV Property:" << child.tagName();
                 }
