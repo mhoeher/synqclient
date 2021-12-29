@@ -197,8 +197,8 @@ inline void ChangeTreeNode::dump(const QString& name, const QString& indentation
 {
 #ifdef SYNQCLIENT_ENABLE_CHANGETREE_DUMP
     QMap<int, const char*> typeNames { { ChangeTree::Invalid, " " },
-                                       { ChangeTree::Folder, "D" },
-                                       { ChangeTree::File, "F" } };
+                                       { ChangeTree::Folder, "🗃️" },
+                                       { ChangeTree::File, "📁" } };
     QMap<int, const char*> changeNames { { ChangeTree::Unknown, "?" },
                                          { ChangeTree::Created, "N" },
                                          { ChangeTree::Changed, "U" },
@@ -218,12 +218,16 @@ inline void ChangeTreeNode::dump(const QString& name, const QString& indentation
 inline void ChangeTreeNode::normalize()
 {
     bool hasChildChanges = false;
+    bool hasChildUpdates = false;
 
     // First, normalize children:
     for (auto& child : children) {
         child.normalize();
         switch (child.change) {
         case ChangeTree::Changed:
+            hasChildUpdates = true;
+            hasChildChanges = true;
+            break;
         case ChangeTree::Created:
             hasChildChanges = true;
             break;
@@ -241,6 +245,12 @@ inline void ChangeTreeNode::normalize()
             change = ChangeTree::Changed;
             break;
         case ChangeTree::Created:
+            // Some servers do not report change attributes on folders.
+            // In this case, folders sometimes are reported as "created", although they existed
+            // before. Hence, correct them to "changed" here:
+            if (hasChildUpdates) {
+                change = ChangeTree::Changed;
+            }
         case ChangeTree::Changed:
             break;
         }

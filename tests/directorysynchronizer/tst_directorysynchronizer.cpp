@@ -739,7 +739,6 @@ bool DirectorySynchronizerTest::syncDir(const QString& localPath, const QString&
     QSignalSpy spy(&sync, &DirectorySynchronizer::finished);
     SQ_VERIFY(spy.wait(1000 * 60 * 10));
     SQ_COMPARE(sync.state(), SynchronizerState::Finished);
-    qDebug() << sync.errorString();
     SQ_COMPARE(sync.errorString(), QString());
     SQ_COMPARE(sync.error(), SynchronizerError::NoError);
     // We need to have a minimal delay between syncs. This is because otherwise sync properties
