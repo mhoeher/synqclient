@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2022 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -376,7 +376,7 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
             QDir remoteDir(remoteDirectoryPath);
             for (const auto& entry : entries) {
                 const auto entryPath = entry.path();
-                if (!filter(entryPath, entry)) {
+                if (!filter(SyncStateEntry::makePath(entryPath), entry)) {
                     continue;
                 }
                 if (entry.isFile()) {
@@ -419,7 +419,7 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
                 for (const auto& entry : entries) {
                     allRemoteEntries.insert(SyncStateEntry::makePath(entry.path()));
                 }
-                qWarning() << "All remote entries:" << allRemoteEntries;
+                qCWarning(log) << "All remote entries:" << allRemoteEntries;
                 syncStateDatabase->iterate([&](const SyncStateEntry& dbEntry) {
                     if (dbEntry.path() == "/") {
                         // Do not consider the root folder - might not be included in remote
@@ -427,7 +427,7 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
                         return;
                     }
                     if (!allRemoteEntries.contains(dbEntry.path())) {
-                        qWarning() << "Marking" << dbEntry.path() << "as deleted";
+                        qCWarning(log) << "Marking" << dbEntry.path() << "as deleted";
                         // The entry could not be found in the DB, so assume it has been deleted on
                         // the server side. Hence, we're going to delete it:
                         auto node = remoteChangeTree.findNode(dbEntry.path(),
@@ -435,7 +435,7 @@ void DirectorySynchronizerPrivate::buildRemoteChangeTreeDropboxLike()
                         node->change = ChangeTree::Deleted;
                         node->syncAttribute = dbEntry.syncProperty();
                     } else {
-                        qWarning() << "Entry" << dbEntry.path() << "found remotely - all fine";
+                        qCWarning(log) << "Entry" << dbEntry.path() << "found remotely - all fine";
                     }
                 });
             }
