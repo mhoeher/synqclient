@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Martin Hoeher <martin@rpdev.net>
+ * Copyright 2020-2022 Martin Hoeher <martin@rpdev.net>
  *
  * This file is part of SynqClient.
  *
@@ -193,7 +193,7 @@ bool SQLSyncStateDatabase::addEntry(const SyncStateEntry& entry)
         query.addBindValue(entry.modificationTime());
     }
     if (entry.syncProperty().isEmpty()) {
-        query.addBindValue("---invalid-sync-property---");
+        query.addBindValue("");
     } else {
         query.addBindValue(entry.syncProperty());
     }
