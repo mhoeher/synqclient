@@ -1,0 +1,14 @@
+# Required
+version: 2
+
+build:
+  os: fedora
+  tools:
+    python: "3.9"
+
+sphinx:
+  configuration: doc/conf.py
+
+python:
+  install:
+    - requirements: doc/requirements.txt
