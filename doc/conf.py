@@ -14,6 +14,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 from pathlib import Path
+import os
 
 
 # -- Project information -----------------------------------------------------
@@ -63,3 +64,11 @@ breathe_projects = {
 }
 
 breathe_default_members = ('members', 'protected-members')
+
+# Check if we're running on Read the Docs' servers
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+breathe_projects = {}
+
+if read_the_docs_build:
+    subprocess.call('doxygen', shell=True, cwd=str(Path(__file__).parent.parent))
