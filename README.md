@@ -13,7 +13,7 @@ Hence, you can use the library both for simple remote file accesses as well as i
 
 # Documentation
 
-You can find the API documentation on https://rpdev.gitlab.io/synqclient/.
+You can find the API documentation on https://synqclient.readthedocs.io/en/latest/index.html.
 
 
 # Building
