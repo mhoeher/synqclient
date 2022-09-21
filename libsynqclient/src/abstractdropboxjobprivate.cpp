@@ -156,7 +156,7 @@ QNetworkReply* AbstractDropboxJobPrivate::postData(const QString& endpoint, cons
  */
 void AbstractDropboxJobPrivate::tryHandleKnownError(
         const QByteArray& body,
-        QMap<QPair<QStringList, QVariant>, KnownErrorHandlerFunction> handlers)
+        QMap<QPair<QStringList, QString>, KnownErrorHandlerFunction> handlers)
 {
     QJsonParseError error;
     auto doc = QJsonDocument::fromJson(body, &error);
