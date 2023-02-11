@@ -7,6 +7,7 @@
 
 #include "abstractjobprivate.h"
 #include "SynqClient/abstractwebdavjob.h"
+#include "SynqClient/abstractjob.h"
 #include "SynqClient/fileinfo.h"
 
 class QDomDocument;
@@ -54,7 +55,7 @@ public:
     const int MaxRetries = 30;
 
     QUrl urlFromPath(const QString& path);
-    void prepareNetworkRequest(QNetworkRequest& request);
+    void prepareNetworkRequest(QNetworkRequest& request, AbstractJob* job);
     void disableCaching(QNetworkRequest& request);
     bool shouldFollowUnhandledRedirect(QNetworkReply* reply);
     FileInfos parseEntryList(const QUrl& url, const QByteArray& reply, bool& ok);

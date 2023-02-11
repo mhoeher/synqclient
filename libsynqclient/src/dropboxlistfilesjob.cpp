@@ -99,7 +99,7 @@ void DropboxListFilesJob::start()
     // to get several pages of entries:
     d->isFirstCall = false;
 
-    auto reply = d_ptr2->post(endpoint, data);
+    auto reply = d_ptr2->post(endpoint, data, this);
 
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {

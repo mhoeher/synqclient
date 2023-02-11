@@ -153,6 +153,39 @@ JobState AbstractJob::state() const
 }
 
 /**
+ * @brief The amount of time after which a job shall be aborted.
+ *
+ * This defines a timeout (in milliseconds) after which a job - if no transfer took place - should
+ * be aborted. The default is to use QNetworkRequest::DefaultTransferTimeoutConstant.
+ *
+ * Note that not all concrete jobs might implement such transfer timeouts. However, implementations
+ * that use Qt's networking code are encouraged to call QNetworkRequest::setTransferTimeout() with
+ * this value.
+ *
+ * A value of zero for the timeout indicates that the request shall never time out.
+ *
+ * To change the timeout, call setTransferTimeout().
+ */
+int AbstractJob::transferTimeout() const
+{
+    Q_D(const AbstractJob);
+    return d->transferTimeout;
+}
+
+/**
+ * @brief Set the transfer timeout of the job to @p transferTimeout.
+ */
+void AbstractJob::setTransferTimeout(int transferTimeout)
+{
+    Q_D(AbstractJob);
+    if (d->transferTimeout == transferTimeout) {
+        return;
+    }
+    d->transferTimeout = transferTimeout;
+    emit transferTimeoutChanged();
+}
+
+/**
  * @brief Constructor.
  */
 AbstractJob::AbstractJob(AbstractJobPrivate* d, QObject* parent) : QObject(parent), d_ptr(d) {}

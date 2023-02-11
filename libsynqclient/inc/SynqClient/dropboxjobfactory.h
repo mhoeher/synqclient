@@ -49,6 +49,9 @@ public:
     QString token() const;
     void setToken(const QString& token);
 
+    int transferTimeout() const;
+    void setTransferTimeout(int transferTimeout);
+
 protected:
     explicit DropboxJobFactory(DropboxJobFactoryPrivate* d, QObject* parent = nullptr);
 

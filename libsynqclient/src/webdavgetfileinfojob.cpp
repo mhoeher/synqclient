@@ -69,7 +69,7 @@ void WebDAVGetFileInfoJob::start()
 
     auto url = d_ptr2->urlFromPath(d->path);
     QNetworkRequest req;
-    d_ptr2->prepareNetworkRequest(req);
+    d_ptr2->prepareNetworkRequest(req, this);
     d_ptr2->disableCaching(req);
     req.setUrl(url);
     req.setRawHeader("Depth", "0");

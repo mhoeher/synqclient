@@ -67,20 +67,20 @@ bool NextCloudLoginFlowPrivate::isValidFlowKickoffResponse(const QJsonDocument& 
         error = "Poll information is not an object";
         return false;
     }
-    auto poll = obj.value("poll").toObject();
-    if (!poll.contains("token")) {
+    auto poll_ = obj.value("poll").toObject();
+    if (!poll_.contains("token")) {
         error = "Poll information is missing token";
         return false;
     }
-    if (!poll.value("token").isString()) {
+    if (!poll_.value("token").isString()) {
         error = "Poll token is not a string";
         return false;
     }
-    if (!poll.contains("endpoint")) {
+    if (!poll_.contains("endpoint")) {
         error = "Poll endpoint is missing";
         return false;
     }
-    if (!poll.value("endpoint").isString()) {
+    if (!poll_.value("endpoint").isString()) {
         error = "Poll endpoint is not a string";
         return false;
     }

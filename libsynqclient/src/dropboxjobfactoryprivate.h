@@ -37,6 +37,7 @@ public:
     QPointer<QNetworkAccessManager> networkAccessManager;
     QString userAgent;
     QString token;
+    int transferTimeout;
 
     template<typename T>
     T* createJob(QObject* parent)
@@ -45,6 +46,7 @@ public:
         result->setNetworkAccessManager(networkAccessManager);
         result->setUserAgent(userAgent);
         result->setToken(token);
+        result->setTransferTimeout(transferTimeout);
         return result;
     }
 };

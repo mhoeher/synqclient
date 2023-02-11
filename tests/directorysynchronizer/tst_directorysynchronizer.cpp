@@ -209,18 +209,18 @@ void DirectorySynchronizerTest::failIfNotCreatingRemoteFolders()
     auto dbPath = metaTmpDir.path() + "/syncdb.json";
     QVERIFY(writeFile(tmpDir.path() + "/top/sub/test.txt", "Hello World!\n"));
 
-    DirectorySynchronizer sync;
-    sync.setJobFactory(jobFactory);
-    auto flags = sync.flags();
+    DirectorySynchronizer sync_;
+    sync_.setJobFactory(jobFactory);
+    auto flags = sync_.flags();
     flags = flags & ~SynchronizerFlags(SynchronizerFlag::CreateRemoteFolderOnFirstSync);
-    sync.setFlags(flags);
-    sync.setLocalDirectoryPath(tmpDir.path());
-    sync.setRemoteDirectoryPath(path);
-    sync.setSyncStateDatabase(new JSONSyncStateDatabase(dbPath, &sync));
-    sync.start();
-    QSignalSpy spy(&sync, &DirectorySynchronizer::finished);
+    sync_.setFlags(flags);
+    sync_.setLocalDirectoryPath(tmpDir.path());
+    sync_.setRemoteDirectoryPath(path);
+    sync_.setSyncStateDatabase(new JSONSyncStateDatabase(dbPath, &sync_));
+    sync_.start();
+    QSignalSpy spy(&sync_, &DirectorySynchronizer::finished);
     QVERIFY(spy.wait());
-    QCOMPARE(sync.error(), SynchronizerError::FailedListingRemoteFolder);
+    QCOMPARE(sync_.error(), SynchronizerError::FailedListingRemoteFolder);
 }
 
 void DirectorySynchronizerTest::simpleSyncAndConflictResolution()
@@ -724,23 +724,23 @@ bool DirectorySynchronizerTest::syncDir(const QString& localPath, const QString&
                                         SynqClient::AbstractJobFactory* jobFactory)
 {
     JSONSyncStateDatabase syncDb(syncDbPath);
-    DirectorySynchronizer sync;
-    sync.setJobFactory(jobFactory);
-    sync.setFilter([](const QString& path, const FileInfo&) { return !path.endsWith(".dat"); });
-    sync.setLocalDirectoryPath(localPath);
-    sync.setRemoteDirectoryPath(remotePath);
-    sync.setSyncStateDatabase(&syncDb);
-    sync.setSyncConflictStrategy(strategy);
-    SQ_COMPARE(sync.state(), SynchronizerState::Ready);
-    SQ_COMPARE(sync.error(), SynchronizerError::NoError);
-    sync.start();
-    SQ_COMPARE(sync.state(), SynchronizerState::Running);
-    SQ_COMPARE(sync.error(), SynchronizerError::NoError);
-    QSignalSpy spy(&sync, &DirectorySynchronizer::finished);
+    DirectorySynchronizer sync_;
+    sync_.setJobFactory(jobFactory);
+    sync_.setFilter([](const QString& path, const FileInfo&) { return !path.endsWith(".dat"); });
+    sync_.setLocalDirectoryPath(localPath);
+    sync_.setRemoteDirectoryPath(remotePath);
+    sync_.setSyncStateDatabase(&syncDb);
+    sync_.setSyncConflictStrategy(strategy);
+    SQ_COMPARE(sync_.state(), SynchronizerState::Ready);
+    SQ_COMPARE(sync_.error(), SynchronizerError::NoError);
+    sync_.start();
+    SQ_COMPARE(sync_.state(), SynchronizerState::Running);
+    SQ_COMPARE(sync_.error(), SynchronizerError::NoError);
+    QSignalSpy spy(&sync_, &DirectorySynchronizer::finished);
     SQ_VERIFY(spy.wait(1000 * 60 * 10));
-    SQ_COMPARE(sync.state(), SynchronizerState::Finished);
-    SQ_COMPARE(sync.errorString(), QString());
-    SQ_COMPARE(sync.error(), SynchronizerError::NoError);
+    SQ_COMPARE(sync_.state(), SynchronizerState::Finished);
+    SQ_COMPARE(sync_.errorString(), QString());
+    SQ_COMPARE(sync_.error(), SynchronizerError::NoError);
     // We need to have a minimal delay between syncs. This is because otherwise sync properties
     // might not yet be regenerated and hence we won't see the updates. In real life, this is less
     // of a problem, because usually the user will have pauses between syncs (and even if not,

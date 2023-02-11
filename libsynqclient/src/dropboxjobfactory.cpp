@@ -101,6 +101,28 @@ void DropboxJobFactory::setToken(const QString& token)
 }
 
 /**
+ * @brief The transfer timeout before aborting network requests.
+ *
+ * This is the timeout if no network transfer occurs after which a network request will be aborted.
+ *
+ * @sa AbstractJob::transferTimeout()
+ */
+int DropboxJobFactory::transferTimeout() const
+{
+    Q_D(const DropboxJobFactory);
+    return d->transferTimeout;
+}
+
+/**
+ * @brief Set the transfer timeout.
+ */
+void DropboxJobFactory::setTransferTimeout(int transferTimeout)
+{
+    Q_D(DropboxJobFactory);
+    d->transferTimeout = transferTimeout;
+}
+
+/**
  * @brief Constructor.
  */
 DropboxJobFactory::DropboxJobFactory(DropboxJobFactoryPrivate* d, QObject* parent)

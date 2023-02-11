@@ -36,6 +36,8 @@ class AbstractJobPrivate;
 class LIBSYNQCLIENT_EXPORT AbstractJob : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int transferTimeout READ transferTimeout WRITE setTransferTimeout NOTIFY
+                       transferTimeoutChanged)
 public:
     explicit AbstractJob(QObject* parent = nullptr);
     ~AbstractJob() override;
@@ -46,10 +48,13 @@ public:
     JobError error() const;
     QString errorString() const;
     JobState state() const;
+    int transferTimeout() const;
+    void setTransferTimeout(int transferTimeout);
 
 signals:
 
     void finished();
+    void transferTimeoutChanged();
 
 protected:
     explicit AbstractJob(AbstractJobPrivate* d, QObject* parent = nullptr);
