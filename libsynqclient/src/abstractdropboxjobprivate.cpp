@@ -111,32 +111,45 @@ FileInfo AbstractDropboxJobPrivate::fileInfoFromJson(const QJsonObject& obj,
     return result;
 }
 
-QNetworkReply* AbstractDropboxJobPrivate::post(const QString& endpoint, const QVariant& data)
+QNetworkReply* AbstractDropboxJobPrivate::post(const QString& endpoint, const QVariant& data,
+                                               AbstractJob* job)
 {
     QNetworkRequest req;
+    prepareNetworkRequest(req, job);
     req.setUrl(AbstractDropboxJobPrivate::APIv2 + endpoint);
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     req.setRawHeader("Authorization", "Bearer " + token.toUtf8());
 
-    auto reply = networkAccessManager->post(
+    auto reply_ = networkAccessManager->post(
             req, QJsonDocument::fromVariant(data).toJson(QJsonDocument::Compact));
 
-    return reply;
+    return reply_;
 }
 
 QNetworkReply* AbstractDropboxJobPrivate::postData(const QString& endpoint, const QVariant& data,
-                                                   QIODevice* content)
+                                                   QIODevice* content, AbstractJob* job)
 {
     QNetworkRequest req;
+    prepareNetworkRequest(req, job);
     req.setUrl(AbstractDropboxJobPrivate::ContentAPIv2 + endpoint);
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
     req.setRawHeader("Authorization", "Bearer " + token.toUtf8());
     req.setRawHeader("Dropbox-API-Arg",
                      QJsonDocument::fromVariant(data).toJson(QJsonDocument::Compact));
 
-    auto reply = networkAccessManager->post(req, content);
+    auto reply_ = networkAccessManager->post(req, content);
 
-    return reply;
+    return reply_;
+}
+
+/**
+ * @brief Prepare a network request.
+ *
+ * This sets some common properties on a QNetworkRequest before running it.
+ */
+void AbstractDropboxJobPrivate::prepareNetworkRequest(QNetworkRequest& req, AbstractJob* job)
+{
+    req.setTransferTimeout(job->transferTimeout());
 }
 
 /**

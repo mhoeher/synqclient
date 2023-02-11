@@ -19,6 +19,8 @@
 
 #include "webdavjobfactoryprivate.h"
 
+#include <QNetworkReply>
+
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
@@ -30,6 +32,7 @@ WebDAVJobFactoryPrivate::WebDAVJobFactoryPrivate(WebDAVJobFactory* q)
       userAgent(AbstractWebDAVJobPrivate::DefaultUserAgent),
       serverType(WebDAVServerType::Generic),
       workarounds(WebDAVWorkaround::NoWorkarounds),
+      transferTimeout(QNetworkRequest::DefaultTransferTimeoutConstant),
       currentServerTestData(),
       serverTestJob()
 {

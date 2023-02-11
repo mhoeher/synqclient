@@ -68,7 +68,7 @@ void DropboxDeleteJob::start()
         data["parent_rev"] = syncAttribute();
     }
 
-    auto reply = d_ptr2->post("/files/delete_v2", data);
+    auto reply = d_ptr2->post("/files/delete_v2", data, this);
 
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {

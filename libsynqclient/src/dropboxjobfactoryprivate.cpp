@@ -19,6 +19,8 @@
 
 #include "dropboxjobfactoryprivate.h"
 
+#include <QNetworkRequest>
+
 #include "abstractwebdavjobprivate.h"
 
 namespace SynqClient {
@@ -27,7 +29,8 @@ DropboxJobFactoryPrivate::DropboxJobFactoryPrivate(DropboxJobFactory* q)
     : AbstractJobFactoryPrivate(q),
       networkAccessManager(nullptr),
       userAgent(AbstractWebDAVJobPrivate::DefaultUserAgent),
-      token()
+      token(),
+      transferTimeout(QNetworkRequest::DefaultTransferTimeoutConstant)
 {
 }
 

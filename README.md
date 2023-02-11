@@ -22,7 +22,7 @@ Building the library can be done either with `cmake` or `qmake`.
 
 You will need the following dependencies being installed:
 
-- Qt 5 or 6. The following modules are used:
+- Qt 5.15 or 6. The following modules are used:
   - Core
   - Network
   - XML

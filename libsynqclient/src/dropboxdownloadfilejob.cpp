@@ -80,7 +80,7 @@ void DropboxDownloadFileJob::start()
     QVariantMap data { { "path", AbstractDropboxJobPrivate::fixPath(d->remoteFilename) } };
 
     d->downloadDevice->seek(0);
-    auto reply = d_ptr2->postData("/files/download", data, nullptr);
+    auto reply = d_ptr2->postData("/files/download", data, nullptr, this);
 
     if (reply) {
         connect(reply, &QNetworkReply::readyRead, this, [=]() {

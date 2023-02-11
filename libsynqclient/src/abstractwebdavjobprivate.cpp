@@ -72,9 +72,10 @@ QUrl AbstractWebDAVJobPrivate::urlFromPath(const QString& path)
     return result;
 }
 
-void AbstractWebDAVJobPrivate::prepareNetworkRequest(QNetworkRequest& request)
+void AbstractWebDAVJobPrivate::prepareNetworkRequest(QNetworkRequest& request, AbstractJob* job)
 {
     request.setRawHeader("User-Agent", userAgent.toUtf8());
+    request.setTransferTimeout(job->transferTimeout());
 }
 
 void AbstractWebDAVJobPrivate::disableCaching(QNetworkRequest& request)
