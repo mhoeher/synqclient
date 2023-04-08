@@ -20,6 +20,7 @@ public:
     JobError error;
     QString errorString;
     JobState state;
+    int transferTimeout;
 };
 
 } // namespace SynqClient

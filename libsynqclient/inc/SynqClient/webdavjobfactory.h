@@ -58,6 +58,9 @@ public:
     WebDAVWorkarounds workarounds() const;
     void setWorkarounds(WebDAVWorkarounds workarounds);
 
+    int transferTimeout() const;
+    void setTransferTimeout(int transferTimeout);
+
 public slots:
 
     void testServer(const QString& path = QString());

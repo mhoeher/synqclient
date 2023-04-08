@@ -29,6 +29,7 @@
 
 #include "SynqClient/FileInfo"
 #include "SynqClient/SynqClient"
+#include "SynqClient/abstractjob.h"
 #include "SynqClient/abstractdropboxjob.h"
 
 class QJsonObject;
@@ -66,12 +67,14 @@ public:
     static FileInfo fileInfoFromJson(const QJsonObject& obj, const QString& basePath = QString(),
                                      const QString& forceTag = QString());
 
-    QNetworkReply* post(const QString& endpoint, const QVariant& data);
-    QNetworkReply* postData(const QString& endpoint, const QVariant& data, QIODevice* content);
+    QNetworkReply* post(const QString& endpoint, const QVariant& data, AbstractJob* job);
+    QNetworkReply* postData(const QString& endpoint, const QVariant& data, QIODevice* content,
+                            AbstractJob* job);
 
-    void
-    tryHandleKnownError(const QByteArray& body,
-                        QMap<QPair<QStringList, QString>, KnownErrorHandlerFunction> handlers);
+    void prepareNetworkRequest(QNetworkRequest& req, AbstractJob* job);
+
+    void tryHandleKnownError(const QByteArray& body,
+                             QMap<QPair<QStringList, QString>, KnownErrorHandlerFunction> handlers);
 
     static QString fixPath(const QString& path);
 

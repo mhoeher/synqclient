@@ -70,7 +70,7 @@ void WebDAVCreateDirectoryJob::start()
         }
     }
     QNetworkRequest req;
-    d_ptr2->prepareNetworkRequest(req);
+    d_ptr2->prepareNetworkRequest(req, this);
     req.setUrl(url);
     req.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
                      QNetworkRequest::ManualRedirectPolicy); // WA for QTBUG-92909, handle redirects

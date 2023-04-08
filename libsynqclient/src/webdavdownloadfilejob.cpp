@@ -59,7 +59,7 @@ void WebDAVDownloadFileJob::start()
 
     auto url = d_ptr2->urlFromPath(d->remoteFilename);
     QNetworkRequest req;
-    d_ptr2->prepareNetworkRequest(req);
+    d_ptr2->prepareNetworkRequest(req, this);
     d_ptr2->disableCaching(req);
     req.setUrl(url);
     // Turn server side compression off. This is required because some servers tend to modify

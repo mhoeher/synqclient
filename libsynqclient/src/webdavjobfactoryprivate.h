@@ -41,6 +41,7 @@ public:
     QString userAgent;
     WebDAVServerType serverType;
     WebDAVWorkarounds workarounds;
+    int transferTimeout;
     QVariantMap currentServerTestData;
 
     QPointer<CompositeJob> serverTestJob;
@@ -54,6 +55,7 @@ public:
         result->setUserAgent(userAgent);
         result->setServerType(serverType);
         result->setWorkarounds(workarounds);
+        result->setTransferTimeout(transferTimeout);
         return result;
     }
 };

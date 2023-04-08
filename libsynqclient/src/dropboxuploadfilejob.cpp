@@ -86,7 +86,7 @@ void DropboxUploadFileJob::start()
         data["mode"] = QVariantMap { { ".tag", "update" }, { "update", syncAttr } };
     }
 
-    auto reply = d_ptr2->postData("/files/upload", data, d->uploadDevice.data());
+    auto reply = d_ptr2->postData("/files/upload", data, d->uploadDevice.data(), this);
 
     if (reply) {
         connect(reply, &QNetworkReply::finished, this, [=]() {

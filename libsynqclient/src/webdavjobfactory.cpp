@@ -156,6 +156,28 @@ void WebDAVJobFactory::setWorkarounds(WebDAVWorkarounds workarounds)
 }
 
 /**
+ * @brief The transfer timeout before aborting requests.
+ *
+ * This is the timeout before aborting network jobs when no transfer takes place.
+ *
+ * @sa AbstractJob::transferTimeout()
+ */
+int WebDAVJobFactory::transferTimeout() const
+{
+    Q_D(const WebDAVJobFactory);
+    return d->transferTimeout;
+}
+
+/**
+ * @brief Set the transfer timeout.
+ */
+void WebDAVJobFactory::setTransferTimeout(int transferTimeout)
+{
+    Q_D(WebDAVJobFactory);
+    d->transferTimeout = transferTimeout;
+}
+
+/**
  * @brief Test the server.
  *
  * This starts testing the server. WebDAV servers differ heavily in the way the implement the WebDAV
